@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Complete Python Master Reference — CLI · Language · Standard Library</title>
+<style>
+:root{--bg:#f6f8fa;--bg2:#fff;--side:#122029;--side2:#0b161d;--fg:#1c2430;--fg2:#5a6472;
+--accent:#2f7dae;--accent2:#ffd43b;--border:#d9dee6;--code-bg:#eef1f5;--pre-bg:#101a22;--pre-fg:#d7e4ec;
+--shadow:0 2px 10px rgba(10,20,30,.08)}
+html[data-theme=dark]{--bg:#0f151b;--bg2:#151d26;--side:#0a1117;--side2:#070d12;--fg:#d7dee8;--fg2:#8b96a5;
+--accent:#4cc2ff;--accent2:#ffd43b;--border:#28323f;--code-bg:#1c2530;--pre-bg:#0a1118;--pre-fg:#cfd9e5;
+--shadow:0 2px 12px rgba(0,0,0,.45)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}[id]{scroll-margin-top:84px}
+.layout{display:flex;min-height:100vh}
+aside.sidebar{width:320px;flex:0 0 320px;background:linear-gradient(180deg,var(--side),var(--side2));color:#c6d4de;position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 14px 40px;border-right:1px solid rgba(255,255,255,.06)}
+.sidebar .brand{font-weight:700;font-size:15px;color:#fff;padding:6px 10px 12px;border-bottom:1px solid rgba(255,255,255,.09);margin-bottom:10px}
+.sidebar .brand .sub{display:block;font-weight:400;font-size:11.5px;color:#7f929f;margin-top:3px}
+main.content{flex:1;min-width:0;padding:0 40px 90px;max-width:1240px}.inner{max-width:1100px;margin:0 auto}
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:12px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.topbar h1{font-size:17px;margin:0 12px 0 0;flex:1 1 auto;min-width:200px}
+.searchwrap{position:relative;flex:0 1 380px;min-width:220px}
+#search{width:100%;padding:8px 64px 8px 34px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--fg);font-size:13.5px}
+#search:focus{outline:2px solid var(--accent);outline-offset:1px}
+.searchwrap .icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--fg2);font-size:13px;pointer-events:none}
+.searchwrap kbd{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:10.5px;color:var(--fg2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;background:var(--bg)}
+#matchcount{font-size:12px;color:var(--fg2);white-space:nowrap}
+.iconbtn{border:1px solid var(--border);background:var(--bg2);color:var(--fg);border-radius:8px;padding:7px 11px;cursor:pointer;font-size:14px}
+.iconbtn:hover{border-color:var(--accent)}#menuBtn{display:none}
+details.part{margin:2px 0 8px;border-radius:8px}
+details.part summary{cursor:pointer;list-style:none;padding:7px 10px;font-weight:600;font-size:13px;color:#e8f0f6;border-radius:8px;background:rgba(255,255,255,.05)}
+details.part summary::-webkit-details-marker{display:none}
+details.part summary::before{content:"\25B8  ";color:#6f8494}
+details.part[open] summary::before{content:"\25BE  "}
+details.part summary a{color:inherit}
+details.part ul{list-style:none;margin:4px 0 6px;padding:0 0 0 8px;border-left:1px solid rgba(255,255,255,.08)}
+details.part li{margin:1px 0}
+details.part li a{display:block;padding:4px 9px;font-size:12.3px;color:#9fb2c0;border-radius:6px}
+details.part li.sub a{padding-left:22px;font-size:11.8px;color:#7e919e}
+details.part li a:hover{background:rgba(255,255,255,.07);color:#fff;text-decoration:none}
+details.part li a.active{background:var(--accent);color:#041018;font-weight:600}
+details.part li a.filtered{display:none}
+h1.doc-title{font-size:30px;margin:26px 0 6px;line-height:1.25}
+h1{font-size:26px;margin:38px 0 14px;padding-bottom:8px;border-bottom:3px solid var(--accent)}
+h2{font-size:21px;margin:34px 0 12px;padding-left:11px;border-left:4px solid var(--accent)}
+h3{font-size:16.5px;margin:24px 0 8px;color:var(--fg)}
+p{margin:10px 0}hr{border:0;border-top:1px solid var(--border);margin:34px 0}
+blockquote{margin:14px 0;padding:10px 16px;border-left:4px solid var(--accent2);background:var(--bg2);border-radius:0 8px 8px 0;color:var(--fg2)}
+blockquote code{color:var(--fg)}
+ul,ol{margin:10px 0;padding-left:26px}li{margin:4px 0}
+code{font-family:'Cascadia Code',Consolas,'JetBrains Mono',Menlo,monospace;font-size:.9em;background:var(--code-bg);padding:1.5px 5px;border-radius:5px;border:1px solid var(--border)}
+.section{border-radius:4px}.section.hidden{display:none}
+.table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:13.4px;background:var(--bg2)}
+th,td{padding:7px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+thead th{background:var(--code-bg);font-weight:700;font-size:12.6px;border-bottom:2px solid var(--accent);white-space:nowrap}
+tbody tr:nth-child(even){background:color-mix(in srgb,var(--code-bg) 45%,transparent)}
+tbody tr:hover{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+td code{white-space:nowrap}
+.codewrap{margin:14px 0;border-radius:10px;overflow:hidden;border:1px solid #24333f;box-shadow:var(--shadow)}
+.codebar{display:flex;justify-content:space-between;align-items:center;background:#182530;padding:6px 12px;font-size:11.5px;color:#8b9dad}
+.codebar .lang{text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.copybtn{background:#22303d;color:#c6d4de;border:1px solid #33455a;border-radius:6px;font-size:11.5px;padding:3px 12px;cursor:pointer}
+.copybtn:hover{background:#2d3f51}
+pre{margin:0;background:var(--pre-bg);padding:14px 16px;overflow-x:auto}
+pre code{background:none;border:0;padding:0;color:var(--pre-fg);font-size:13px;line-height:1.5;white-space:pre}
+#toTop{position:fixed;right:22px;bottom:22px;z-index:60;width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);color:var(--fg);font-size:17px;cursor:pointer;box-shadow:var(--shadow);display:none}
+#toTop.show{display:block}
+.footer-note{margin-top:60px;padding-top:16px;border-top:1px solid var(--border);color:var(--fg2);font-size:12.5px;text-align:center}
+@media (max-width:920px){#menuBtn{display:inline-block}
+aside.sidebar{position:fixed;left:0;top:0;z-index:100;transform:translateX(-105%);transition:transform .25s ease;height:100vh}
+body.nav-open aside.sidebar{transform:translateX(0);box-shadow:0 0 40px rgba(0,0,0,.5)}
+body.nav-open::after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+main.content{padding:0 16px 70px}.topbar h1{font-size:14.5px}}
+@media print{aside.sidebar,.topbar,#toTop,.copybtn,.codebar{display:none!important}
+.section.hidden{display:block!important}body{background:#fff;color:#000}
+main.content{max-width:100%;padding:0}.table-wrap{box-shadow:none;overflow:visible}
+pre{white-space:pre-wrap;word-break:break-all}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">🐍 Python Master Reference<span class="sub">CLI tools · the whole language · stdlib · tutorials</span></div>
+    <nav id="tocnav">
+<details open class="part"><summary><a href="#the-complete-python-master-reference">🐍 The Complete Python Master Reference</a></summary><ul>
+<li class="main"><a href="#table-of-contents">Table of Contents</a></li>
+</ul></details>
+<details open class="part"><summary><a href="#part-0-getting-started-beginner-course">PART 0 — GETTING STARTED (Beginner Course)</a></summary><ul>
+<li class="main"><a href="#01-python-versions-implementations">0.1 Python versions &amp; implementations</a></li>
+<li class="main"><a href="#02-installing-python-everywhere">0.2 Installing Python everywhere</a></li>
+<li class="main"><a href="#03-running-python-7-ways">0.3 Running Python: 7 ways</a></li>
+<li class="main"><a href="#04-the-repl-ipython">0.4 The REPL &amp; IPython</a></li>
+<li class="main"><a href="#05-virtual-environments-the-packaging-zoo">0.5 Virtual environments &amp; the packaging zoo</a></li>
+<li class="main"><a href="#06-getting-help-anywhere">0.6 Getting help anywhere</a></li>
+<li class="main"><a href="#07-your-first-10-programs">0.7 Your first 10 programs</a></li>
+</ul></details>
+<details open class="part"><summary><a href="#part-1-the-python-command-line-every-tool-subcommand">PART 1 — THE PYTHON COMMAND LINE: EVERY TOOL &amp; SUBCOMMAND</a></summary><ul>
+<li class="main"><a href="#1-python-every-interpreter-flag">1. python — Every Interpreter Flag</a></li>
+<li class="main"><a href="#2-py-launcher-windows">2. py Launcher (Windows)</a></li>
+<li class="main"><a href="#3-pip-every-subcommand">3. pip — Every Subcommand</a></li>
+<li class="main"><a href="#4-environment-dependency-managers">4. Environment &amp; Dependency Managers</a></li>
+<li class="sub"><a href="#venv-built-in">venv (built-in)</a></li>
+<li class="sub"><a href="#pipx-cli-apps-in-isolated-envs">pipx — CLI apps in isolated envs</a></li>
+<li class="sub"><a href="#poetry">poetry</a></li>
+<li class="sub"><a href="#conda-mamba">conda / mamba</a></li>
+<li class="sub"><a href="#uv-the-fast-modern-toolchain">uv — the fast modern toolchain</a></li>
+<li class="main"><a href="#5-the-python--m-toolbox">5. The python -m Toolbox</a></li>
+<li class="main"><a href="#6-packaging-publishing">6. Packaging &amp; Publishing</a></li>
+<li class="main"><a href="#7-testing">7. Testing</a></li>
+<li class="sub"><a href="#pytest-the-standard">pytest — the standard</a></li>
+<li class="sub"><a href="#unittest-cli-stdlib">unittest CLI (stdlib)</a></li>
+<li class="sub"><a href="#coverage">coverage</a></li>
+<li class="main"><a href="#8-quality-tools-lint-format-type-check">8. Quality Tools — Lint, Format, Type-check</a></li>
+<li class="main"><a href="#9-debugging-profiling">9. Debugging &amp; Profiling</a></li>
+<li class="sub"><a href="#pdb-every-command">pdb — every command</a></li>
+<li class="sub"><a href="#cprofile">cProfile</a></li>
+<li class="sub"><a href="#timeit-tracemalloc">timeit / tracemalloc</a></li>
+<li class="main"><a href="#10-jupyter-notebooks">10. Jupyter &amp; Notebooks</a></li>
+</ul></details>
+<details open class="part"><summary><a href="#part-2-the-language-complete-syntax-reference">PART 2 — THE LANGUAGE: COMPLETE SYNTAX REFERENCE</a></summary><ul>
+<li class="main"><a href="#11-structure-syntax-rules">11. Structure &amp; Syntax Rules</a></li>
+<li class="main"><a href="#12-built-in-types-every-method">12. Built-in Types — Every Method</a></li>
+<li class="sub"><a href="#numeric">Numeric</a></li>
+<li class="sub"><a href="#str-all-methods">str — all methods</a></li>
+<li class="sub"><a href="#list-tuple">list &amp; tuple</a></li>
+<li class="sub"><a href="#dict">dict</a></li>
+<li class="sub"><a href="#set-frozenset">set / frozenset</a></li>
+<li class="sub"><a href="#bytes-bytearray-memoryview">bytes / bytearray / memoryview</a></li>
+<li class="sub"><a href="#other-core-types">Other core types</a></li>
+<li class="main"><a href="#13-operators-precedence">13. Operators &amp; Precedence</a></li>
+<li class="main"><a href="#14-strings-deep-dive">14. Strings Deep-Dive</a></li>
+<li class="sub"><a href="#slicing-the-complete-rules">Slicing — the complete rules</a></li>
+<li class="sub"><a href="#f-strings-format-full-spec-mini-language">f-strings &amp; format — full spec mini-language</a></li>
+<li class="sub"><a href="#re-the-regex-module">re — the regex module</a></li>
+<li class="main"><a href="#15-control-flow">15. Control Flow</a></li>
+<li class="sub"><a href="#conditionals">Conditionals</a></li>
+<li class="sub"><a href="#loops">Loops</a></li>
+<li class="sub"><a href="#comprehensions-all-four">Comprehensions — all four</a></li>
+<li class="sub"><a href="#generators-iterators">Generators &amp; iterators</a></li>
+<li class="sub"><a href="#itertools-every-function">itertools — every function</a></li>
+<li class="main"><a href="#16-functions">16. Functions</a></li>
+<li class="sub"><a href="#definitions-the-full-anatomy">Definitions — the full anatomy</a></li>
+<li class="sub"><a href="#closures-decorators-functools">Closures, decorators, functools</a></li>
+<li class="sub"><a href="#typing-annotations">Typing (annotations)</a></li>
+<li class="main"><a href="#17-classes-oop">17. Classes &amp; OOP</a></li>
+<li class="sub"><a href="#dataclasses-the-boilerplate-killer">dataclasses — the boilerplate killer</a></li>
+<li class="main"><a href="#18-exceptions">18. Exceptions</a></li>
+<li class="sub"><a href="#full-builtin-hierarchy">Full builtin hierarchy</a></li>
+<li class="sub"><a href="#using-them-properly">Using them properly</a></li>
+<li class="main"><a href="#19-modules-packages-imports">19. Modules, Packages &amp; Imports</a></li>
+<li class="main"><a href="#20-files-io">20. Files &amp; I/O</a></li>
+<li class="sub"><a href="#open-all-modes">open — all modes</a></li>
+<li class="sub"><a href="#pathlib-every-method-that-matters">pathlib — every method that matters</a></li>
+<li class="sub"><a href="#os-ospath-shutil">os / os.path / shutil</a></li>
+<li class="sub"><a href="#data-formats">Data formats</a></li>
+<li class="main"><a href="#21-concurrency">21. Concurrency</a></li>
+<li class="sub"><a href="#which-model-for-what">Which model for what?</a></li>
+<li class="sub"><a href="#threading">threading</a></li>
+<li class="sub"><a href="#multiprocessing">multiprocessing</a></li>
+<li class="sub"><a href="#concurrentfutures-the-friendly-face">concurrent.futures — the friendly face</a></li>
+<li class="sub"><a href="#asyncio">asyncio</a></li>
+<li class="main"><a href="#22-standard-library-essentials">22. Standard Library Essentials</a></li>
+<li class="sub"><a href="#datetime-the-complete-kit">datetime — the complete kit</a></li>
+<li class="sub"><a href="#collections">collections</a></li>
+<li class="sub"><a href="#random-math-statistics-secrets">random, math, statistics, secrets</a></li>
+<li class="sub"><a href="#hashing-encoding">Hashing &amp; encoding</a></li>
+<li class="sub"><a href="#subprocess-run-anything">subprocess — run anything</a></li>
+<li class="sub"><a href="#argparse-full-walkthrough">argparse — full walkthrough</a></li>
+<li class="sub"><a href="#logging-full-walkthrough">logging — full walkthrough</a></li>
+<li class="sub"><a href="#networking-quick-hits">Networking quick hits</a></li>
+<li class="sub"><a href="#archives-glob-platform">Archives, glob, platform</a></li>
+</ul></details>
+<details open class="part"><summary><a href="#part-3-hands-on-tutorials">PART 3 — HANDS-ON TUTORIALS</a></summary><ul>
+<li class="main"><a href="#t1-your-first-hour">T1. Your First Hour</a></li>
+<li class="main"><a href="#t2-parse-a-log-file-csv-report">T2. Parse a Log File → CSV Report</a></li>
+<li class="main"><a href="#t3-consume-any-rest-api-json">T3. Consume Any REST API (JSON)</a></li>
+<li class="main"><a href="#t4-build-a-real-cli-app-argparse">T4. Build a Real CLI App (argparse)</a></li>
+<li class="main"><a href="#t5-oop-with-dataclasses-an-inventory-manager">T5. OOP with Dataclasses — an Inventory Manager</a></li>
+<li class="main"><a href="#t6-package-publish-a-library-to-pypi">T6. Package &amp; Publish a Library to PyPI</a></li>
+<li class="main"><a href="#t7-test-like-a-pro-with-pytest">T7. Test Like a Pro with pytest</a></li>
+<li class="main"><a href="#t8-automate-the-boring-stuff">T8. Automate the Boring Stuff</a></li>
+<li class="main"><a href="#t9-async-a-concurrent-downloader">T9. Async — a Concurrent Downloader</a></li>
+<li class="main"><a href="#t10-debug-profile-like-a-detective">T10. Debug &amp; Profile Like a Detective</a></li>
+</ul></details>
+<details open class="part"><summary><a href="#part-4-appendices">PART 4 — APPENDICES</a></summary><ul>
+<li class="main"><a href="#appendix-a-az-command-tool-index-part-1">Appendix A — A–Z Command &amp; Tool Index (Part 1)</a></li>
+<li class="main"><a href="#appendix-b-all-built-in-functions">Appendix B — All Built-in Functions</a></li>
+<li class="main"><a href="#appendix-c-dunder-methods-protocol-table">Appendix C — Dunder Methods Protocol Table</a></li>
+<li class="main"><a href="#appendix-d-format-spec-quick-table">Appendix D — Format Spec Quick Table</a></li>
+<li class="main"><a href="#appendix-e-the-exceptions-youll-actually-meet">Appendix E — The Exceptions You&#x27;ll Actually Meet</a></li>
+<li class="main"><a href="#appendix-f-one-liner-cookbook">Appendix F — One-Liner Cookbook</a></li>
+<li class="main"><a href="#appendix-g-traceback-decoding-errors-best-practices">Appendix G — Traceback Decoding, Errors &amp; Best Practices</a></li>
+<li class="main"><a href="#keep-learning">Keep Learning</a></li>
+</ul></details>
+    </nav>
+  </aside>
+  <main class="content">
+    <div class="topbar">
+      <button class="iconbtn" id="menuBtn" title="Menu">☰</button>
+      <h1>🐍 The Complete Python Master Reference</h1>
+      <div class="searchwrap">
+        <span class="icon">🔍</span>
+        <input id="search" type="search" placeholder="Search commands, sections, tutorials&hellip;" autocomplete="off">
+        <kbd>/</kbd>
+      </div>
+      <span id="matchcount"></span>
+      <button class="iconbtn" id="themeToggle" title="Toggle theme">🌙</button>
+    </div>
+    <div class="inner" id="docbody">
+<h1 id="the-complete-python-master-reference">🐍 The Complete Python Master Reference</h1>
+<p><strong>CLI commands &amp; subcommands · the whole language · standard library · full step-by-step tutorials</strong></p>
+<blockquote><strong>The Python edition of the Command-Line Master Reference.</strong> Covers every way you <em>run</em> Python (interpreter flags, <code>pip</code>, <code>venv</code>, packaging tools, debuggers), the complete core language with every important method table, the essential standard library, 10 hands-on tutorials, and 7 quick-reference appendices. Examples target <strong>Python 3.10–3.13</strong>. Conventions: <code>command</code> = type exactly · <code>⟨required⟩</code> · <code>[optional]</code> · <code>a|b</code> = choose one · ⚠ = destructive/risky · † = deprecated or removed (modern replacement given) · <code>$</code> = shell prompt (CMD/PowerShell/Bash all fine) · <code>&amp;gt;&amp;gt;&amp;gt;</code> = Python REPL.</blockquote>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<p><strong>PART 0 — Getting Started (Beginner Course)</strong> 0.1 Python versions &amp; implementations · 0.2 Installing Python everywhere · 0.3 Running Python: 7 ways · 0.4 The REPL &amp; IPython · 0.5 Virtual environments &amp; the packaging zoo · 0.6 Getting help anywhere · 0.7 Your first 10 programs</p>
+<p><strong>PART 1 — The Python Command Line: every tool &amp; subcommand</strong></p>
+<ol><li><code>python</code> — every interpreter flag &amp; env var · 2. <code>py</code> launcher (Windows) · 3. <code>pip</code> — every subcommand &amp; key flags · 4. Environments: <code>venv</code> · <code>virtualenv</code> · <code>pipx</code> · <code>poetry</code> · <code>pipenv</code> · <code>conda</code> · <code>uv</code> · 5. <code>python -m</code> toolbox (pydoc, http.server, json.tool, timeit, cProfile, pdb, compileall, zipfile…)</li></ol>
+<ol><li>Packaging &amp; publishing (<code>pyproject.toml</code>, <code>build</code>, <code>twine</code>, setuptools) · 7. Testing (<code>pytest</code> all flags, <code>unittest</code> CLI, <code>coverage</code>) · 8. Quality tools (<code>ruff</code>, <code>black</code>, <code>isort</code>, <code>mypy</code>, <code>flake8</code>, <code>pylint</code>, <code>bandit</code>, <code>pre-commit</code>) · 9. Debugging &amp; profiling (<code>pdb</code> — every command, <code>cProfile</code>, <code>timeit</code>, <code>tracemalloc</code>) · 10. Jupyter &amp; notebooks</li></ol>
+<p><strong>PART 2 — The Language: complete syntax reference</strong></p>
+<ol><li>Structure &amp; syntax rules · 12. Built-in types — every method (<code>str</code>, <code>list</code>, <code>dict</code>, <code>set</code>, <code>bytes</code>…) · 13. Operators &amp; precedence — full tables · 14. Strings deep-dive: slicing, all methods, f-string format specs, <code>re</code> regex</li></ol>
+<ol><li>Control flow: <code>if</code>/<code>match</code>/<code>for</code>/<code>while</code>, comprehensions, generators, <code>itertools</code> — every function · 16. Functions: <code>*args</code>/<code>**kwargs</code>, lambdas, closures, decorators, <code>functools</code>, typing · 17. Classes &amp; OOP: inheritance, <code>dataclasses</code>, properties, dunder protocol · 18. Exceptions: full hierarchy + best practices · 19. Modules, packages &amp; imports</li></ol>
+<ol><li>Files &amp; I/O: <code>open</code>, <code>pathlib</code> (all methods), <code>os</code>/<code>shutil</code>, JSON/CSV/pickle, <code>sqlite3</code>, <code>tempfile</code> · 21. Concurrency: <code>threading</code>, <code>multiprocessing</code>, <code>asyncio</code>, <code>concurrent.futures</code> · 22. Standard-library essentials: <code>datetime</code>, <code>collections</code>, <code>itertools</code>, <code>random</code>, <code>hashlib</code>, <code>subprocess</code>, <code>argparse</code> (full tutorial), <code>logging</code> (full tutorial), networking, <code>zipfile</code></li></ol>
+<p><strong>PART 3 — Hands-On Tutorials (T1–T10)</strong> T1 Your first hour · T2 Parse a log file → CSV report · T3 Consume any REST API (JSON) · T4 Build a real CLI app with <code>argparse</code> · T5 OOP with dataclasses: an inventory manager · T6 Package &amp; publish a library to PyPI · T7 Test like a pro with <code>pytest</code> · T8 Automate the boring stuff (files, Excel, email) · T9 Async: concurrent downloader · T10 Debug &amp; profile like a detective</p>
+<p><strong>PART 4 — Appendices</strong> A. A–Z command/tool index · B. All built-in functions (70) · C. Dunder methods protocol table · D. f-string &amp; <code>format()</code> spec table · E. Exceptions hierarchy tree · F. One-liner cookbook · G. Traceback decoding, common errors, best-practice checklist</p>
+<hr>
+<h1 id="part-0-getting-started-beginner-course">PART 0 — GETTING STARTED (Beginner Course)</h1>
+<h2 id="01-python-versions-implementations">0.1 Python versions &amp; implementations</h2>
+<div class="table-wrap"><table><thead><tr><th> Thing </th><th> What to know </th></tr></thead><tbody><tr><td> <strong>Python 3.x</strong> </td><td> The present &amp; future. Use 3.11+ (25–60 % faster than 3.10); 3.13 is current stable </td></tr><tr><td> <strong>Python 2.7</strong> † </td><td> Dead since 2020-01-01. If you meet legacy code, port it (<code>2to3</code>) </td></tr><tr><td> <strong>CPython</strong> </td><td> The reference implementation you download from python.org — what “Python” means by default </td></tr><tr><td> <strong>PyPy</strong> </td><td> JIT-compiled, often 4–10× faster for long-running pure-Python code; lags CPython by a version or two </td></tr><tr><td> <strong>MicroPython / CircuitPython</strong> </td><td> Python for microcontrollers (ESP32, Raspberry Pi Pico) </td></tr><tr><td> <strong>IronPython / Jython</strong> † </td><td> .NET / JVM ports — niche today </td></tr></tbody></table></div>
+<p>Version check — do this first, always: <code>$ python --version</code> (or <code>py -V</code> on Windows). The interpreter reports e.g. <code>Python 3.12.4</code>. Any 3.10+ is fine for this entire document.</p>
+<h2 id="02-installing-python-everywhere">0.2 Installing Python everywhere</h2>
+<div class="table-wrap"><table><thead><tr><th> Platform </th><th> Method </th></tr></thead><tbody><tr><td> Windows </td><td> <code>winget install Python.Python.3.13</code> (or from <a href="https://python.org" target="_blank" rel="noopener">python.org</a> — <strong>tick “Add python.exe to PATH”</strong> in the installer) </td></tr><tr><td> Windows (multi-version) </td><td> Install several side by side; the <code>py</code> launcher picks: <code>py -3.12</code>, <code>py -0</code> lists all </td></tr><tr><td> macOS </td><td> <code>brew install python@3.13</code> (macOS also ships a system python3 — check <code>python3 -V</code>) </td></tr><tr><td> Ubuntu/Debian </td><td> <code>sudo apt install python3 python3-pip python3-venv python3-full</code> </td></tr><tr><td> Fedora/RHEL </td><td> <code>sudo dnf install python3 python3-pip</code> </td></tr><tr><td> From source </td><td> <code>./configure &amp;amp;&amp;amp; make -j &amp;amp;&amp;amp; sudo make altinstall</code> (use <code>altinstall</code> so you don’t shadow the system python) </td></tr></tbody></table></div>
+<p><strong>Rule #1:</strong> never install project packages into the system Python — use a virtual environment (0.5). On Windows, also grab <a href="https://code.visualstudio.com" target="_blank" rel="noopener">VS Code</a> + the Python extension; on any platform an editor with a language server (VS Code, PyCharm, Neovim+pyright) transforms the experience.</p>
+<h2 id="03-running-python-7-ways">0.3 Running Python: 7 ways</h2>
+<div class="table-wrap"><table><thead><tr><th> # </th><th> How </th><th> Example </th></tr></thead><tbody><tr><td> 1 </td><td> REPL </td><td> <code>$ python</code> → <code>&amp;gt;&amp;gt;&amp;gt;</code> prompt (exit: <code>exit()</code> or Ctrl+D / Ctrl+Z⏎) </td></tr><tr><td> 2 </td><td> Script file </td><td> <code>$ python hello.py</code> </td></tr><tr><td> 3 </td><td> One-liner </td><td> <code>$ python -c "print(2**38)"</code> </td></tr><tr><td> 4 </td><td> Module </td><td> <code>$ python -m http.server 8000</code> </td></tr><tr><td> 5 </td><td> Stdin pipe </td><td> <code>$ echo "print('hi')" | python</code> or <code>python &amp;lt; script.py</code> </td></tr><tr><td> 6 </td><td> Interactive-after-run </td><td> <code>$ python -i script.py</code> — drops into REPL <strong>with</strong> the script’s variables (great for poking at results) </td></tr><tr><td> 7 </td><td> Executable script </td><td> Add shebang <code>#!/usr/bin/env python3</code>, <code>chmod +x</code>, run <code>./script.py</code> (Unix); on Windows use <code>py script.py</code> or <code>.py</code> file association </td></tr></tbody></table></div>
+<p>Bonus: <code>$ python -m pydoc -b</code> opens browsable docs of every installed module; <code>python -m this</code> prints the Zen of Python.</p>
+<h2 id="04-the-repl-ipython">0.4 The REPL &amp; IPython</h2>
+<div class="table-wrap"><table><thead><tr><th> REPL trick </th><th> What it does </th></tr></thead><tbody><tr><td> <code>_</code> </td><td> Last result value </td></tr><tr><td> <code>_3</code> (IPython) </td><td> Result number 3 </td></tr><tr><td> <code>Tab</code> </td><td> Completion (names, paths, methods) </td></tr><tr><td> <code>history</code> (IPython) </td><td> Show session history </td></tr><tr><td> <code>help(x)</code> </td><td> Docs on object x </td></tr><tr><td> <code>dir(x)</code> </td><td> Everything x has </td></tr><tr><td> <code>x?</code> / <code>x??</code> (IPython) </td><td> Quick help / full source </td></tr><tr><td> <code>%timeit expr</code> (IPython) </td><td> Micro-benchmark </td></tr><tr><td> <code>%run script.py</code> (IPython) </td><td> Run file in session </td></tr><tr><td> <code>%pip install x</code> (IPython/Jupyter) </td><td> Pip inside the right environment </td></tr><tr><td> <code>python -q</code> </td><td> Start REPL without banner </td></tr><tr><td> <code>PYTHONSTARTUP=file</code> env </td><td> Auto-run on every REPL start </td></tr></tbody></table></div>
+<p>Upgrade once comfortable: <code>$ pip install ipython</code> → run <code>ipython</code>. Colored output, magic commands (<code>%</code>), <code>?</code> help, shell escape (<code>!ls</code>), and syntax-highlighted input.</p>
+<h2 id="05-virtual-environments-the-packaging-zoo">0.5 Virtual environments &amp; the packaging zoo</h2>
+<p><strong>The problem:</strong> project A needs <code>requests==2.31</code>, project B needs <code>2.32</code>. Install both into one global Python → pain. <strong>The fix:</strong> per-project isolated environments.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>python -m venv .venv            # 1. create (one-time per project)
+source .venv/bin/activate       # 2. activate (Linux/macOS)
+.venv\Scripts\activate          #    (Windows CMD/PowerShell)
+python -m pip install -U pip    # 3. fresh envs ship an old pip — upgrade
+pip install requests            # 4. install into the env only
+deactivate                      # 5. leave the env</code></pre></div>
+<p>An env is just a folder (here <code>.venv/</code>) containing a copy/symlink of the interpreter plus its own <code>site-packages</code>. Delete the folder = delete the env. Commit a <code>requirements.txt</code> (<code>pip freeze &amp;gt; requirements.txt</code>), never the <code>.venv/</code> folder itself.</p>
+<div class="table-wrap"><table><thead><tr><th> Tool </th><th> What it is </th><th> When to use </th></tr></thead><tbody><tr><td> <code>venv</code> </td><td> Built-in env creator </td><td> Default choice, zero install </td></tr><tr><td> <code>virtualenv</code> </td><td> Third-party, faster, more features </td><td> Fine, but <code>venv</code> usually enough </td></tr><tr><td> <code>pip</code> </td><td> Package installer from PyPI </td><td> Inside every env </td></tr><tr><td> <code>pipx</code> </td><td> Installs CLI <strong>apps</strong> into their own envs (<code>pipx install black</code>) </td><td> For tools, not libraries </td></tr><tr><td> <code>poetry</code> </td><td> Env + dependency + build + publish, all-in-one (<code>pyproject.toml</code>) </td><td> Modern library/app workflow </td></tr><tr><td> <code>pipenv</code> </td><td> Pip + venv glue with Pipfile </td><td> Declined in popularity </td></tr><tr><td> <code>conda</code> / <code>mamba</code> </td><td> Env manager for Python <strong>and</strong> C/Fortran stacks (science) </td><td> Data science, numpy/CUDA needs </td></tr><tr><td> <code>uv</code> ⭐ </td><td> Rust-based, 10–100× faster pip/venv/poetry replacement </td><td> The 2024+ modern default for speed </td></tr></tbody></table></div>
+<h2 id="06-getting-help-anywhere">0.6 Getting help anywhere</h2>
+<div class="table-wrap"><table><thead><tr><th> Where </th><th> Command </th></tr></thead><tbody><tr><td> REPL </td><td> <code>help(len)</code>, <code>help("re")</code>, <code>dir(str)</code> </td></tr><tr><td> Shell docs </td><td> <code>python -m pydoc re.findall</code>, <code>pydoc -b</code> (browser), <code>pydoc -w module</code> (writes .html) </td></tr><tr><td> Signatures live </td><td> <code>import inspect; inspect.signature(func)</code> </td></tr><tr><td> Official docs </td><td> <a href="https://docs.python.org/3/" target="_blank" rel="noopener">docs.python.org/3</a> — tutorial, library reference, HOWTOs </td></tr><tr><td> Error → answer </td><td> Paste the <strong>last line</strong> of a traceback into a search; add “python3” </td></tr><tr><td> PEPs </td><td> Index of Python Enhancement Proposals — the design documents (<code>peps.python.org</code>) </td></tr></tbody></table></div>
+<h2 id="07-your-first-10-programs">0.7 Your first 10 programs</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># 1 — print &amp; arithmetic
+print("Hello, Python!", 2 + 2, 10 / 4, 10 // 4, 10 % 4, 2 ** 10)
+
+# 2 — variables need no declarations
+name, age = "Matin", 30
+print(f"{name} will be {age + 1} next year")     # f-string
+
+# 3 — a list, a loop
+for i in [3, 1, 4, 1, 5]:
+    print(i * "*")
+
+# 4 — conditions
+temperature = 31
+print("hot" if temperature &gt; 28 else "fine")
+
+# 5 — function
+def greet(who="world"):
+    return f"Hello, {who}!"
+print(greet(), greet("Python"))
+
+# 6 — dictionary
+book = {"title": "Dune", "year": 1965}
+book["author"] = "Frank Herbert"
+print(book["title"].upper())
+
+# 7 — input (note: always a string!)
+age = int(input("Your age? "))
+print("Days alive ≈", age * 365.25)
+
+# 8 — file write &amp; read
+with open("notes.txt", "w", encoding="utf-8") as f:
+    f.write("line 1\nline 2\n")
+print(open("notes.txt").read().splitlines())
+
+# 9 — comprehension
+squares = [n * n for n in range(1, 11) if n % 2 == 1]
+print(squares)
+
+# 10 — import &amp; use the battery included
+from datetime import date
+from pathlib import Path
+print(date.today(), "· cwd:", Path.cwd().name)</code></pre></div>
+<hr>
+<h1 id="part-1-the-python-command-line-every-tool-subcommand">PART 1 — THE PYTHON COMMAND LINE: EVERY TOOL &amp; SUBCOMMAND</h1>
+<h2 id="1-python-every-interpreter-flag">1. <code>python</code> — Every Interpreter Flag</h2>
+<div class="table-wrap"><table><thead><tr><th> Flag </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>python script.py arg1 arg2</code> </td><td> Run script; args land in <code>sys.argv[1:]</code> </td></tr><tr><td> <code>python -c "code"</code> </td><td> Run a one-liner (<code>python -c "import sys;print(sys.version)"</code>) </td></tr><tr><td> <code>python -m module [args]</code> </td><td> Run a library module as a program — the power user's secret (§5) </td></tr><tr><td> <code>python -</code> </td><td> Read the program from stdin </td></tr><tr><td> <code>python -i [script]</code> </td><td> Drop into the REPL after running (inspect live objects) </td></tr><tr><td> <code>python -q</code> </td><td> No banner in REPL </td></tr><tr><td> <code>python -V</code> / <code>--version</code> </td><td> Print version (add <code>-VV</code> for build+compiler detail) </td></tr><tr><td> <code>python -u</code> </td><td> Unbuffered stdout/stderr — <strong>essential</strong> for logs in Docker/pipes </td></tr><tr><td> <code>python -B</code> </td><td> Don't write <code>.pyc</code> bytecode caches </td></tr><tr><td> <code>python -B</code>-adjacent: <code>PYTHONPYCACHEPREFIX=dir</code> </td><td> Redirect all bytecode caches to one folder </td></tr><tr><td> <code>python -E</code> </td><td> Ignore all <code>PYTHON*</code> environment variables (clean runs) </td></tr><tr><td> <code>python -s</code> </td><td> Ignore user <code>site-packages</code> </td></tr><tr><td> <code>python -S</code> </td><td> Skip importing <code>site</code> at startup (minimal startup; you lose easy-install paths) </td></tr><tr><td> <code>python -I</code> </td><td> Isolated mode = <code>-E</code> + <code>-s</code> + safe <code>sys.path</code> (no script dir) </td></tr><tr><td> <code>python -O</code> / <code>-OO</code> </td><td> Optimizations: strip <code>assert</code> (<code>-O</code>), also docstrings (<code>-OO</code>) — sets <code>__debug__=False</code> </td></tr><tr><td> <code>python -P</code> (3.11+) </td><td> Don't prepend script's directory to <code>sys.path</code> (safer imports) </td></tr><tr><td> <code>python -b</code> / <code>-bb</code> </td><td> Warn / error on <code>bytes</code>↔<code>str</code> comparison traps </td></tr><tr><td> <code>python -v</code> </td><td> Verbose: trace every import (also <code>import verbose</code> style debugging) </td></tr><tr><td> <code>python -W action</code> </td><td> Warnings control: <code>default error ignore always module once</code> (<code>-W error::DeprecationWarning</code>) </td></tr><tr><td> <code>python -X dev</code> </td><td> Development mode: extra checks, debug allocator (also <code>-X utf8</code>, <code>-X frozen_modules=on</code>) </td></tr><tr><td> <code>python -X importtime</code> </td><td> Print per-module import timing — kills slow startup </td></tr><tr><td> <code>python --check-hash-based-pycs always</code> </td><td> Always validate cached bytecode </td></tr><tr><td> <code>python -m pdb script.py</code> </td><td> Start under the debugger (§9) </td></tr><tr><td> <code>python -m trace --trace script.py</code> </td><td> Line-by-line execution trace </td></tr></tbody></table></div>
+<p><strong>Environment variables that matter</strong></p>
+<div class="table-wrap"><table><thead><tr><th> Variable </th><th> Effect </th></tr></thead><tbody><tr><td> <code>PYTHONPATH=dir1:dir2</code> </td><td> Extra module search paths (try to avoid; use proper packaging) </td></tr><tr><td> <code>PYTHONHOME</code> </td><td> Relocate the stdlib — rarely needed, often harmful </td></tr><tr><td> <code>PYTHONSTARTUP=file</code> </td><td> Executed at every interactive startup </td></tr><tr><td> <code>PYTHONBREAKPOINT=0|func</code> </td><td> Disable or retarget <code>breakpoint()</code> (e.g. <code>PYTHONBREAKPOINT=pudb.set_trace</code>) </td></tr><tr><td> <code>PYTHONWARNINGS=ignore</code> </td><td> Same as <code>-W</code> </td></tr><tr><td> <code>PYTHONDONTWRITEBYTECODE=1</code> </td><td> Same as <code>-B</code> </td></tr><tr><td> <code>PYTHONUNBUFFERED=1</code> </td><td> Same as <code>-u</code> (standard in Dockerfiles) </td></tr><tr><td> <code>PYTHONIOENCODING=utf-8</code> </td><td> Force stdio encoding (fix Windows accents) </td></tr><tr><td> <code>PYTHONHASHSEED=0</code> </td><td> Determinable hashing (reproducible dict order tests) </td></tr><tr><td> <code>PYTHONFAULTHANDLER=1</code> </td><td> Dump traceback on crashes (segfaults) </td></tr><tr><td> <code>VIRTUAL_ENV=path</code> </td><td> Set by venv activation — how your prompt knows </td></tr></tbody></table></div>
+<h2 id="2-py-launcher-windows">2. <code>py</code> Launcher (Windows)</h2>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>py</code> </td><td> Run newest installed Python 3 </td></tr><tr><td> <code>py -3.12 script.py</code> </td><td> Run with a specific version </td></tr><tr><td> <code>py -0</code> / <code>py --list</code> </td><td> List installed versions (<code>-0p</code> with paths) </td></tr><tr><td> <code>py -V:3.12</code> </td><td> Pin exact version (also works in shebangs: <code>#!/usr/bin/env python3.12</code> → <code>py</code> honors it) </td></tr><tr><td> <code>py -m venv .venv</code> </td><td> Create env with chosen interpreter </td></tr><tr><td> <code>py -3.13 -m pip list</code> </td><td> Pip of a specific version </td></tr><tr><td> <code>py -h</code> </td><td> Launcher help </td></tr></tbody></table></div>
+<p>On Unix the equivalent is simply <code>python3.12</code> binaries on PATH, or <code>uv python pin 3.12</code>.</p>
+<h2 id="3-pip-every-subcommand">3. <code>pip</code> — Every Subcommand</h2>
+<blockquote>Run <code>pip --version</code> <strong>inside your venv</strong> to be sure you're installing into the right place. Universal flags on every subcommand: <code>-v/-vv/-vvv</code> verbosity, <code>-q</code> quiet, <code>--dry-run</code> (23.2+, install/list), <code>--no-color</code>, <code>--require-virtualenv</code> safety.</blockquote>
+<div class="table-wrap"><table><thead><tr><th> Subcommand </th><th> Purpose · key flags </th></tr></thead><tbody><tr><td> <code>pip install pkg</code> </td><td> Install latest from PyPI </td></tr><tr><td> <code>pip install pkg==1.4.2</code> </td><td> Exact pin · <code>pkg&amp;gt;=1.4,&amp;lt;2</code> ranges · <code>pkg!=1.5</code> exclusions </td></tr><tr><td> <code>pip install -r requirements.txt</code> </td><td> Install a pinned set </td></tr><tr><td> <code>pip install -e .</code> / <code>-e path</code> </td><td> <strong>Editable</strong> install (your local project, live-edited) </td></tr><tr><td> <code>pip install -U pkg</code> </td><td> Upgrade (<code>--upgrade</code>) </td></tr><tr><td> <code>pip install --pre pkg</code> </td><td> Allow pre-releases/betas </td></tr><tr><td> <code>pip install pkg -t dir</code> </td><td> Install into arbitrary target folder </td></tr><tr><td> <code>pip install -i URL pkg</code> </td><td> Alternate index (<code>--index-url</code>), <code>--extra-index-url URL</code> secondary </td></tr><tr><td> <code>pip install -f URL/pkg.whl</code> </td><td> Find links — direct wheel/house index </td></tr><tr><td> <code>pip install --no-deps pkg</code> </td><td> Skip dependency resolution </td></tr><tr><td> <code>pip install --only-binary=:all:</code> </td><td> Wheels only (no source builds) · <code>--no-binary pkg</code> </td></tr><tr><td> <code>pip install --require-hashes -r reqs</code> </td><td> Hash-pinned reproducible install </td></tr><tr><td> <code>pip install --report report.json pkg</code> </td><td> JSON manifest of what would be installed </td></tr><tr><td> <code>pip download pkg -d dir</code> </td><td> Fetch packages without installing </td></tr><tr><td> <code>pip uninstall pkg</code> </td><td> Remove (<code>-y</code> no-confirm; multiple names ok) </td></tr><tr><td> <code>pip list</code> </td><td> Installed packages — <code>--outdated</code>, <code>--uptodate</code>, <code>-e</code> (editables), <code>--format=freeze|json|columns</code> </td></tr><tr><td> <code>pip freeze</code> </td><td> Requirements-style output — <code>&amp;gt; requirements.txt</code> </td></tr><tr><td> <code>pip show pkg</code> </td><td> Version, location, deps, home page (<code>-f</code> = installed files) </td></tr><tr><td> <code>pip check</code> </td><td> Verify installed deps are mutually consistent (missing/conflicting) </td></tr><tr><td> <code>pip cache dir|info|list|remove|purge</code> </td><td> Manage the wheel cache </td></tr><tr><td> <code>pip config list|get|set|edit|unset</code> </td><td> Config file management (<code>--user</code>, <code>--global</code>, <code>--site</code> scopes) </td></tr><tr><td> <code>pip index versions pkg</code> </td><td> All versions available on the index </td></tr><tr><td> <code>pip hash file</code> </td><td> Compute hash for <code>--require-hashes</code> </td></tr><tr><td> <code>pip inspect</code> </td><td> Full environment report as JSON (3.11+ pip) </td></tr><tr><td> <code>pip wheel pkg</code> </td><td> Build wheels for packages </td></tr><tr><td> <code>pip debug</code> </td><td> Environment/pip diagnostics </td></tr><tr><td> <code>pip completion --bash|zsh|fish</code> </td><td> Shell autocompletion setup </td></tr><tr><td> <code>pip search</code> † </td><td> Removed (PyPI shut the endpoint) — use pypi.org search or <code>pip index</code> </td></tr><tr><td> <code>pip help [command]</code> </td><td> Built-in docs </td></tr></tbody></table></div>
+<p><strong>The workflow that never breaks:</strong> <code>python -m pip …</code> — guarantees pip belongs to <em>that</em> interpreter, however many Pythons you have.</p>
+<h2 id="4-environment-dependency-managers">4. Environment &amp; Dependency Managers</h2>
+<h3 id="venv-built-in"><code>venv</code> (built-in)</h3>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>python -m venv .venv</code> </td><td> Create </td></tr><tr><td> <code>python -m venv .venv --system-site-packages</code> </td><td> Inherit global packages (rare) </td></tr><tr><td> <code>python -m venv .venv --upgrade-deps</code> </td><td> Create with fresh pip+setuptools </td></tr><tr><td> <code>python -m venv .venv --without-pip</code> </td><td> Bare env (then <code>ensurepip</code>) </td></tr><tr><td> <code>python -m ensurepip --upgrade</code> </td><td> Bootstrap pip into an env </td></tr></tbody></table></div>
+<h3 id="pipx-cli-apps-in-isolated-envs"><code>pipx</code> — CLI apps in isolated envs</h3>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>pipx install black</code> </td><td> Install an app globally-but-isolated, <code>~/.local/bin/black</code> </td></tr><tr><td> <code>pipx install poetry --pip-args=...</code> </td><td> Install with pip args </td></tr><tr><td> <code>pipx list</code> </td><td> Installed apps </td></tr><tr><td> <code>pipx upgrade / upgrade-all</code> </td><td> Update </td></tr><tr><td> <code>pipx uninstall / uninstall-all</code> </td><td> Remove </td></tr><tr><td> <code>pipx inject app pkg</code> </td><td> Add a library into an app's env </td></tr><tr><td> <code>pipx run pkg@1.2 --args</code> </td><td> One-shot run without installing </td></tr><tr><td> <code>pipx ensurepath</code> </td><td> Fix PATH </td></tr></tbody></table></div>
+<h3 id="poetry"><code>poetry</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>poetry init</code> </td><td> Interactive <code>pyproject.toml</code> </td></tr><tr><td> <code>poetry new pkg</code> / <code>poetry install</code> </td><td> Scaffold project / install all deps </td></tr><tr><td> <code>poetry add requests</code> / <code>poetry add --group dev pytest</code> </td><td> Add dependency (respecting semver) </td></tr><tr><td> <code>poetry remove pkg</code> </td><td> Drop it </td></tr><tr><td> <code>poetry update</code> / <code>poetry lock</code> </td><td> Refresh deps / regenerate lock file </td></tr><tr><td> <code>poetry run pytest</code> </td><td> Run command inside env </td></tr><tr><td> <code>poetry shell</code> </td><td> Activate env shell </td></tr><tr><td> <code>poetry build</code> </td><td> sdist + wheel </td></tr><tr><td> <code>poetry publish</code> </td><td> To PyPI (<code>--build</code> both) </td></tr><tr><td> <code>poetry env info / use 3.12</code> </td><td> Env management </td></tr></tbody></table></div>
+<h3 id="conda-mamba"><code>conda</code> / <code>mamba</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>conda create -n ml python=3.12 numpy</code> </td><td> New env with packages </td></tr><tr><td> <code>conda activate ml</code> / <code>conda deactivate</code> </td><td> Enter/leave </td></tr><tr><td> <code>conda install pkg</code> / <code>conda remove pkg</code> </td><td> Install/remove (conda-forge channel: <code>-c conda-forge</code>) </td></tr><tr><td> <code>conda env list</code> / <code>conda env export &amp;gt; env.yml</code> </td><td> List / export </td></tr><tr><td> <code>conda env create -f env.yml</code> </td><td> Recreate </td></tr><tr><td> <code>conda list</code> / <code>conda info</code> / <code>conda clean --all</code> </td><td> Inventory / info / cache purge </td></tr><tr><td> <code>conda update conda</code> </td><td> Self-update </td></tr></tbody></table></div>
+<h3 id="uv-the-fast-modern-toolchain"><code>uv</code> — the fast modern toolchain</h3>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>uv venv</code> / <code>uv venv -p 3.13</code> </td><td> Create env (blazing) </td></tr><tr><td> <code>uv pip install / list / freeze / uninstall …</code> </td><td> pip-compatible interface </td></tr><tr><td> <code>uv init project</code> / <code>uv add pkg</code> / <code>uv remove pkg</code> </td><td> Project management (pyproject+lock) </td></tr><tr><td> <code>uv sync</code> </td><td> Install exactly the lock file </td></tr><tr><td> <code>uv lock</code> / <code>uv upgrade</code> </td><td> Lock / upgrade deps </td></tr><tr><td> <code>uv run script.py</code> </td><td> Run inside the project env </td></tr><tr><td> <code>uv tool install ruff</code> / <code>uvx ruff check .</code> </td><td> pipx-style tools / ephemeral run </td></tr><tr><td> <code>uv python install 3.12</code> / <code>uv python list</code> </td><td> Manage interpreters themselves </td></tr><tr><td> <code>uv self update</code> </td><td> Update uv </td></tr></tbody></table></div>
+<h2 id="5-the-python--m-toolbox">5. The <code>python -m</code> Toolbox</h2>
+<p><code>python -m module</code> runs any module that has a <code>__main__</code>. The stdlib ships dozens of ready-made tools:</p>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> What it gives you </th></tr></thead><tbody><tr><td> <code>python -m http.server 8000</code> </td><td> Instant web server for the current folder (add <code>--bind 127.0.0.1</code>, <code>--directory path</code>) </td></tr><tr><td> <code>python -m http.server 8000 --cgi</code> † </td><td> CGI mode (removed 3.13) </td></tr><tr><td> <code>python -m json.tool file.json</code> </td><td> Pretty-print / validate JSON (<code>--indent 2</code>, <code>-</code> stdin) </td></tr><tr><td> <code>python -m json.tool --json-lines f.ndjson</code> </td><td> Validate newline-delimited JSON </td></tr><tr><td> <code>python -m timeit "‘-’.join(map(str,range(50)))"</code> </td><td> Micro-benchmark a snippet </td></tr><tr><td> <code>python -m cProfile -s cumulative script.py</code> </td><td> Profile a whole program (§9) </td></tr><tr><td> <code>python -m pstats dump.prof</code> </td><td> Interactive profile browser </td></tr><tr><td> <code>python -m pdb script.py</code> </td><td> Run under the debugger </td></tr><tr><td> <code>python -m pydoc re.sub</code> / <code>pydoc -b</code> / <code>-p 1234</code> </td><td> Docs in terminal / browser / port </td></tr><tr><td> <code>python -m zipfile -l arch.zip</code> </td><td> List zip contents </td></tr><tr><td> <code>python -m zipfile -e arch.zip dir/</code> / <code>-c arch.zip files…</code> </td><td> Extract / create </td></tr><tr><td> <code>python -m tarfile -l/-e/-c …</code> </td><td> Same for tar archives </td></tr><tr><td> <code>python -m base64 file</code> </td><td> Encode/decode base64 from CLI </td></tr><tr><td> <code>python -m compileall src/</code> </td><td> Pre-compile bytecode (deployment/syntax check) </td></tr><tr><td> <code>python -m ensurepip --upgrade</code> </td><td> Bootstrap/repair pip </td></tr><tr><td> <code>python -m site</code> </td><td> Show module search paths </td></tr><tr><td> <code>python -m sysconfig</code> </td><td> Build/interpreter configuration </td></tr><tr><td> <code>python -m unittest discover</code> </td><td> Run test suite (§7) </td></tr><tr><td> <code>python -m venv .venv</code> </td><td> Environments (§4) </td></tr><tr><td> <code>python -m webbrowser -t "https://x"</code> </td><td> Open a URL in a browser </td></tr><tr><td> <code>python -m ast script.py</code> </td><td> Dump the parse tree </td></tr><tr><td> <code>python -m dis script.py</code> </td><td> Disassemble to bytecode </td></tr><tr><td> <code>python -m token</code> </td><td> Tokenizer dump </td></tr><tr><td> <code>python -m textwrap</code>? — no CLI </td><td> ✗ (library only; listed so you don't hunt) </td></tr><tr><td> <code>python -m this</code> </td><td> The Zen of Python 🎶 </td></tr><tr><td> <code>python -m antigravity</code> </td><td> 🪁 xkcd 352. You deserve a break </td></tr></tbody></table></div>
+<h2 id="6-packaging-publishing">6. Packaging &amp; Publishing</h2>
+<p><strong>Anatomy of a <code>pyproject.toml</code></strong> (the modern standard — one file, no setup.py needed):</p>
+<div class="codewrap"><div class="codebar"><span class="lang">toml</span><button class="copybtn" type="button">Copy</button></div><pre><code>[build-system]
+requires = ["setuptools&gt;=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coolpkg"                     # PyPI name
+version = "1.0.0"                    # or dynamic from git tags
+description = "Does cool things"
+readme = "README.md"
+requires-python = "&gt;=3.10"
+license = {text = "MIT"}
+authors = [{name = "Matin", email = "you@example.com"}]
+keywords = ["cli", "tools"]
+classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License"]
+dependencies = ["requests&gt;=2.31", "rich&gt;=13"]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "mypy"]
+
+[project.scripts]
+cool = "coolpkg.cli:main"            # creates the `cool` command on install
+
+[project.urls]
+Homepage = "https://github.com/xvviix/coolpkg"
+
+[tool.setuptools.packages.find]
+include = ["coolpkg*"]</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> Tool </th><th> Commands </th></tr></thead><tbody><tr><td> <code>pip install build</code> → <code>python -m build</code> </td><td> Produces <code>dist/*.whl</code> + <code>dist/*.tar.gz</code> </td></tr><tr><td> <code>pip install twine</code> → <code>twine check dist/*</code> </td><td> Validate metadata/readme rendering </td></tr><tr><td> <code>twine upload dist/*</code> </td><td> <strong>Publish to PyPI</strong> (token auth: <code>__token__</code> + API token) </td></tr><tr><td> <code>twine upload --repository testpypi dist/*</code> </td><td> Rehearse on TestPyPI first </td></tr><tr><td> <code>pip install dist/coolpkg-1.0.0-py3-none-any.whl</code> </td><td> Local install test </td></tr><tr><td> Legacy <code>setup.py</code> † </td><td> <code>python setup.py sdist bdist_wheel</code> — migrate to pyproject </td></tr></tbody></table></div>
+<p><strong>Version bumping:</strong> SemVer — MAJOR breaking / MINOR features / PATCH fixes. Dev releases: <code>1.1.0a1</code>, <code>1.1.0b2</code>, <code>1.1.0rc1</code>.</p>
+<h2 id="7-testing">7. Testing</h2>
+<h3 id="pytest-the-standard"><code>pytest</code> — the standard</h3>
+<div class="table-wrap"><table><thead><tr><th> Invocation </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>pytest</code> </td><td> Run all tests in <code>test_*.py</code> / <code>*_test.py</code> </td></tr><tr><td> <code>pytest test_math.py</code> / <code>pytest test_math.py::test_add</code> </td><td> File / single test </td></tr><tr><td> <code>pytest -v</code> / <code>-vv</code> / <code>-q</code> </td><td> Verbose / extra-verbose / quiet </td></tr><tr><td> <code>pytest -x</code> </td><td> Stop on first failure (<code>--maxfail=3</code>) </td></tr><tr><td> <code>pytest -k "add and not slow"</code> </td><td> Select by keyword expression </td></tr><tr><td> <code>pytest -m slow</code> </td><td> Select by marker (<code>@pytest.mark.slow</code>) </td></tr><tr><td> <code>pytest -s</code> </td><td> Disable capture — see print() output </td></tr><tr><td> <code>pytest --lf</code> / <code>--ff</code> </td><td> Last-failed only / failed-first </td></tr><tr><td> <code>pytest --durations=10</code> </td><td> Slowest 10 tests </td></tr><tr><td> <code>pytest --tb=short|long|line|no</code> </td><td> Traceback style </td></tr><tr><td> <code>pytest --cov=mypkg --cov-report=html</code> </td><td> Coverage (needs pytest-cov) → <code>htmlcov/</code> </td></tr><tr><td> <code>pytest -n auto</code> </td><td> Parallel (pytest-xdist) </td></tr><tr><td> <code>pytest --fixtures</code> / <code>--collect-only</code> </td><td> List fixtures / dry-run collection </td></tr><tr><td> <code>pytest --junitxml=report.xml</code> </td><td> CI output </td></tr><tr><td> <code>pip install pytest-mock</code> → <code>mocker.patch("mod.func")</code> </td><td> Mocking helper </td></tr></tbody></table></div>
+<p>Core API (used in scripts): <code>assert</code>, <code>pytest.raises</code>, <code>pytest.fixture</code>, <code>pytest.mark.parametrize</code>, <code>pytest.approx</code>, <code>tmp_path</code>, <code>capsys</code>, <code>monkeypatch</code>.</p>
+<h3 id="unittest-cli-stdlib"><code>unittest</code> CLI (stdlib)</h3>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>python -m unittest</code> </td><td> Autodiscover (<code>discover -s tests -p "test_*.py"</code>) </td></tr><tr><td> <code>python -m unittest tests.test_math</code> </td><td> One module </td></tr><tr><td> <code>python -m unittest tests.test_math.TestAdd.test_ints</code> </td><td> One test </td></tr><tr><td> <code>-v</code> / <code>-q</code> </td><td> Verbosity </td></tr><tr><td> <code>-f</code> / <code>-c</code> / <code>-b</code> </td><td> Stop-first-fail / fast Ctrl+C / buffer output </td></tr><tr><td> <code>-k pattern</code> </td><td> Filter by name </td></tr><tr><td> <code>--locals</code> </td><td> Show locals in tracebacks </td></tr></tbody></table></div>
+<h3 id="coverage">coverage</h3>
+<p><code>pip install coverage</code> → <code>coverage run -m pytest</code> → <code>coverage report -m</code> (missing lines) → <code>coverage html</code>. Config in <code>.coveragerc</code> or pyproject <code>[tool.coverage.run]</code>.</p>
+<h2 id="8-quality-tools-lint-format-type-check">8. Quality Tools — Lint, Format, Type-check</h2>
+<div class="table-wrap"><table><thead><tr><th> Tool (install) </th><th> Command </th><th> Purpose </th></tr></thead><tbody><tr><td> <code>ruff</code> ⭐ </td><td> <code>ruff check .</code> </td><td> Linter (100s of rules, flake8+isort+pyupgrade in one, Rust-fast) </td></tr><tr><td> </td><td> <code>ruff check --fix .</code> </td><td> Auto-repair </td></tr><tr><td> </td><td> <code>ruff format .</code> </td><td> Formatter (Black-compatible) </td></tr><tr><td> </td><td> <code>ruff rule RUF008</code> / <code>ruff linter</code> </td><td> Rule docs / list rules </td></tr><tr><td> <code>black</code> </td><td> <code>black .</code> </td><td> The formatter — <code>--check</code>, <code>--diff</code>, <code>--line-length 100</code> </td></tr><tr><td> <code>isort</code> </td><td> <code>isort .</code> </td><td> Sort imports (<code>--profile black</code>) </td></tr><tr><td> <code>mypy</code> </td><td> <code>mypy src/</code> </td><td> Static types — <code>--strict</code>, <code>--ignore-missing-imports</code> </td></tr><tr><td> <code>flake8</code> </td><td> <code>flake8 src/</code> </td><td> Classic linter (<code>--max-line-length 100</code>) </td></tr><tr><td> <code>pylint</code> </td><td> <code>pylint src/</code> </td><td> Deep style/score linter </td></tr><tr><td> <code>bandit</code> </td><td> <code>bandit -r src/</code> </td><td> Security scanner </td></tr><tr><td> <code>pre-commit</code> </td><td> <code>pre-commit run -a</code> </td><td> Run all hooks; <code>.pre-commit-config.yaml</code> glues the above into git </td></tr></tbody></table></div>
+<p><strong>One modern combo to rule them all:</strong> <code>uv tool install ruff</code> + <code>ruff check --fix . &amp;amp;&amp;amp; ruff format .</code> + <code>mypy src</code> in CI. That replaces flake8+isort+black+pyupgrade at ludicrous speed.</p>
+<h2 id="9-debugging-profiling">9. Debugging &amp; Profiling</h2>
+<h3 id="pdb-every-command"><code>pdb</code> — every command</h3>
+<p>Start: <code>python -m pdb script.py</code> · or drop in code: <code>import pdb; pdb.set_trace()</code> · or modern: <code>breakpoint()</code>.</p>
+<div class="table-wrap"><table><thead><tr><th> Pdb command </th><th> Action </th></tr></thead><tbody><tr><td> <code>h</code> / <code>h cmd</code> </td><td> Help / help on command </td></tr><tr><td> <code>l [n]</code> / <code>ll</code> </td><td> List source (around line) / whole function </td></tr><tr><td> <code>w</code> / <code>where</code> </td><td> Stack trace, current frame marked </td></tr><tr><td> <code>u</code> / <code>d</code> </td><td> Up / down the stack frames </td></tr><tr><td> <code>b 42</code> / <code>b func</code> / <code>b file:line</code> </td><td> Set breakpoint </td></tr><tr><td> <code>b</code> </td><td> List breakpoints </td></tr><tr><td> <code>tbreak …</code> </td><td> Temporary breakpoint (dies after first hit) </td></tr><tr><td> <code>cl [n]</code> </td><td> Clear breakpoint(s) </td></tr><tr><td> <code>disable n</code> / <code>enable n</code> </td><td> Toggle without deleting </td></tr><tr><td> <code>condition n expr</code> </td><td> Conditional breakpoint </td></tr><tr><td> <code>ignore n count</code> </td><td> Skip next <em>count</em> hits </td></tr><tr><td> <code>commands n</code> </td><td> Auto-commands on hit (end with <code>end</code>; <code>silent</code> + print = logging) </td></tr><tr><td> <code>s</code> / <code>step</code> </td><td> Step <strong>into</strong> </td></tr><tr><td> <code>n</code> / <code>next</code> </td><td> Step <strong>over</strong> </td></tr><tr><td> <code>r</code> / <code>return</code> </td><td> Run until current function returns </td></tr><tr><td> <code>c</code> / <code>continue</code> </td><td> Run to next breakpoint </td></tr><tr><td> <code>unt [n]</code> </td><td> Run until line n (or next line &gt; current) </td></tr><tr><td> <code>j n</code> / <code>jump</code> </td><td> Jump execution to line n (careful!) </td></tr><tr><td> <code>a</code> / <code>args</code> </td><td> Current function arguments </td></tr><tr><td> <code>p expr</code> / <code>pp expr</code> </td><td> Print / pretty-print </td></tr><tr><td> <code>whatis expr</code> </td><td> Type of expr </td></tr><tr><td> <code>source expr</code> / <code>display [expr]</code> </td><td> Show source of object / auto-print on each stop </td></tr><tr><td> <code>interact</code> </td><td> Full REPL at this point </td></tr><tr><td> <code>retval</code> / <code>exc</code> </td><td> Last return value / current exception </td></tr><tr><td> <code>alias name cmd</code> </td><td> Command macros </td></tr><tr><td> <code>exec stmt</code> </td><td> Execute statement in frame </td></tr><tr><td> <code>q</code> </td><td> Quit (hard exit) </td></tr></tbody></table></div>
+<p>Better-looking alternatives: <code>pip install ipdb</code> (<code>import ipdb; ipdb.set_trace()</code>) or <code>pudb</code> (full-screen TUI), or just use your editor's debugger (VS Code: F5).</p>
+<h3 id="cprofile"><code>cProfile</code></h3>
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>python -m cProfile -s cumulative script.py          # sorted by total time
+python -m cProfile -o out.prof script.py            # save
+python -m pstats out.prof                           # browse: sort cumulative / stats 10 / strip</code></pre></div>
+<p>Reading it: <code>ncalls</code> calls · <code>tottime</code> time in the function itself · <code>cumtime</code> including children · look for high <code>tottime</code> = your hotspot. GUI: <code>pip install snakeviz</code> → <code>snakeviz out.prof</code>.</p>
+<h3 id="timeit-tracemalloc"><code>timeit</code> / <code>tracemalloc</code></h3>
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>python -m timeit "'-'.join(map(str, range(50)))"
+python -m timeit -s "x=list(range(1000))" "x.sort()"</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> Snippet </th><th> Use </th></tr></thead><tbody><tr><td> <code>timeit.timeit(f, number=1_000)</code> </td><td> Library form </td></tr><tr><td> <code>python -X importtime -c "import requests" 2&amp;gt; imp.log</code> </td><td> Find slow imports </td></tr><tr><td> <code>tracemalloc.start()</code> … <code>tracemalloc.take_snapshot()</code> </td><td> Who allocates memory </td></tr><tr><td> <code>sys.settrace</code> / <code>sys.setprofile</code> </td><td> Build your own tracer </td></tr><tr><td> <code>faulthandler.enable()</code> (or <code>-X dev</code>) </td><td> Traceback on hard crashes </td></tr></tbody></table></div>
+<h2 id="10-jupyter-notebooks">10. Jupyter &amp; Notebooks</h2>
+<div class="table-wrap"><table><thead><tr><th> Command </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>pip install notebook jupyterlab</code> </td><td> Install </td></tr><tr><td> <code>jupyter lab</code> / <code>jupyter notebook</code> </td><td> Launch UI (browser tab) </td></tr><tr><td> <code>jupyter lab --no-browser --port=8889</code> </td><td> Headless/remote </td></tr><tr><td> <code>jupyter console</code> / <code>jupyter qtconsole</code> </td><td> Terminal / Qt console </td></tr><tr><td> <code>jupyter kernelspec list</code> </td><td> Installed kernels </td></tr><tr><td> <code>ipykernel</code> → <code>python -m ipykernel install --user --name venv --display-name "Py(venv)"</code> </td><td> Register a venv as kernel </td></tr><tr><td> <code>jupyter nbconvert --to script nb.ipynb</code> </td><td> Notebook → .py (<code>--to html/slides/pdf</code>) </td></tr><tr><td> <code>jupyter nbconvert --execute nb.ipynb --inplace</code> </td><td> Run all cells from CLI </td></tr><tr><td> <code>jupyter trust nb.ipynb</code> </td><td> Trust stored outputs </td></tr><tr><td> <code>jupyter --version</code> / <code>jupyter --data-dir</code> </td><td> Install info </td></tr></tbody></table></div>
+<hr>
+<h1 id="part-2-the-language-complete-syntax-reference">PART 2 — THE LANGUAGE: COMPLETE SYNTAX REFERENCE</h1>
+<h2 id="11-structure-syntax-rules">11. Structure &amp; Syntax Rules</h2>
+<div class="table-wrap"><table><thead><tr><th> Rule </th><th> Detail </th></tr></thead><tbody><tr><td> Indentation </td><td> Blocks are defined by indentation (4 spaces by convention; never mix tabs/spaces) </td></tr><tr><td> Comments </td><td> <code># to end of line</code>; docstrings: <code>"""…"""</code> first statement of module/class/function </td></tr><tr><td> Line continuation </td><td> <code>\</code> at EOL, or implicit inside <code>( )</code>, <code>[ ]</code>, <code>{ }</code> </td></tr><tr><td> Statements per line </td><td> <code>a = 1; b = 2</code> (semicolon) — discouraged </td></tr><tr><td> Names </td><td> Letters/digits/underscore, can't start with digit; <code>lower_snake</code> for functions/vars, <code>CapWords</code> for classes, <code>_private</code> convention, <code>__name__</code> dunders are reserved </td></tr><tr><td> Case </td><td> Everything is case-sensitive </td></tr><tr><td> Entry point </td><td> <code>if __name__ == "__main__": main()</code> — runs only when executed, not imported </td></tr><tr><td> Encoding </td><td> UTF-8 by default (declare only if you need something else) </td></tr><tr><td> Truthiness </td><td> False: <code>None, False, 0, 0.0, '', [], {}, set(), (), range(0)</code> — everything else truthy </td></tr><tr><td> Identity vs equality </td><td> <code>is</code> compares identity (same object), <code>==</code> compares value; use <code>is None</code>, never <code>== None</code> </td></tr></tbody></table></div>
+<h2 id="12-built-in-types-every-method">12. Built-in Types — Every Method</h2>
+<h3 id="numeric">Numeric</h3>
+<div class="table-wrap"><table><thead><tr><th> Type </th><th> Notes / operations </th></tr></thead><tbody><tr><td> <code>int</code> </td><td> Arbitrary precision! <code>7 // 2</code>=3 floor, <code>7 % 2</code>=1, <code>2 ** 64</code>, <code>int("ff", 16)</code>=255, <code>int("0b101", 0)</code>, <code>abs()</code>, <code>divmod(7,2)</code>→(3,1), <code>pow(b, e, mod)</code> fast modular </td></tr><tr><td> <code>float</code> </td><td> IEEE 754: <code>0.1 + 0.2 != 0.3</code> (use <code>math.isclose</code>, <code>decimal</code>, or <code>fractions</code>); <code>1e9</code>, <code>round(x, 2)</code> banker's rounding, <code>float("nan")</code>, <code>math.isnan</code> </td></tr><tr><td> <code>complex</code> </td><td> <code>3+4j</code>, <code>.real</code>, <code>.imag</code>, <code>abs()</code> = magnitude </td></tr><tr><td> <code>bool</code> </td><td> Subclass of int: <code>True + True</code> = 2 </td></tr><tr><td> <code>decimal.Decimal</code> </td><td> Exact decimal money math: <code>Decimal("0.10") + Decimal("0.20") == Decimal("0.30")</code> </td></tr><tr><td> <code>fractions.Fraction</code> </td><td> Exact rationals: <code>Fraction(1, 3) * 3 == 1</code> </td></tr></tbody></table></div>
+<h3 id="str-all-methods"><code>str</code> — all methods</h3>
+<div class="table-wrap"><table><thead><tr><th> Method </th><th> Returns </th></tr></thead><tbody><tr><td> <code>s.upper() lower() capitalize() title() swapcase() casefold()</code> </td><td> Case variants (<code>casefold</code> = aggressive, for matching) </td></tr><tr><td> <code>s.strip() lstrip() rstrip([chars])</code> </td><td> Trim edges (default whitespace) </td></tr><tr><td> <code>s.ljust(w) rjust(w) center(w[, fill])</code> </td><td> Pad to width </td></tr><tr><td> <code>s.zfill(w)</code> </td><td> Zero-pad (keeps sign) </td></tr><tr><td> <code>s.startswith(p) endswith(p)</code> </td><td> Prefix/suffix test (accept tuples) </td></tr><tr><td> <code>s.find(sub) rfind(sub)</code> </td><td> Index or −1 </td></tr><tr><td> <code>s.index(sub) rindex(sub)</code> </td><td> Index or <code>ValueError</code> </td></tr><tr><td> <code>s.count(sub)</code> </td><td> Occurrences </td></tr><tr><td> <code>s.replace(old, new[, count])</code> </td><td> Substitute </td></tr><tr><td> <code>s.split(sep) rsplit(sep) splitlines()</code> </td><td> Split (<code>None</code> = whitespace runs; <code>splitlines</code> respects \n \r\n) </td></tr><tr><td> <code>s.join(iterable)</code> </td><td> Glue: <code>",".join(words)</code> </td></tr><tr><td> <code>s.partition(sep) rpartition(sep)</code> </td><td> <code>(pre, sep, post)</code> 3-tuple </td></tr><tr><td> <code>s.removeprefix(p) removesuffix(p)</code> </td><td> Clean prefix/suffix removal (3.9+) </td></tr><tr><td> <code>s.strip</code>-family + <code>chars</code> arg </td><td> Trim specific chars </td></tr><tr><td> <code>s.encode("utf-8")</code> </td><td> → bytes (<code>errors="ignore|replace|strict"</code>) </td></tr><tr><td> <code>s.format(**kw)</code> / <code>s.format_map(m)</code> </td><td> <code>"{x:&amp;gt;10}".format(x=1)</code> </td></tr><tr><td> <code>s.maketrans(a,b)</code> + <code>s.translate(t)</code> </td><td> Character mapping </td></tr><tr><td> Tests: <code>isalnum() isalpha() isascii() isdecimal() isdigit() isnumeric() isidentifier() islower() isupper() isspace() istitle() isprintable()</code> </td><td> True/False </td></tr></tbody></table></div>
+<h3 id="list-tuple"><code>list</code> &amp; <code>tuple</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Method </th><th> Returns </th></tr></thead><tbody><tr><td> <code>l.append(x)</code> </td><td> Add at end </td></tr><tr><td> <code>l.extend(iter)</code> </td><td> Add many </td></tr><tr><td> <code>l.insert(i, x)</code> </td><td> Insert at position </td></tr><tr><td> <code>l.remove(x)</code> </td><td> Delete first ==x (<code>ValueError</code> if missing) </td></tr><tr><td> <code>l.pop([i])</code> </td><td> Remove &amp; return (default last) </td></tr><tr><td> <code>l.clear()</code> </td><td> Empty it </td></tr><tr><td> <code>l.index(x[, start[, end]])</code> </td><td> Position or <code>ValueError</code> </td></tr><tr><td> <code>l.count(x)</code> </td><td> Occurrences </td></tr><tr><td> <code>l.sort(*, key=None, reverse=True)</code> </td><td> In-place sort </td></tr><tr><td> <code>l.reverse()</code> </td><td> In-place reverse </td></tr><tr><td> <code>l.copy()</code> </td><td> Shallow copy </td></tr><tr><td> <code>sorted(iter, key=, reverse=)</code> → new list · <code>reversed(iter)</code> → iterator </td><td> Non-mutating versions </td></tr><tr><td> <code>tuple</code> </td><td> Immutable — only <code>count</code> + <code>index</code>; <code>(1,)</code> single needs comma </td></tr><tr><td> <code>min/max/sum/any/all(iter)</code> </td><td> Aggregates </td></tr></tbody></table></div>
+<h3 id="dict"><code>dict</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Method </th><th> Returns </th></tr></thead><tbody><tr><td> <code>d[k]</code> </td><td> Get or <code>KeyError</code> </td></tr><tr><td> <code>d.get(k[, default])</code> </td><td> Get or default (None) </td></tr><tr><td> <code>d[k] = v</code> / <code>del d[k]</code> / <code>d.pop(k[, default])</code> / <code>d.popitem()</code> </td><td> Write / delete (KeyError) / delete+return / delete last inserted </td></tr><tr><td> <code>d.update(other)</code> </td><td> Merge in </td></tr><tr><td> <code>d.setdefault(k, default)</code> </td><td> Get-or-create </td></tr><tr><td> <code>d.keys() values() items()</code> </td><td> Views (live!) </td></tr><tr><td> <code>dict(**kw)</code>, <code>dict(zip(ks, vs))</code>, <code>d | other</code> (3.9+), <code>d |= other</code> </td><td> Construction / merge </td></tr><tr><td> <code>{k: v for k, v in pairs}</code> </td><td> Dict comprehension </td></tr><tr><td> <code>collections.OrderedDict</code>† / <code>defaultdict</code> / <code>Counter</code> </td><td> When plain dict isn't enough (§22) </td></tr></tbody></table></div>
+<h3 id="set-frozenset"><code>set</code> / <code>frozenset</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Method </th><th> Returns </th></tr></thead><tbody><tr><td> <code>s.add(x)</code> / <code>s.remove(x)</code> / <code>s.discard(x)</code> </td><td> Add / remove (KeyError) / remove (silent) </td></tr><tr><td> <code>s.pop()</code> / <code>s.clear()</code> </td><td> Arbitrary removal / empty </td></tr><tr><td> <code>s.update(*others)</code> </td><td> <code> |=</code> union in place </td></tr><tr><td> <code>s.union(o)</code> <code>s.intersection(o)</code> <code>s.difference(o)</code> <code>s.symmetric_difference(o)</code> </td><td> New set results — operators: <code>| &amp;amp; - ^</code> </td></tr><tr><td> <code>s.issubset(o)</code> <code>s.issuperset(o)</code> <code>s.isdisjoint(o)</code> </td><td> Relations: <code>&amp;lt;=</code> <code>&amp;gt;=</code> </td></tr><tr><td> <code>{x for x in it if p}</code> </td><td> Set comprehension </td></tr><tr><td> <code>frozenset(iter)</code> </td><td> Immutable, hashable (usable as dict key) </td></tr></tbody></table></div>
+<h3 id="bytes-bytearray-memoryview"><code>bytes</code> / <code>bytearray</code> / <code>memoryview</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Method </th><th> Returns </th></tr></thead><tbody><tr><td> <code>b"abc"</code> / <code>bytes(range(65,68))</code> / <code>"a".encode()</code> </td><td> Literal / from ints / from str </td></tr><tr><td> <code>b.decode("utf-8")</code> </td><td> → str </td></tr><tr><td> <code>b.hex()</code> / <code>bytes.fromhex("414243")</code> </td><td> Hex shuttle </td></tr><tr><td> <code>bytearray</code> </td><td> Mutable bytes — same methods as bytes + <code>append/extend/insert</code> </td></tr><tr><td> <code>memoryview(b)</code> </td><td> Zero-copy slice view (<code>mv[0]</code>, <code>mv.cast("I")</code>) </td></tr></tbody></table></div>
+<h3 id="other-core-types">Other core types</h3>
+<div class="table-wrap"><table><thead><tr><th> Type </th><th> Notes </th></tr></thead><tbody><tr><td> <code>None</code> </td><td> The null singleton — test with <code>is None</code> </td></tr><tr><td> <code>range(start, stop, step)</code> </td><td> Lazy integer sequence — <code>range(10, 0, -2)</code> </td></tr><tr><td> <code>enumerate(it, start=0)</code> </td><td> <code>(index, item)</code> pairs </td></tr><tr><td> <code>zip(a, b, strict=False)</code> </td><td> Parallel iteration; <code>strict=True</code> errors on length mismatch (3.10+) </td></tr><tr><td> <code>slice(start, stop, step)</code> </td><td> <code>s[slice(1,None,2)]</code> == <code>s[1::2]</code> </td></tr><tr><td> <code>type(x)</code> / <code>isinstance(x, T)</code> / <code>issubclass(A, B)</code> </td><td> Type tools </td></tr></tbody></table></div>
+<h2 id="13-operators-precedence">13. Operators &amp; Precedence</h2>
+<div class="table-wrap"><table><thead><tr><th> Category </th><th> Operators (high→low precedence order) </th></tr></thead><tbody><tr><td> Grouping </td><td> <code>( )</code> </td></tr><tr><td> Call / index / attribute / slice </td><td> <code>f(x)</code> <code>x[i]</code> <code>x.attr</code> <code>x[a:b]</code> </td></tr><tr><td> Power </td><td> <code>**</code> </td></tr><tr><td> Unary </td><td> <code>+x -x ~x</code> </td></tr><tr><td> Multiply/divide </td><td> <code>* / // %</code> </td></tr><tr><td> Add/subtract </td><td> <code>+ -</code> </td></tr><tr><td> Shifts </td><td> <code>&amp;lt;&amp;lt; &amp;gt;&amp;gt;</code> </td></tr><tr><td> Bitwise AND </td><td> <code>&amp;amp;</code> </td></tr><tr><td> Bitwise XOR </td><td> <code>^</code> </td></tr><tr><td> Bitwise OR </td><td> <code>|</code> </td></tr><tr><td> Comparisons / membership / identity </td><td> <code>&amp;lt; &amp;lt;= &amp;gt; &amp;gt;= == != in not in is is not</code> (chaining works: <code>1 &amp;lt; x &amp;lt; 10</code>) </td></tr><tr><td> not </td><td> <code>not x</code> </td></tr><tr><td> and </td><td> <code>a and b</code> </td></tr><tr><td> or </td><td> <code>a or b</code> </td></tr><tr><td> Conditional </td><td> <code>x if c else y</code> </td></tr><tr><td> Assignment </td><td> <code>= += -= *= /= //= %= **= &amp;amp;= |= ^= &amp;lt;&amp;lt;= &amp;gt;&amp;gt;= :=</code>(walrus) </td></tr></tbody></table></div>
+<p><strong>Walrus <code>:=</code></strong> assigns inside an expression: <code>while (chunk := f.read(8192)): …</code>. Floor <code>//</code> rounds toward −∞ on negatives: <code>-7 // 2 == -4</code>. <code>==</code> on <code>is</code>-looking things: small ints/strings may be interned — never rely on it.</p>
+<h2 id="14-strings-deep-dive">14. Strings Deep-Dive</h2>
+<h3 id="slicing-the-complete-rules">Slicing — the complete rules</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>s = "Pythonista"
+s[0] s[-1]        # 'P', 'a'
+s[2:5] s[:4] s[6:]     # 'tho', 'Pyth', 'ista'
+s[::2] s[::-1]         # 'PtoiA' step-2; reversed copy
+s[1:-1:3]              # start 1, stop before -1, step 3</code></pre></div>
+<p>Index out of range in <code>[i]</code> raises; slices never do (they clamp). Works identically on lists/tuples — learn once, use everywhere.</p>
+<h3 id="f-strings-format-full-spec-mini-language">f-strings &amp; <code>format</code> — full spec mini-language</h3>
+<p><code>f"{value:[[fill]align][sign][z][#][0][width][grouping][.precision][type]}"</code></p>
+<div class="table-wrap"><table><thead><tr><th> Piece </th><th> Options </th></tr></thead><tbody><tr><td> align </td><td> <code>&amp;lt;</code> left · <code>&amp;gt;</code> right · <code>^</code> center · <code>=</code> pad after sign </td></tr><tr><td> sign </td><td> <code>+</code> always · <code>-</code> only negatives · <code> </code> space for positives </td></tr><tr><td> <code>#</code> </td><td> Alternate form: <code>0x</code> prefix, keep trailing <code>.0</code> </td></tr><tr><td> <code>0</code> </td><td> Zero-pad (same as <code>fill=0, align==</code>) </td></tr><tr><td> width </td><td> Minimum width (can nest: <code>{v:{w}}</code>) </td></tr><tr><td> grouping </td><td> <code>_</code> or <code>,</code> thousands separators </td></tr><tr><td> precision </td><td> Digits after <code>.</code> </td></tr><tr><td> type </td><td> <code>d</code> int · <code>f</code> fixed · <code>e</code> sci · <code>g</code> general · <code>%</code> percent · <code>b o x X</code> int bases · <code>c</code> char · <code>s</code> string · <code>n</code> locale-aware </td></tr></tbody></table></div>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>f"{3.14159:.2f}"          # '3.14'
+f"{1234567:,}"            # '1,234,567'
+f"{0.85:.1%}"             # '85.0%'
+f"{255:#x} {255:b}"       # '0xff' '11111111'
+f"{'hi':^10}"             # '    hi    '
+f"{name=} / {x=}"         # 'name=...' debug prints the expression!
+f"{dt:%Y-%m-%d}"          # datetime inline
+f"{obj!r}"                # repr() instead of str()</code></pre></div>
+<h3 id="re-the-regex-module"><code>re</code> — the regex module</h3>
+<div class="table-wrap"><table><thead><tr><th> Function </th><th> Use </th></tr></thead><tbody><tr><td> <code>re.search(p, s)</code> </td><td> First match anywhere → Match or None </td></tr><tr><td> <code>re.match(p, s)</code> </td><td> Anchored at start · <code>re.fullmatch</code> entire string </td></tr><tr><td> <code>re.findall(p, s)</code> </td><td> All matches (list; groups→tuples) </td></tr><tr><td> <code>re.finditer(p, s)</code> </td><td> Iterator of Match objects </td></tr><tr><td> <code>re.sub(p, repl, s, count=0)</code> </td><td> Replace (repl may be a function!) · <code>re.subn</code> also returns count </td></tr><tr><td> <code>re.split(p, s)</code> </td><td> Split by pattern </td></tr><tr><td> <code>re.compile(p)</code> </td><td> Precompiled pattern object — reuse it </td></tr><tr><td> <code>re.escape(s)</code> </td><td> Quote all metacharacters </td></tr><tr><td> Match <code>m</code> </td><td> <code>m.group(0/1/name)</code>, <code>m.groups()</code>, <code>m.groupdict()</code>, <code>m.start() end() span()</code>, <code>m[0]</code> </td></tr></tbody></table></div>
+<p>Flags: <code>re.I</code> ignorecase · <code>re.M</code> ^$ per-line · <code>re.S</code> dot-matches-newline · <code>re.X</code> verbose · <code>re.A</code> ASCII. Pattern syntax: <code>\d \w \s \b</code> classes, <code>+ * ? {m,n}</code> reps, <code>[]</code> sets, <code>(...)</code> group, <code>(?:...)</code> non-capture, <code>(?P&amp;lt;name&amp;gt;…)</code>, lookarounds <code>(?=…) (?!…) (?&amp;lt;=…) (?&amp;lt;!…)</code>, alternation <code>|</code>.</p>
+<h2 id="15-control-flow">15. Control Flow</h2>
+<h3 id="conditionals">Conditionals</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>if x &gt; 100:        ...
+elif x &gt; 10:       ...
+else:              ...
+
+# ternary
+label = "big" if x &gt; 100 else "small"
+
+# match (3.10+) — structural pattern matching
+match command.split():
+    case ["go", direction]:            print("moving", direction)
+    case ["go", *rest]:                print("go many:", rest)
+    case ["drop", item] if item != "": print("dropping", item)
+    case ["quit" | "exit"]:            break
+    case {"op": "add", "n": n}:        total += n        # mapping patterns
+    case Point(x=0, y=y):              ...               # class patterns
+    case _:                            print("unknown")</code></pre></div>
+<h3 id="loops">Loops</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>for item in iterable: ...          # the one loop
+for i, item in enumerate(items, 1): ...
+for a, b in zip(xs, ys): ...
+while condition: ...
+break                               # exit loop
+continue                            # next iteration
+else:                              # runs only if loop finished WITHOUT break — unique to Python
+    print("no break happened")
+for n in range(10, 0, -1): ...     # countdown</code></pre></div>
+<h3 id="comprehensions-all-four">Comprehensions — all four</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>[n*n for n in range(10) if n % 2 == 0]           # list
+{n: n*n for n in range(5)}                       # dict
+{ch for ch in "abracadabra" if ch in "abc"}      # set
+(lazy := (line.strip() for line in f))           # generator expression — memory-free
+[[r*c for c in range(4)] for r in range(3)]      # nested
+[x if x &gt; 0 else 0 for x in data]                # conditional expression inside
+flat = [x for row in matrix for x in row]        # flatten (order: outer loop first)</code></pre></div>
+<h3 id="generators-iterators">Generators &amp; iterators</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>def countdown(n):
+    while n &gt; 0:
+        yield n          # pause here, hand value out
+        n -= 1
+
+gen = (x*x for x in range(1_000_000))   # lazy, O(1) memory
+next(gen)                               # pull one value
+def fib():                              # infinite stream
+    a, b = 0, 1
+    while True:
+        yield a; a, b = b, a + b
+
+# yield from delegates to a sub-generator
+def chain_all(*iterables):
+    for it in iterables:
+        yield from it
+
+# send / close — coroutine-style generators
+g = echo(); g.send(None); g.send("hi")</code></pre></div>
+<p>Protocol: <code>iter(obj)</code> → iterator; <code>next(it)</code> → value or <code>StopIteration</code>. Anything with <code>__iter__</code> is iterable; make your class iterable by defining <code>__iter__</code> (generator method is easiest).</p>
+<h3 id="itertools-every-function"><code>itertools</code> — every function</h3>
+<div class="table-wrap"><table><thead><tr><th> Function </th><th> Yields </th></tr></thead><tbody><tr><td> <code>count(10, 2)</code> </td><td> 10, 12, 14, … forever </td></tr><tr><td> <code>cycle("AB")</code> </td><td> A, B, A, B… </td></tr><tr><td> <code>repeat(x, n)</code> </td><td> x, x, x (n times or forever) </td></tr><tr><td> <code>chain(a, b)</code> / <code>chain.from_iterable(lists)</code> </td><td> Concatenation </td></tr><tr><td> <code>compress(data, [1,0,1])</code> </td><td> Keep items where selector truthy </td></tr><tr><td> <code>dropwhile(pred, it)</code> / <code>takewhile(pred, it)</code> </td><td> Skip/keep until pred fails </td></tr><tr><td> <code>filterfalse(pred, it)</code> </td><td> Opposite of builtin filter </td></tr><tr><td> <code>groupby(it, key)</code> </td><td> Consecutive groups — <strong>sort first!</strong> </td></tr><tr><td> <code>islice(it, 5)</code> / <code>islice(it, 2, 10, 2)</code> </td><td> Slicing any iterator </td></tr><tr><td> <code>pairwise(it)</code> (3.10+) </td><td> (a,b),(b,c),… sliding pairs </td></tr><tr><td> <code>starmap(f, [(1,2),(3,4)])</code> </td><td> f(*args) per item </td></tr><tr><td> <code>tee(it, 2)</code> </td><td> Two independent iterators </td></tr><tr><td> <code>zip_longest(a, b, fillvalue=0)</code> </td><td> Zip to the longest </td></tr><tr><td> <code>product("AB", "12")</code> </td><td> Cartesian product </td></tr><tr><td> <code>permutations("ABC", 2)</code> </td><td> Ordered arrangements </td></tr><tr><td> <code>combinations("ABC", 2)</code> </td><td> Unordered subsets </td></tr><tr><td> <code>combinations_with_replacement("AB", 2)</code> </td><td> With repeats </td></tr><tr><td> <code>accumulate([1,2,3])</code> / <code>accumulate(xs, operator.mul)</code> </td><td> Running totals/products </td></tr></tbody></table></div>
+<h2 id="16-functions">16. Functions</h2>
+<h3 id="definitions-the-full-anatomy">Definitions — the full anatomy</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>def f(pos_only, /, normal, *args, kw_only=1, **kwargs):
+    """Docstring. pos_only is positional-only (the /)."""
+    ...
+
+f(1, 2, 3, 4, kw_only=9, anything="goes")
+# pos_only=1, normal=2, args=(3,4), kwargs={'anything':'goes'}
+
+def g(a, b=(), /, *, key=None): ...       # / left = positional-only, * right = keyword-only
+lambda x, y: x + y                         # expression function
+func(*args_list, **kwargs_dict)            # unpacking at call site</code></pre></div>
+<p>Defaults are evaluated <strong>once</strong> — the mutable default trap: <code>def f(x, acc=[])</code> accumulates forever; use <code>acc=None</code> + <code>acc = [] if acc is None else acc</code>.</p>
+<h3 id="closures-decorators-functools">Closures, decorators, functools</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>def make_multiplier(n):
+    def multiply(x): return x * n          # closes over n
+    return multiply
+
+import functools
+@functools.cache                            # memoize (3.9+); @lru_cache(maxsize=None) same
+def fib(n): return n if n &lt; 2 else fib(n-1) + fib(n-2)
+
+@functools.wraps(f)                         # preserve metadata in custom decorators
+def wrapper(*a, **k): ...</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> <code>functools</code> tool </th><th> Does </th></tr></thead><tbody><tr><td> <code>cache</code> / <code>lru_cache(maxsize=128, typed=False)</code> </td><td> Memoization </td></tr><tr><td> <code>cached_property</code> </td><td> Compute once, store on instance </td></tr><tr><td> <code>partial(f, x=1)</code> </td><td> Freeze arguments </td></tr><tr><td> <code>reduce(f, iter, init)</code> </td><td> Rolling fold: <code>reduce(operator.add, xs, 0)</code> </td></tr><tr><td> <code>wraps</code> </td><td> Decorator-preserving decorator </td></tr><tr><td> <code>total_ordering</code> </td><td> Define <code>__eq__</code>+<code>__lt__</code>, get all six comparisons </td></tr><tr><td> <code>cmp_to_key(f)</code> </td><td> old-style cmp → sort key </td></tr><tr><td> <code>singledispatch</code> </td><td> Function overloading by first-arg type </td></tr></tbody></table></div>
+<h3 id="typing-annotations">Typing (annotations)</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>def process(items: list[int], name: str = "x", *,
+            limit: int | None = None) -&gt; dict[str, float]: ...
+
+from typing import Optional, Union, Literal, TypedDict, Protocol, Callable, TypeVar, Generic, Any
+Vector = list[float]                        # type alias (or `type Vector = list[float]` 3.12+)
+T = TypeVar("T")
+
+class Repo(Generic[T]):
+    def get(self, id: int) -&gt; T | None: ...
+
+def scale(v: list[float], k: float = 1.0) -&gt; list[float]: return [x * k for x in v]
+
+# gradual typing: hints are NOT enforced at runtime — check with mypy / pyright</code></pre></div>
+<p>Common hints: <code>int str bytes bool float</code> · <code>list[T] dict[K,V] set[T] tuple[int, ...]</code> · <code>T \| None</code> (3.10+) · <code>Literal["a","b"]</code> · <code>Callable[[int], str]</code> · <code>Iterable/Sequence/Mapping</code> (accept broad, return precise) · <code>Any</code>, <code>Never</code>, <code>Self</code> (3.11+).</p>
+<h2 id="17-classes-oop">17. Classes &amp; OOP</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>class Animal:
+    kingdom = "Animalia"                        # class attribute (shared)
+    def __init__(self, name: str, legs: int = 4):
+        self.name = name                        # instance attributes
+        self.legs = legs
+    def speak(self) -&gt; str:
+        return "..."
+    def __repr__(self):
+        return f"Animal({self.name!r})"         # unambiguous (debug) repr
+    def __str__(self):
+        return f"{self.name} ({self.legs} legs)" # friendly str
+
+class Dog(Animal):                              # inheritance
+    def __init__(self, name):
+        super().__init__(name, 4)               # call parent init
+    def speak(self):                            # override
+        return "Woof"
+
+d = Dog("Rex")
+isinstance(d, Animal)  → True;  issubclass(Dog, Animal) → True</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> Concept </th><th> Syntax </th><th> Notes </th></tr></thead><tbody><tr><td> Class attr vs instance </td><td> <code>Dog.kingdom</code> vs <code>d.name</code> </td><td> Shared vs per-object </td></tr><tr><td> Property </td><td> <code>@property</code> + <code>@x.setter</code> + <code>@x.deleter</code> </td><td> Computed attributes with validation </td></tr><tr><td> Classmethod </td><td> <code>@classmethod def from_str(cls, s):</code> </td><td> Alternative constructors </td></tr><tr><td> Staticmethod </td><td> <code>@staticmethod def helper():</code> </td><td> No self/cls — namespaced function </td></tr><tr><td> <code>__slots__ = ("a","b")</code> </td><td> Attribute whitelist </td><td> Smaller objects, no dict, blocks typos </td></tr><tr><td> <code>@dataclass</code> </td><td> See below </td><td> Kills boilerplate </td></tr><tr><td> Multiple inheritance </td><td> <code>class A(B, C)</code> </td><td> MRO via <code>A.__mro__</code> / <code>super()</code> follows it </td></tr><tr><td> Mixin </td><td> Small base adding one behavior </td><td> Convention: suffix <code>Mixin</code> </td></tr><tr><td> Abstract base </td><td> <code>from abc import ABC, abstractmethod</code> </td><td> Force subclasses to implement </td></tr><tr><td> Protocol </td><td> <code>class Closeable(Protocol): def close(self)-&amp;gt;None: ...</code> </td><td> Duck-typed interfaces (static check) </td></tr><tr><td> Composition &gt; inheritance </td><td> <code>self.engine = Engine()</code> </td><td> Prefer it when tempted by deep trees </td></tr></tbody></table></div>
+<h3 id="dataclasses-the-boilerplate-killer">dataclasses — the boilerplate killer</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from dataclasses import dataclass, field
+
+@dataclass
+class Point:
+    x: float
+    y: float = 0.0
+    tags: list[str] = field(default_factory=list)   # mutable-safe default
+
+    def dist(self): return (self.x**2 + self.y**2) ** 0.5
+
+p = Point(3, 4)         # __init__ generated
+p == Point(3, 4)        # True — __eq__ generated
+print(p)                # Point(x=3, y=4) — __repr__ generated</code></pre></div>
+<p>Modifiers: <code>@dataclass(frozen=True)</code> immutable/hashable · <code>@dataclass(order=True)</code> adds <code>&amp;lt;</code> etc. · <code>field(compare=False, repr=False)</code>. Sister tools: <code>typing.NamedTuple</code> (tuple-behavior) and <code>attrs</code> (third-party, more features).</p>
+<h2 id="18-exceptions">18. Exceptions</h2>
+<h3 id="full-builtin-hierarchy">Full builtin hierarchy</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">text</span><button class="copybtn" type="button">Copy</button></div><pre><code>BaseException
+├── SystemExit              # sys.exit()
+├── KeyboardInterrupt       # Ctrl+C
+├── GeneratorExit
+└── Exception
+    ├── ArithmeticError
+    │   ├── ZeroDivisionError
+    │   ├── OverflowError
+    │   └── FloatingPointError
+    ├── AssertionError
+    ├── AttributeError
+    ├── BufferError
+    ├── EOFError
+    ├── ImportError
+    │   └── ModuleNotFoundError
+    ├── LookupError
+    │   ├── IndexError
+    │   └── KeyError
+    ├── MemoryError
+    ├── NameError
+    │   └── UnboundLocalError
+    ├── OSError
+    │   ├── FileNotFoundError
+    │   ├── FileExistsError
+    │   ├── PermissionError
+    │   ├── IsADirectoryError / NotADirectoryError
+    │   ├── BlockingIOError / InterruptedError
+    │   ├── TimeoutError
+    │   ├── ConnectionError (Reset/Aborted/Refused)
+    │   └── ProcessLookupError / ChildProcessError
+    ├── ReferenceError
+    ├── RuntimeError
+    │   ├── NotImplementedError
+    │   └── RecursionError
+    ├── StopIteration / StopAsyncIteration
+    ├── SyntaxError
+    │   └── IndentationError
+    │       └── TabError
+    ├── SystemError
+    ├── TypeError
+    ├── ValueError
+    │   └── UnicodeError (Decode/Encode/Translate)
+    └── Warning (Deprecation, Future, User, RuntimeWarning, …)</code></pre></div>
+<h3 id="using-them-properly">Using them properly</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>try:
+    risky()
+except (ValueError, KeyError) as e:      # multiple types, bound as e
+    log.warning("bad input: %s", e)
+except OSError as e:
+    if e.errno == 2: ...                  # inspect errno
+    raise                                 # re-raise same exception
+else:
+    print("no exception happened")        # only on success
+finally:
+    cleanup()                             # always
+
+raise ValueError(f"bad mode: {mode!r}") from cause          # exception chaining
+raise TimeoutError("server didn't answer") from None        # hide the chain
+
+class InventoryError(Exception):
+    """Custom domain error."""
+
+with contextlib.suppress(FileNotFoundError):
+    os.remove("tmp.txt")                  # try/except-pass, but readable</code></pre></div>
+<p><strong>Rules:</strong> catch the <strong>narrowest</strong> exception you can handle; never bare <code>except:</code> (it swallows Ctrl+C); don't use exceptions for normal flow control; log the traceback (<code>logging.exception("msg")</code> inside except).</p>
+<h2 id="19-modules-packages-imports">19. Modules, Packages &amp; Imports</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import math                                # whole module
+import numpy as np                         # aliased
+from datetime import date, timedelta       # names directly
+from pathlib import Path as P              # aliased name
+from mypkg import submodule                # a submodule
+from .sibling import helper                # relative (inside a package)</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> Concept </th><th> Detail </th></tr></thead><tbody><tr><td> Module </td><td> Any <code>.py</code> file; its name is the filename </td></tr><tr><td> Package </td><td> Folder with <code>__init__.py</code> (can be empty); makes <code>import pkg.mod</code> work </td></tr><tr><td> Search order </td><td> script dir → <code>PYTHONPATH</code> → stdlib → <code>site-packages</code> (inspect: <code>sys.path</code>) </td></tr><tr><td> <code>__name__</code> </td><td> <code>"__main__"</code> when run directly, module name when imported — the entry-point idiom </td></tr><tr><td> <code>__all__ = ["a","b"]</code> </td><td> What <code>from mod import *</code> gives </td></tr><tr><td> Executed once </td><td> A module's body runs at <strong>first import only</strong>; later imports reuse the cached <code>sys.modules</code> entry </td></tr><tr><td> Circular imports </td><td> Symptom: <code>ImportError</code>/<code>AttributeError</code> on package start — fix by restructuring or importing inside functions </td></tr><tr><td> Namespaced </td><td> PEP 420: folders without <code>__init__.py</code> are implicit namespace packages </td></tr><tr><td> Standard layout </td><td> <code>src/myproj/…</code> + <code>tests/</code> + <code>pyproject.toml</code> (see §6) </td></tr><tr><td> <code>if TYPE_CHECKING:</code> </td><td> Import type-only deps without runtime cost </td></tr><tr><td> <code>importlib.import_module("x")</code> </td><td> Dynamic import by string </td></tr><tr><td> Reload (rare) </td><td> <code>importlib.reload(mod)</code> </td></tr></tbody></table></div>
+<hr>
+<h2 id="20-files-io">20. Files &amp; I/O</h2>
+<h3 id="open-all-modes"><code>open</code> — all modes</h3>
+<div class="table-wrap"><table><thead><tr><th> Mode </th><th> Meaning </th><th> Notes </th></tr></thead><tbody><tr><td> <code>r</code> </td><td> Read (default) </td><td> Missing → FileNotFoundError </td></tr><tr><td> <code>w</code> </td><td> Write, truncate </td><td> Creates/destroys </td></tr><tr><td> <code>a</code> </td><td> Append </td><td> Creates </td></tr><tr><td> <code>x</code> </td><td> Exclusive create </td><td> Exists → FileExistsError </td></tr><tr><td> <code>b</code> / <code>t</code> </td><td> Binary / text (default text) </td><td> <code>rb</code>, <code>wb</code>, <code>r+b</code>… </td></tr><tr><td> <code>+</code> </td><td> Read+write </td><td> <code>r+</code> no truncate, <code>w+</code> truncate </td></tr></tbody></table></div>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>with open("data.txt", "r", encoding="utf-8", newline="\n") as f:   # ALWAYS with
+    text = f.read()                    # whole file
+    first = f.readline()
+    lines = f.readlines()              # list of lines
+for line in f:                         # lazy — best for big files
+    process(line.rstrip("\n"))
+
+with open("out.txt", "w", encoding="utf-8") as f:
+    f.write("text\n"); f.writelines(lines)</code></pre></div>
+<p><code>with</code> guarantees closing even on exceptions. <strong>Always pass <code>encoding=</code></strong> on Windows (default there is locale-dependent — cp1252 landmines). Universal newlines: text mode translates <code>\r\n</code>→<code>\n</code> automatically.</p>
+<h3 id="pathlib-every-method-that-matters"><code>pathlib</code> — every method that matters</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from pathlib import Path
+p = Path("docs") / "report" / "final.txt"     # / joins!</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> Method </th><th> Returns </th></tr></thead><tbody><tr><td> <code>Path.cwd()</code> / <code>Path.home()</code> </td><td> Where am I / home dir </td></tr><tr><td> <code>p.exists() is_file() is_dir() is_symlink() is_absolute()</code> </td><td> Tests </td></tr><tr><td> <code>p.name .stem .suffix .suffixes .parts</code> </td><td> <code>'final.txt'</code>, <code>'final'</code>, <code>'.txt'</code>, <code>['docs','report','final.txt']</code> </td></tr><tr><td> <code>p.parent</code> / <code>p.parents[0..n]</code> </td><td> Up one / ancestors </td></tr><tr><td> <code>p.with_name("v2.txt")</code> / <code>p.with_suffix(".md")</code> </td><td> Sibling paths </td></tr><tr><td> <code>p.resolve()</code> / <code>p.absolute()</code> </td><td> Canonical absolute (symlinks resolved) </td></tr><tr><td> <code>p.expanduser()</code> </td><td> <code>~</code> expansion </td></tr><tr><td> <code>p.iterdir()</code> </td><td> Entries of a folder </td></tr><tr><td> <code>p.glob("*.log")</code> / <code>p.rglob("*.log")</code> </td><td> Pattern match (recursive) </td></tr><tr><td> <code>p.mkdir(parents=True, exist_ok=True)</code> </td><td> Create (no errors) </td></tr><tr><td> <code>p.rmdir()</code> / <code>p.unlink(missing_ok=True)</code> </td><td> Delete dir / file </td></tr><tr><td> <code>p.touch()</code> </td><td> Create empty </td></tr><tr><td> <code>p.rename(target)</code> / <code>p.replace(target)</code> </td><td> Rename / overwrite-rename </td></tr><tr><td> <code>p.read_text(encoding="utf-8")</code> / <code>p.write_text(s)</code> </td><td> Whole-file shuttle </td></tr><tr><td> <code>p.read_bytes()</code> / <code>p.write_bytes(b)</code> </td><td> Binary shuttle </td></tr><tr><td> <code>p.open("r")</code> </td><td> Built-in open on this path </td></tr><tr><td> <code>p.stat()</code> </td><td> <code>.st_size .st_mtime .st_mtime_ns</code>… </td></tr><tr><td> <code>p.chmod(0o644)</code> / <code>p.owner() .group()</code> </td><td> Permissions/ownership </td></tr><tr><td> <code>p.samefile(q)</code> / <code>p.is_relative_to(base)</code> / <code>p.relative_to(base)</code> </td><td> Relations </td></tr><tr><td> <code>p.as_posix()</code> / <code>p.as_uri()</code> </td><td> String forms </td></tr></tbody></table></div>
+<h3 id="os-ospath-shutil"><code>os</code> / <code>os.path</code> / <code>shutil</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Call </th><th> Does </th></tr></thead><tbody><tr><td> <code>os.getcwd()</code> · <code>os.chdir(p)</code> · <code>os.listdir(p)</code> </td><td> Classic trio </td></tr><tr><td> <code>os.environ["KEY"]</code> / <code>os.getenv("K", default)</code> </td><td> Environment </td></tr><tr><td> <code>os.system(cmd)</code> † </td><td> Shell out — prefer <code>subprocess</code> </td></tr><tr><td> <code>os.path.join(a,b)</code> · <code>os.path.exists/abspath/basename/dirname/splitext/getsize/isfile/isdir</code> </td><td> Legacy path ops (pathlib replaces) </td></tr><tr><td> <code>os.remove(f)</code> · <code>os.mkdir/rmdir</code> · <code>os.makedirs(p, exist_ok=True)</code> </td><td> File ops </td></tr><tr><td> <code>os.walk(top)</code> </td><td> Yields <code>(dirpath, dirnames, filenames)</code> down a tree </td></tr><tr><td> <code>os.stat(f).st_size</code> · <code>os.rename</code> · <code>os.replace</code> </td><td> Metadata/moves </td></tr><tr><td> <code>shutil.copy(src,dst)</code> / <code>copy2</code> (metadata) / <code>copytree</code> / <code>rmtree</code> ⚠ </td><td> Copies &amp; deep deletes </td></tr><tr><td> <code>shutil.move(src,dst)</code> </td><td> Move </td></tr><tr><td> <code>shutil.disk_usage("/")</code> </td><td> Free space </td></tr><tr><td> <code>shutil.make_archive("backup","zip",root_dir)</code> / <code>unpack_archive</code> </td><td> Zip/tar without zipfile boilerplate </td></tr><tr><td> <code>shutil.which("python")</code> </td><td> Locate executable </td></tr></tbody></table></div>
+<h3 id="data-formats">Data formats</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import json
+json.dumps(obj)  / json.dump(obj, f, indent=2, ensure_ascii=False)   # → str / file
+json.loads(s)    / json.load(f)                                      # ← str / file
+# tuples→lists, keys must be str, use default= for dates/custom
+
+import csv
+with open("t.csv", newline="", encoding="utf-8") as f:
+    rows = list(csv.DictReader(f))                 # dicts keyed by header
+with open("out.csv", "w", newline="", encoding="utf-8") as f:
+    w = csv.DictWriter(f, fieldnames=["a","b"]); w.writeheader(); w.writerows(rows)
+
+import pickle                                  # ⚠ only unpickle data you trust
+pickle.dump(obj, open("o.pkl","wb")); obj = pickle.load(open("o.pkl","rb"))
+
+import sqlite3
+con = sqlite3.connect("app.db")                # or :memory:
+con.execute("CREATE TABLE IF NOT EXISTS t (id INTEGER PRIMARY KEY, name TEXT)")
+con.execute("INSERT INTO t(name) VALUES (?)", ("alice",))   # ALWAYS ? params
+con.commit(); [r for r in con.execute("SELECT * FROM t WHERE name=?", ("alice",))]
+con.row_factory = sqlite3.Row; con.close()
+
+import tempfile, io
+tmp = tempfile.NamedTemporaryFile(delete=False); tmp.name
+buf = io.StringIO("initial"); buf.seek(0)      # in-memory text file</code></pre></div>
+<h2 id="21-concurrency">21. Concurrency</h2>
+<h3 id="which-model-for-what">Which model for what?</h3>
+<div class="table-wrap"><table><thead><tr><th> Workload </th><th> Tool </th></tr></thead><tbody><tr><td> Many network waits (HTTP, DB) </td><td> <code>asyncio</code> </td></tr><tr><td> Many blocking I/O calls (legacy libs, file ops) </td><td> <code>threading</code> </td></tr><tr><td> CPU-bound crunching </td><td> <code>multiprocessing</code> (or C extensions/numpy) </td></tr><tr><td> Don't want to choose </td><td> <code>concurrent.futures</code> thread/process pools </td></tr></tbody></table></div>
+<h3 id="threading"><code>threading</code></h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from threading import Thread, Lock, Event, Semaphore, Condition, local
+lock = Lock()
+def worker(n):
+    with lock:                    # GIL still applies to Python bytecode
+        shared.append(n)
+threads = [Thread(target=worker, args=(i,)) for i in range(8)]
+[t.start() for t in threads]; [t.join() for t in threads]</code></pre></div>
+<p>The <strong>GIL</strong>: only one thread runs Python bytecode at a time — threads help I/O concurrency, not CPU parallelism (PEP 703 free-threaded build exists experimentally in 3.13).</p>
+<h3 id="multiprocessing"><code>multiprocessing</code></h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from multiprocessing import Process, Pool, Queue, Pipe
+def cube(n): return n * n * n
+if __name__ == "__main__":                     # REQUIRED on Windows/macOS spawn
+    with Pool() as pool:
+        results = pool.map(cube, range(10))    # parallel map
+        r = pool.apply_async(cube, (7,)); r.get(timeout=5)
+    p = Process(target=worker, args=(1,)); p.start(); p.join()</code></pre></div>
+<p>Each process = separate interpreter = true parallel CPU work. Costs: pickling, startup. <code>multiprocessing.shared_memory</code> (3.8+) for zero-copy buffers.</p>
+<h3 id="concurrentfutures-the-friendly-face"><code>concurrent.futures</code> — the friendly face</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
+with ThreadPoolExecutor(max_workers=20) as ex:
+    futures = {ex.submit(fetch, url): url for url in urls}
+    for fut in as_completed(futures):
+        try: print(fut.result())
+        except Exception as e: print("failed:", futures[fut], e)
+pages = list(ex.map(fetch, urls))               # simple parallel map</code></pre></div>
+<h3 id="asyncio"><code>asyncio</code></h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import asyncio
+
+async def fetch(name, delay):
+    await asyncio.sleep(delay)                  # non-blocking wait
+    return f"{name} done"
+
+async def main():
+    # sequential
+    a = await fetch("a", 1)
+    # concurrent — gather (results in order)
+    results = await asyncio.gather(fetch("b", 2), fetch("c", 1), return_exceptions=True)
+    # structured concurrency (3.11+)
+    async with asyncio.TaskGroup() as tg:
+        t1 = tg.create_task(fetch("d", 1))
+        t2 = tg.create_task(fetch("e", 2))       # one fails → all cancelled
+    # timeout
+    try:
+        await asyncio.wait_for(fetch("f", 10), timeout=2)
+    except TimeoutError: pass
+
+asyncio.run(main())                              # THE entry point</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> API </th><th> Purpose </th></tr></thead><tbody><tr><td> <code>asyncio.run(coro)</code> </td><td> Run the top-level coroutine </td></tr><tr><td> <code>asyncio.gather(*aws)</code> </td><td> Concurrent, ordered results </td></tr><tr><td> <code>asyncio.TaskGroup</code> (3.11+) </td><td> Structured, auto-cancel on error </td></tr><tr><td> <code>asyncio.create_task(c)</code> </td><td> Schedule without awaiting immediately </td></tr><tr><td> <code>asyncio.wait_for(aw, t)</code> / <code>asyncio.timeout(t)</code> (3.11+) </td><td> Time limits </td></tr><tr><td> <code>asyncio.sleep(d)</code> </td><td> Non-blocking delay </td></tr><tr><td> <code>asyncio.Queue</code> / <code>Lock</code> / <code>Event</code> / <code>Semaphore</code> </td><td> Coordination primitives (async versions) </td></tr><tr><td> <code>asyncio.as_completed(aws)</code> </td><td> Iterate as they finish </td></tr><tr><td> <code>asyncio.to_thread(func, …)</code> </td><td> Push blocking call to a thread </td></tr><tr><td> <code>asyncio.start_server / open_connection</code> </td><td> Async sockets </td></tr></tbody></table></div>
+<p>Libraries must be async-native (<code>aiohttp</code>, <code>httpx</code> async mode). <code>await</code> only inside <code>async def</code>. One event loop per process.</p>
+<h2 id="22-standard-library-essentials">22. Standard Library Essentials</h2>
+<h3 id="datetime-the-complete-kit"><code>datetime</code> — the complete kit</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from datetime import datetime, date, time, timedelta, timezone
+now = datetime.now()                      # local, naive
+utc  = datetime.now(timezone.utc)         # TIMEZONE-AWARE — prefer for real code
+datetime.fromisoformat("2026-08-30T14:30:00+02:00")   # parse ISO (3.11+: most formats)
+dt = datetime.strptime("30/08/2026", "%d/%m/%Y")      # parse any format
+dt.strftime("%Y-%m-%d %H:%M")                         # format out
+dt + timedelta(days=7, hours=3)                       # arithmetic
+(dt2 - dt1).days / .total_seconds()                   # differences
+dt.timestamp() ; datetime.fromtimestamp(1760000000)   # epoch shuttle
+date.today() ; dt.date() ; dt.year .month .day .hour .weekday()  # Monday=0 / isoweekday()</code></pre></div>
+<p><code>strftime</code> directives: <code>%Y %m %d %H %M %S</code> big four · <code>%y</code> 2-digit year · <code>%I %p</code> 12-hour + AM/PM · <code>%j</code> day of year · <code>%a %A %b %B</code> names · <code>%f</code> microseconds · <code>%z %Z</code> timezone · <code>%s</code>† · <code>%U %W %V</code> weeks · <code>%c %x %X</code> locale · <code>%%</code> literal. Gotcha: comparing naive and aware datetimes raises TypeError — normalize with <code>dt.astimezone()</code>. Third-party <code>dateparser</code>/<code>pendulum</code> for human formats ("3 days ago").</p>
+<h3 id="collections"><code>collections</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Tool </th><th> Use </th></tr></thead><tbody><tr><td> <code>Counter("mississippi").most_common(3)</code> </td><td> Frequency counting </td></tr><tr><td> <code>defaultdict(list)</code> </td><td> Dict with auto-factory — kills <code>setdefault</code> boilerplate </td></tr><tr><td> <code>deque(maxlen=n)</code> </td><td> Fast append/pop both ends — sliding windows, queues </td></tr><tr><td> <code>namedtuple("P", "x y")</code> </td><td> Tuple with names </td></tr><tr><td> <code>OrderedDict</code> † </td><td> Ordered since 3.7 plain dict; still useful for move_to_end </td></tr><tr><td> <code>ChainMap(a, b)</code> </td><td> Layered lookup (defaults over overrides) </td></tr><tr><td> <code>UserDict/List/String</code> </td><td> Base classes for custom containers </td></tr></tbody></table></div>
+<h3 id="random-math-statistics-secrets"><code>random</code>, <code>math</code>, <code>statistics</code>, <code>secrets</code></h3>
+<div class="table-wrap"><table><thead><tr><th> Call </th><th> Returns </th></tr></thead><tbody><tr><td> <code>random.random()</code> / <code>randint(1,6)</code> / <code>randrange(0,10,2)</code> </td><td> Float [0,1) / inclusive int / step </td></tr><tr><td> <code>random.choice(seq)</code> / <code>choices(seq, k=5, weights=…)</code> / <code>sample(seq, k)</code> </td><td> Picks (no/with replacement) </td></tr><tr><td> <code>random.shuffle(list)</code> </td><td> In-place </td></tr><tr><td> <code>random.seed(42)</code> </td><td> Reproducible </td></tr><tr><td> <code>math.ceil floor fabs factorial gcd lcm sqrt cbrt(3.11+)</code> </td><td> Basics </td></tr><tr><td> <code>math.pi e tau inf nan</code> · <code>math.log(x, b)</code> <code>log2 log10</code> <code>exp</code> </td><td> Constants/logs </td></tr><tr><td> <code>math.isclose(a,b,rel_tol=1e-9)</code> </td><td> Float-safe compare </td></tr><tr><td> <code>statistics.mean median mode stdev variance quantiles</code> </td><td> Stats </td></tr><tr><td> <code>secrets.token_hex(32)</code> / <code>token_urlsafe(16)</code> / <code>randbelow(n)</code> </td><td> <strong>Crypto-safe</strong> randomness </td></tr><tr><td> <code>secrets.compare_digest(a,b)</code> </td><td> Constant-time compare </td></tr></tbody></table></div>
+<p>⚠ <code>random</code> is NOT for security — use <code>secrets</code>. Random ints in hot loops: <code>random.Random(seed)</code> instance avoids global lock.</p>
+<h3 id="hashing-encoding">Hashing &amp; encoding</h3>
+<div class="table-wrap"><table><thead><tr><th> Call </th><th> Purpose </th></tr></thead><tbody><tr><td> <code>hashlib.sha256(b).hexdigest()</code> (<code>md5†</code> <code>sha1†</code> <code>sha512</code> <code>blake2b</code> <code>sha3_256</code>) </td><td> Digests — verify downloads, fingerprint </td></tr><tr><td> <code>hashlib.file_digest(open(f,'rb'), 'sha256')</code> (3.11+) </td><td> Streamed file hash </td></tr><tr><td> <code>hmac.new(key, msg, 'sha256').hexdigest()</code> </td><td> Signed messages </td></tr><tr><td> <code>base64.b64encode(b)</code> / <code>b64decode</code> / <code>urlsafe_b64*</code> </td><td> Transport encoding (not encryption!) </td></tr><tr><td> <code>uuid.uuid4()</code> </td><td> Random UUID; <code>uuid1()</code> host-based; <code>uuid5(ns, name)</code> deterministic </td></tr></tbody></table></div>
+<h3 id="subprocess-run-anything"><code>subprocess</code> — run anything</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import subprocess
+r = subprocess.run(["ping", "-n", "1", "example.com"], capture_output=True,
+                   text=True, timeout=10, check=False)
+r.returncode, r.stdout, r.stderr
+subprocess.run("echo hi &gt; f.txt", shell=True)             # ⚠ shell=True = injection risk
+subprocess.run(["python", "script.py"], input="y\n", text=True, check=True)</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> Param </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>args</code> list </td><td> Program + args (no shell parsing — safe) </td></tr><tr><td> <code>capture_output=True</code> </td><td> Collect stdout+stderr </td></tr><tr><td> <code>text=True</code> </td><td> Decode to str (else bytes) </td></tr><tr><td> <code>input="…"</code> </td><td> Feed stdin </td></tr><tr><td> <code>check=True</code> </td><td> Non-zero → <code>CalledProcessError</code> </td></tr><tr><td> <code>timeout=30</code> </td><td> Kill after 30 s (<code>TimeoutExpired</code>) </td></tr><tr><td> <code>cwd=</code>, <code>env={**os.environ, "K":"v"}</code> </td><td> Working dir / environment </td></tr><tr><td> <code>Popen(…)</code> </td><td> Low-level streaming (<code>p.stdout.readline()</code>, <code>p.communicate()</code>) </td></tr></tbody></table></div>
+<p>Legacy: <code>os.system</code> † · <code>os.popen</code> † — migrate both to <code>subprocess</code>.</p>
+<h3 id="argparse-full-walkthrough"><code>argparse</code> — full walkthrough</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import argparse
+
+p = argparse.ArgumentParser(
+    prog="tool", description="Do the thing",
+    epilog="Enjoy.")
+p.add_argument("src", help="source file")                       # positional
+p.add_argument("dst", nargs="?", default="out.txt")             # optional positional
+p.add_argument("-n", "--dry-run", action="store_true")          # flag
+p.add_argument("-v", "--verbose", action="count", default=0)    # -vvv → 3
+p.add_argument("--limit", type=int, default=10)                 # typed option
+p.add_argument("--mode", choices=["fast","safe"], default="safe")
+p.add_argument("--tags", action="append")                       # repeatable → list
+p.add_argument("--log", type=argparse.FileType("w"))            # opens the file!
+p.add_argument("--retries", metavar="N", type=int, default=3)
+sub = p.add_subparsers(dest="cmd", required=True)
+p_init = sub.add_parser("init", help="create config")
+p_init.add_argument("--force", action="store_true")
+p_push = sub.add_parser("push", help="upload")
+p_push.add_argument("target")
+
+args = p.parse_args()          # --help auto-generated from all of the above</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> Concept </th><th> Detail </th></tr></thead><tbody><tr><td> <code>nargs</code> </td><td> <code>N</code> exactly · <code>?</code> 0-or-1 · <code>*</code> any list · <code>+</code> at least one </td></tr><tr><td> <code>action</code> </td><td> <code>store</code> · <code>store_true/false/const</code> · <code>append</code> · <code>count</code> · <code>extend</code> · custom Action class </td></tr><tr><td> <code>type</code> </td><td> Any callable — <code>int</code>, <code>float</code>, <code>Path</code>, <code>datetime.fromisoformat</code> </td></tr><tr><td> <code>default</code> + <code>required=True</code> </td><td> Optionality control </td></tr><tr><td> <code>dest</code> </td><td> Attribute name (from long option by default) </td></tr><tr><td> <code>parse_known_args()</code> </td><td> Ignore unknown (wrapper scripts) </td></tr><tr><td> <code>args = p.parse_args(["init","--force"])</code> </td><td> Testing parsers programmatically </td></tr></tbody></table></div>
+<p>Alternatives: <code>typer</code> (type-hint driven, pretty) and <code>click</code> (decorator based) — argparse needs zero dependencies.</p>
+<h3 id="logging-full-walkthrough"><code>logging</code> — full walkthrough</h3>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-8s %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    filename="app.log",          # omit → stderr
+)
+log = logging.getLogger("payroll")           # per-module loggers: logging.getLogger(__name__)
+log.debug("detail %s", item)                 # lazy % formatting — never f-strings in hot paths
+log.info("processed %d rows", n)
+log.warning("deprecated call")
+log.error("failed: %s", err)
+log.exception("boom")                        # ERROR + traceback (in except block)</code></pre></div>
+<div class="table-wrap"><table><thead><tr><th> Level </th><th> Numeric </th><th> Use </th></tr></thead><tbody><tr><td> <code>DEBUG</code> </td><td> 10 </td><td> Everything while developing </td></tr><tr><td> <code>INFO</code> </td><td> 20 </td><td> Normal milestones </td></tr><tr><td> <code>WARNING</code> </td><td> 30 </td><td> Default level — surprising but recoverable </td></tr><tr><td> <code>ERROR</code> </td><td> 40 </td><td> Operation failed </td></tr><tr><td> <code>CRITICAL</code> </td><td> 50 </td><td> App going down </td></tr></tbody></table></div>
+<p>Advanced: handlers (<code>StreamHandler</code>, <code>FileHandler</code>, <code>RotatingFileHandler(maxBytes, backupCount)</code>, <code>SMTPHandler</code>), <code>Formatter</code>, <code>dictConfig</code> from YAML/JSON, <code>logging.config.dictConfig({...})</code>, propagate/filter per logger. Rule: libraries log, <strong>never</strong> configure basicConfig inside a library — only in the app entry point.</p>
+<h3 id="networking-quick-hits">Networking quick hits</h3>
+<div class="table-wrap"><table><thead><tr><th> Call </th><th> Purpose </th></tr></thead><tbody><tr><td> <code>urllib.request.urlopen(url)</code> </td><td> Stdlib HTTP GET (clunky but zero-dep) </td></tr><tr><td> <code>pip install requests</code> → <code>requests.get(url, timeout=5, headers=…)</code>; <code>r.json() r.status_code r.raise_for_status()</code> </td><td> The human API </td></tr><tr><td> <code>httpx</code> </td><td> requests-compatible + async + HTTP/2 </td></tr><tr><td> <code>socket.create_connection((host, port), timeout=5)</code> </td><td> Raw TCP </td></tr><tr><td> <code>email/smtplib</code> </td><td> MIME building + SMTP send (<code>smtplib.SMTP(host).send_message(msg)</code>) </td></tr><tr><td> <code>webbrowser.open(url)</code> </td><td> Open browser </td></tr></tbody></table></div>
+<h3 id="archives-glob-platform">Archives, glob, platform</h3>
+<div class="table-wrap"><table><thead><tr><th> Call </th><th> Purpose </th></tr></thead><tbody><tr><td> <code>zipfile.ZipFile("a.zip")</code> → <code>.namelist() .extractall(dir) .read(name)</code> · <code>ZipFile("a.zip","w").write(f)</code> </td><td> Zip I/O </td></tr><tr><td> <code>tarfile.open("a.tar.gz", "r:gz")</code> </td><td> Tar I/O </td></tr><tr><td> <code>glob.glob("data/*.csv", recursive=True)</code> · <code>glob.iglob</code> </td><td> Wildcard files (pathlib <code>glob</code> usually nicer) </td></tr><tr><td> <code>platform.system() .machine() .python_version()</code> </td><td> OS/CPU/Py detection </td></tr><tr><td> <code>os.name</code> (<code>"nt"</code>/<code>"posix"</code>) · <code>sys.platform</code> (<code>win32</code>/<code>linux</code>/<code>darwin</code>) </td><td> Platform branches </td></tr><tr><td> <code>sys.argv</code> · <code>sys.exit(code)</code> · <code>sys.stdin/stdout/stderr</code> · <code>sys.modules</code> · <code>sys.path</code> </td><td> System handles </td></tr><tr><td> <code>time.time() time.sleep(s) time.perf_counter()</code> </td><td> Clocks — perf_counter for timing! </td></tr><tr><td> <code>shelve.open("data")</code> </td><td> Pickle-backed dict on disk </td></tr></tbody></table></div>
+<hr>
+<h1 id="part-3-hands-on-tutorials">PART 3 — HANDS-ON TUTORIALS</h1>
+<h2 id="t1-your-first-hour">T1. Your First Hour</h2>
+<p><strong>Goal:</strong> variables → data → loops → functions, ending with two tiny real programs.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># Step 1 — the calculator soul of Python (REPL: &gt;&gt;&gt; means type it live)
+2 + 2, 7 / 2, 7 // 2, 7 % 2, 2 ** 10          # (4, 3.5, 3, 1, 1024)
+
+# Step 2 — variables &amp; types (dynamic: names are labels, not boxes)
+width, height = 3, 4
+area = width * height
+type(area)                                     # &lt;class 'int'&gt;
+
+# Step 3 — strings &amp; f-strings
+name = "Ada"
+print(f"{name} computed area={area}")
+
+# Step 4 — lists and loops
+temps = [21, 25, 19, 30, 27]
+for t in temps:
+    print("hot" if t &gt;= 25 else "mild", t)
+print("avg:", sum(temps) / len(temps))
+
+# Step 5 — functions
+def to_f(c): return c * 9 / 5 + 32
+print([to_f(t) for t in temps])
+
+# Step 6 — dict as a tiny database
+people = {"ada": 36, "alan": 41}
+people["grace"] = 45
+for who, age in sorted(people.items()):
+    print(f"{who:&gt;6}: {age}")
+
+# Step 7 — program 1: number guessing game
+import random
+secret = random.randint(1, 100)
+while (guess := int(input("Guess: "))) != secret:
+    print("higher" if guess &lt; secret else "lower")
+print("Correct!")
+
+# Step 8 — program 2: word counter
+text = input("Sentence: ")
+counts = {}
+for word in text.lower().split():
+    counts[word] = counts.get(word, 0) + 1
+print(sorted(counts.items(), key=lambda kv: -kv[1]))</code></pre></div>
+<p><strong>Checkpoint:</strong> you can store data (list/dict), repeat work (for/while), package logic (def), and read input. That's 80 % of daily Python.</p>
+<h2 id="t2-parse-a-log-file-csv-report">T2. Parse a Log File → CSV Report</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># parse access logs like: 2026-08-30 12:01:02 ERROR payment failed id=771
+import re, csv
+from collections import Counter
+from pathlib import Path
+
+log_re = re.compile(r"(?P&lt;date&gt;\d{4}-\d{2}-\d{2}) (?P&lt;time&gt;\d{2}:\d{2}:\d{2}) "
+                    r"(?P&lt;level&gt;INFO|WARNING|ERROR) (?P&lt;msg&gt;.*)")
+
+rows, level_counts = [], Counter()
+for line in Path("app.log").read_text(encoding="utf-8").splitlines():
+    if m := log_re.match(line):
+        rows.append(m.groupdict())
+        level_counts[m["level"]] += 1
+
+with open("report.csv", "w", newline="", encoding="utf-8") as f:
+    w = csv.DictWriter(f, fieldnames=["date", "time", "level", "msg"])
+    w.writeheader(); w.writerows(rows)
+
+print("levels:", dict(level_counts))
+print("errors on:", {r["date"] for r in rows if r["level"] == "ERROR"})</code></pre></div>
+<p>Teaches: <code>re</code> named groups, walrus, <code>Counter</code>, <code>pathlib</code>, <code>csv.DictWriter</code>.</p>
+<h2 id="t3-consume-any-rest-api-json">T3. Consume Any REST API (JSON)</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import requests
+
+def get_json(url, **params):
+    r = requests.get(url, params=params, timeout=10)
+    r.raise_for_status()
+    return r.json()
+
+data = get_json("https://api.github.com/repos/python/cpython/events", per_page=5)
+for ev in data:
+    print(f"{ev['type']:&lt;22} {ev['actor']['login']:&lt;20} {ev['repo']['name']}")
+
+# POST with auth:
+# requests.post(url, json={"key": "value"}, headers={"Authorization": f"Bearer {token}"})</code></pre></div>
+<p>Teaches: HTTP verbs, params/timeout, raise_for_status, JSON navigation (<code>['type']</code>), and the habit of wrapping API calls in small functions. Retry logic: <code>HTTPAdapter(max_retries=3)</code> in a <code>requests.Session</code>.</p>
+<h2 id="t4-build-a-real-cli-app-argparse">T4. Build a Real CLI App (<code>argparse</code>)</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>"""todo.py — a tiny task manager."""
+import argparse, json
+from pathlib import Path
+
+DB = Path.home() / ".todo.json"
+
+def load():
+    return json.loads(DB.read_text()) if DB.exists() else []
+def save(tasks): DB.write_text(json.dumps(tasks, indent=2))
+
+def main():
+    p = argparse.ArgumentParser(description="Tiny todo")
+    sub = p.add_subparsers(dest="cmd", required=True)
+    a = sub.add_parser("add");    a.add_argument("task", help="task text")
+    d = sub.add_parser("done");   d.add_argument("n", type=int, help="task number")
+    sub.add_parser("list", help="show tasks")
+    args = p.parse_args()
+
+    tasks = load()
+    match args.cmd:
+        case "add":  tasks.append({"task": args.task, "done": False}); save(tasks)
+        case "done": tasks[args.n - 1]["done"] = True; save(tasks)
+        case "list":
+            for i, t in enumerate(tasks, 1):
+                print(f"{'✓' if t['done'] else '·'} {i}. {t['task']}")
+
+if __name__ == "__main__":
+    main()</code></pre></div>
+<p>Run: <code>python todo.py add "Ship the report"</code> → <code>python todo.py list</code> → <code>python todo.py done 1</code>. Next level: convert with <code>typer</code> (add type hints, get <code>--help</code> for free) and install as a command with <code>pipx install</code> after adding a <code>[project.scripts]</code> entry (§6).</p>
+<h2 id="t5-oop-with-dataclasses-an-inventory-manager">T5. OOP with Dataclasses — an Inventory Manager</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from dataclasses import dataclass, field
+from enum import Enum
+
+class Condition(Enum):
+    NEW = "new"; USED = "used"; BROKEN = "broken"
+
+@dataclass(order=True)
+class Item:
+    sort_index: float = field(init=False, repr=False)
+    sku: str = ""
+    name: str = ""
+    price: float = 0.0
+    condition: Condition = Condition.NEW
+    tags: list[str] = field(default_factory=list)
+
+    def __post_init__(self):
+        self.sort_index = -self.price          # highest price first
+
+class Inventory:
+    def __init__(self): self._items: dict[str, Item] = {}
+    def add(self, item: Item): self._items[item.sku] = item
+    def total_value(self) -&gt; float:
+        return sum(i.price for i in self._items.values() if i.condition != Condition.BROKEN)
+    def find(self, query: str) -&gt; list[Item]:
+        q = query.lower()
+        return [i for i in self._items.values() if q in i.name.lower() or q in " ".join(i.tags)]
+
+inv = Inventory()
+inv.add(Item(sku="A1", name="Keyboard", price=79.9, tags=["input"]))
+inv.add(Item(sku="A2", name="Monitor", price=349, condition=Condition.USED))
+print(inv.total_value(), inv.find("monitor"))</code></pre></div>
+<p>Teaches: <code>@dataclass(order=True)</code>, <code>field(init=False)</code> + <code>__post_init__</code>, <code>Enum</code>, private-by-convention attributes, type-hinted composition.</p>
+<h2 id="t6-package-publish-a-library-to-pypi">T6. Package &amp; Publish a Library to PyPI</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code># 1. Layout
+mylib/
+├── pyproject.toml      # from §6 — name, version, deps, [project.scripts]
+├── README.md
+├── src/mylib/__init__.py
+└── tests/test_mylib.py
+
+# 2. Local sanity
+python -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install -e . &amp;&amp; mylib-cli --help          # entry point works?
+
+# 3. Build &amp; validate
+pip install build twine
+python -m build
+twine check dist/*
+
+# 4. Rehearse on TestPyPI, then the real thing
+twine upload --repository testpypi dist/*
+pip install -i https://test.pypi.org/simple/ mylib &amp;&amp; python -c "import mylib"
+twine upload dist/*                            # needs a PyPI API token</code></pre></div>
+<p>Checklist before upload: unique name, version bumped, README renders (<code>twine check</code>), license present, no secrets in the sdist. Every re-upload of the same version is rejected — bump first.</p>
+<h2 id="t7-test-like-a-pro-with-pytest">T7. Test Like a Pro with pytest</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># tests/test_math.py
+import pytest
+from mylib import add, divide, load_config
+
+def test_add_ints():
+    assert add(2, 3) == 5
+
+@pytest.mark.parametrize("a,b,out", [(0,0,0), (-1,1,0), (100,1,101)])
+def test_add_many(a, b, out):
+    assert add(a, b) == out
+
+def test_divide_by_zero():
+    with pytest.raises(ZeroDivisionError):
+        divide(1, 0)
+
+@pytest.fixture
+def config(tmp_path):
+    cfg = tmp_path / "c.ini"; cfg.write_text("[main]\nkey=1\n")
+    return load_config(cfg)
+
+def test_config(config):
+    assert config["main"]["key"] == "1"
+
+def test_output(capsys):
+    print("hi"); assert capsys.readouterr().out == "hi\n"</code></pre></div>
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>pytest -v --durations=3
+pytest --lf
+pytest --cov=mylib --cov-report=term-missing</code></pre></div>
+<p>Teaches: one concept per test, AAA (Arrange-Act-Assert), fixtures over setup boilerplate, parametrize over copy-paste, raises-testing, coverage flags.</p>
+<h2 id="t8-automate-the-boring-stuff">T8. Automate the Boring Stuff</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># A — rename &amp; sort a folder of photos by EXIF-less mtime
+from pathlib import Path
+from datetime import datetime
+for p in Path("dump").iterdir():
+    if p.is_file():
+        stamp = datetime.fromtimestamp(p.stat().st_mtime).strftime("%Y-%m/%Y%m%d_%H%M%S")
+        target = Path("sorted") / f"{stamp}{p.suffix}"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        p.rename(target)
+
+# B — Excel → cleaned Excel (pip install openpyxl pandas)
+import pandas as pd
+df = pd.read_excel("sales.xlsx", sheet_name="Q3")
+clean = (df.dropna(subset=["amount"])
+           .assign(total=lambda d: d.amount * d.qty)
+           .groupby("region", as_index=False)["total"].sum())
+clean.to_excel("sales_summary.xlsx", index=False)
+
+# C — send an email report (stdlib)
+import smtplib
+from email.message import EmailMessage
+msg = EmailMessage()
+msg["From"], msg["To"], msg["Subject"] = "me@x.com", "boss@x.com", "Weekly report"
+msg.set_content(open("report.txt").read())
+with smtplib.SMTP("smtp.example.com", 587) as s:
+    s.starttls(); s.login("me@x.com", "app-password"); s.send_message(msg)
+
+# D — watch a folder for new files
+import time
+seen = set()
+while True:
+    for p in Path("inbox").glob("*.csv"):
+        if p not in seen:
+            seen.add(p); print("new:", p); # process(p)
+    time.sleep(2)</code></pre></div>
+<h2 id="t9-async-a-concurrent-downloader">T9. Async — a Concurrent Downloader</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import asyncio, aiohttp, time
+
+URLS = [f"https://httpbin.org/delay/{d}" for d in (1, 1, 1, 1, 1)]
+
+async def fetch(session, url):
+    async with session.get(url, timeout=aiohttp.ClientTimeout(total=15)) as r:
+        return url, r.status
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        async with asyncio.TaskGroup() as tg:                    # 3.11+
+            tasks = [tg.create_task(fetch(session, u)) for u in URLS]
+    for t in tasks:
+        print(t.result())
+
+start = time.perf_counter()
+asyncio.run(main())
+print(f"5 requests in {time.perf_counter() - start:.1f}s (sequential would be ~5s)")</code></pre></div>
+<p><code>pip install aiohttp</code> first. Same pattern with threads for blocking libraries: <code>ThreadPoolExecutor</code> + <code>fetch</code> (§21). Teaches: async/await, sessions, TaskGroup, timeouts, and measuring speedups honestly.</p>
+<h2 id="t10-debug-profile-like-a-detective">T10. Debug &amp; Profile Like a Detective</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code># 1 — reproduce under pdb
+python -m pdb app.py input.csv
+(Pdb) b app.py:42            # break where it goes wrong
+(Pdb) c                      # run to it
+(Pdb) p rows[:3]             # inspect
+(Pdb) pp {r["id"]: r for r in rows}
+(Pdb) w                      # how did we get here?
+(Pdb) interact               # full REPL with all locals
+
+# 2 — or post-mortem the last crash
+python -i app.py
+&gt;&gt;&gt; import pdb; pdb.pm()
+
+# 3 — find the hotspot
+python -m cProfile -s cumtime app.py | head -25
+# or: python -X importtime -c "import app" 2&gt;&amp;1 | sort -t'|' -k2 -n | tail</code></pre></div>
+<p>Method: (1) make it fail deterministically (smallest input), (2) read the traceback <strong>bottom-up</strong> — last frame is where it died, walk up for who caused it, (3) inspect state with pdb rather than guessing, (4) profile before optimizing, (5) after fixing: add the regression test (T7).</p>
+<hr>
+<h1 id="part-4-appendices">PART 4 — APPENDICES</h1>
+<h2 id="appendix-a-az-command-tool-index-part-1">Appendix A — A–Z Command &amp; Tool Index (Part 1)</h2>
+<div class="table-wrap"><table><thead><tr><th> </th><th> Tools </th></tr></thead><tbody><tr><td> <strong>B</strong> </td><td> <code>black</code> §8 · <code>build</code> §6 · <code>bandit</code> §8 </td></tr><tr><td> <strong>C</strong> </td><td> <code>conda</code>/<code>mamba</code> §4 · <code>coverage</code> §7 </td></tr><tr><td> <strong>F</strong> </td><td> <code>flake8</code> §8 </td></tr><tr><td> <strong>I</strong> </td><td> <code>ipython</code> §0.4 · <code>isort</code> §8 · <code>ipdb</code>/<code>pudb</code> §9 </td></tr><tr><td> <strong>J</strong> </td><td> <code>jupyter lab/notebook/console/nbconvert/kernelspec</code> §10 </td></tr><tr><td> <strong>M</strong> </td><td> <code>mypy</code> §8 · <code>mamba</code> §4 </td></tr><tr><td> <strong>P</strong> </td><td> <code>python</code> §1 (all flags) · <code>py</code> launcher §2 · <code>pip</code> §3 · <code>pipx</code> §4 · <code>poetry</code> §4 · <code>pre-commit</code> §8 · <code>pylint</code> §8 · <code>pydoc</code> §5,§0.6 · <code>pdb</code> §9 · <code>pstats</code> §9 </td></tr><tr><td> <strong>R</strong> </td><td> <code>ruff</code> §8 </td></tr><tr><td> <strong>T</strong> </td><td> <code>twine</code> §6 · <code>timeit</code> §5,§9 · <code>tracemalloc</code> §9 </td></tr><tr><td> <strong>U</strong> </td><td> <code>uv</code> §4 (venv/pip/add/sync/run/tool/uvx) · <code>unittest</code> §7 </td></tr><tr><td> <strong>V</strong> </td><td> <code>venv</code> §4 · <code>virtualenv</code> §4 </td></tr></tbody></table></div>
+<p><code>python -m</code> modules (§5): <code>http.server</code> · <code>json.tool</code> · <code>timeit</code> · <code>cProfile</code> · <code>pdb</code> · <code>pydoc</code> · <code>zipfile</code> · <code>tarfile</code> · <code>base64</code> · <code>compileall</code> · <code>ensurepip</code> · <code>site</code> · <code>sysconfig</code> · <code>unittest</code> · <code>venv</code> · <code>webbrowser</code> · <code>ast</code> · <code>dis</code> · <code>this</code>.</p>
+<h2 id="appendix-b-all-built-in-functions">Appendix B — All Built-in Functions</h2>
+<div class="table-wrap"><table><thead><tr><th> </th><th> </th><th> </th><th> </th></tr></thead><tbody><tr><td> <code>abs(x)</code> </td><td> absolute value </td><td> <code>hash(o)</code> </td><td> identity-based hash </td></tr><tr><td> <code>aiter(x)</code> / <code>anext(x)</code> (3.10+) </td><td> async iteration </td><td> <code>help([x])</code> </td><td> interactive docs </td></tr><tr><td> <code>all(it)</code> / <code>any(it)</code> </td><td> every/any truthy </td><td> <code>hex(i)</code> / <code>oct(i)</code> / <code>bin(i)</code> </td><td> base strings </td></tr><tr><td> <code>ascii(o)</code> </td><td> repr, non-ASCII escaped </td><td> <code>id(o)</code> </td><td> identity int </td></tr><tr><td> <code>bin(i)</code> </td><td> <code>'0b…'</code> </td><td> <code>input([prompt])</code> </td><td> read a string </td></tr><tr><td> <code>bool(x)</code> </td><td> truthiness </td><td> <code>int(x[, base])</code> </td><td> parse/convert </td></tr><tr><td> <code>breakpoint()</code> </td><td> drop into pdb </td><td> <code>isinstance(o, T)</code> </td><td> type test (tuple ok) </td></tr><tr><td> <code>bytearray(x)</code> / <code>bytes(x)</code> </td><td> mutable/immutable bytes </td><td> <code>issubclass(A, B)</code> </td><td> class test </td></tr><tr><td> <code>callable(o)</code> </td><td> has <code>__call__</code> </td><td> <code>iter(it)</code> / <code>next(it[,d])</code> </td><td> iterator protocol </td></tr><tr><td> <code>chr(i)</code> / <code>ord(c)</code> </td><td> code ↔ character </td><td> <code>len(x)</code> </td><td> size </td></tr><tr><td> <code>classmethod(f)</code> </td><td> classmethod wrapper </td><td> <code>list(it)</code> / <code>tuple(it)</code> </td><td> sequences </td></tr><tr><td> <code>compile(src,…)</code> </td><td> source → code object </td><td> <code>locals()</code> / <code>globals()</code> </td><td> namespace dicts </td></tr><tr><td> <code>complex(re,im)</code> </td><td> complex number </td><td> <code>map(f, *its)</code> </td><td> lazy transform </td></tr><tr><td> <code>delattr(o,n)</code> / <code>getattr(o,n[,d])</code> / <code>setattr(o,n,v)</code> / <code>hasattr(o,n)</code> </td><td> attribute tools </td><td> <code>max(it[,key])</code> / <code>min(it[,key])</code> </td><td> extremes </td></tr><tr><td> <code>dict(**kw)</code> </td><td> new dict </td><td> <code>memoryview(b)</code> </td><td> zero-copy view </td></tr><tr><td> <code>dir([o])</code> </td><td> name list </td><td> <code>object()</code> </td><td> base of everything </td></tr><tr><td> <code>divmod(a,b)</code> </td><td> <code>(a//b, a%b)</code> </td><td> <code>oct(i)</code> </td><td> <code>'0o…'</code> </td></tr><tr><td> <code>enumerate(it, s=0)</code> </td><td> index+value </td><td> <code>open(path,…)</code> </td><td> file handle </td></tr><tr><td> <code>eval(e)</code> / <code>exec(e)</code> ⚠ </td><td> run dynamic code </td><td> <code>pow(b,e[,m])</code> </td><td> power (fast mod) </td></tr><tr><td> <code>filter(f, it)</code> </td><td> keep matching </td><td> <code>print(*a, sep,end,file,flush)</code> </td><td> output </td></tr><tr><td> <code>float(x)</code> </td><td> parse float </td><td> <code>property(fget,…) </code> </td><td> descriptor </td></tr><tr><td> <code>format(v, spec)</code> </td><td> <code>__format__</code> </td><td> <code>range(a,b,s)</code> </td><td> lazy ints </td></tr><tr><td> <code>frozenset(it)</code> </td><td> immutable set </td><td> <code>repr(o)</code> </td><td> debug string </td></tr><tr><td> <code>reversed(seq)</code> </td><td> reverse iterator </td><td> <code>round(x[,n])</code> </td><td> banker's rounding </td></tr><tr><td> <code>set(it)</code> </td><td> new set </td><td> <code>slice(a,b,s)</code> </td><td> slice object </td></tr><tr><td> <code>sorted(it,key,rev)</code> </td><td> new sorted list </td><td> <code>staticmethod(f)</code> </td><td> static wrapper </td></tr><tr><td> <code>str(x)</code> </td><td> string form </td><td> <code>sum(it[,start])</code> </td><td> total </td></tr><tr><td> <code>super()</code> </td><td> next-in-MRO proxy </td><td> <code>type(o)</code> / <code>type(n,b,d)</code> </td><td> type of / build class </td></tr><tr><td> <code>vars([o])</code> </td><td> <code>__dict__</code> </td><td> <code>zip(*its, strict=False)</code> </td><td> parallel iteration </td></tr><tr><td> <code>exit()</code> / <code>quit()</code> </td><td> leave REPL (never in scripts) </td><td> <code>__import__(n)</code> </td><td> low-level import </td></tr></tbody></table></div>
+<h2 id="appendix-c-dunder-methods-protocol-table">Appendix C — Dunder Methods Protocol Table</h2>
+<div class="table-wrap"><table><thead><tr><th> Protocol </th><th> Methods </th><th> Triggered by </th></tr></thead><tbody><tr><td> Construction </td><td> <code>__new__</code> <code>__init__</code> <code>__del__</code> </td><td> creation / destruction (GC) </td></tr><tr><td> String forms </td><td> <code>__repr__ __str__ __bytes__ __format__</code> </td><td> <code>repr()</code> <code>print()</code> <code>bytes()</code> f-strings </td></tr><tr><td> Comparison </td><td> <code>__eq__ __ne__ __lt__ __le__ __gt__ __ge__</code> </td><td> <code>== != &amp;lt; &amp;lt;= &amp;gt; &amp;gt;=</code>, <code>sorted</code> </td></tr><tr><td> Hashing </td><td> <code>__hash__</code> </td><td> <code>hash()</code>, dict/set keys (pair with <code>__eq__</code>) </td></tr><tr><td> Truth </td><td> <code>__bool__</code> <code>__len__</code> </td><td> <code>if x:</code>, <code>bool()</code> </td></tr><tr><td> Attribute access </td><td> <code>__getattr__ __getattribute__ __setattr__ __delattr__ __dir__</code> </td><td> dot access, <code>dir()</code> </td></tr><tr><td> Descriptors </td><td> <code>__get__ __set__ __delete__ __set_name__</code> </td><td> property/class machinery </td></tr><tr><td> Containers </td><td> <code>__len__ __getitem__ __setitem__ __delitem__ __contains__ __missing__</code> </td><td> <code>len()</code> <code>[]</code> <code>in</code> </td></tr><tr><td> Iteration </td><td> <code>__iter__ __next__ __reversed__ __length_hint__</code> </td><td> <code>for</code>, <code>iter()</code>, unpacking </td></tr><tr><td> Callable </td><td> <code>__call__</code> </td><td> <code>obj()</code> </td></tr><tr><td> Context manager </td><td> <code>__enter__ __exit__</code> </td><td> <code>with</code> </td></tr><tr><td> Arithmetic </td><td> <code>__add__ __sub__ __mul__ __truediv__ __floordiv__ __mod__ __pow__ __matmul__ @</code> </td><td> operators </td></tr><tr><td> Reflected </td><td> <code>__radd__ __rsub__ …</code> </td><td> right operand implements </td></tr><tr><td> In-place </td><td> <code>__iadd__ __isub__ …</code> </td><td> <code>+=</code> and friends </td></tr><tr><td> Unary </td><td> <code>__neg__ __pos__ __abs__ __invert__</code> </td><td> <code>-x +x abs(x) ~x</code> </td></tr><tr><td> Conversions </td><td> <code>__int__ __float__ __complex__ __index__ __bool__</code> </td><td> <code>int()</code>, slicing indices </td></tr><tr><td> Types </td><td> <code>__class__ __mro__ __bases__ __slots__ __dict__</code> </td><td> introspection </td></tr><tr><td> Path/name </td><td> <code>__name__ __qualname__ __module__ __file__</code> </td><td> module/function identity </td></tr><tr><td> Entry point </td><td> <code>__main__</code> </td><td> <code>if __name__ == "__main__"</code> </td></tr><tr><td> Async </td><td> <code>__aiter__ __anext__ __aenter__ __aexit__</code> </td><td> <code>async for</code> / <code>async with</code> </td></tr></tbody></table></div>
+<h2 id="appendix-d-format-spec-quick-table">Appendix D — Format Spec Quick Table</h2>
+<div class="table-wrap"><table><thead><tr><th> Want </th><th> Spec </th><th> Example → result </th></tr></thead><tbody><tr><td> 2 decimals </td><td> <code>.2f</code> </td><td> <code>f"{3.14159:.2f}"</code> → <code>3.14</code> </td></tr><tr><td> Thousands </td><td> <code>,</code> </td><td> <code>f"{1234567:,}"</code> → <code>1,234,567</code> </td></tr><tr><td> Percent </td><td> <code>.1%</code> </td><td> <code>f"{0.856:.1%}"</code> → <code>85.6%</code> </td></tr><tr><td> Hex/oct/bin </td><td> <code>x</code> <code>o</code> <code>b</code> (<code>#x</code> prefixed) </td><td> <code>f"{255:#x}"</code> → <code>0xff</code> </td></tr><tr><td> Padding right/left/center </td><td> <code>&amp;gt;10</code> <code>&amp;lt;10</code> <code>^10</code> </td><td> <code>f"{'ab':^6}"</code> → <code>' ab  '</code> </td></tr><tr><td> Zero pad </td><td> <code>08d</code> </td><td> <code>f"{42:08d}"</code> → <code>00000042</code> </td></tr><tr><td> Sign always </td><td> <code>+d</code> </td><td> <code>f"{5:+d}"</code> → <code>+5</code> </td></tr><tr><td> Exponent </td><td> <code>e</code> </td><td> <code>f"{12345.6:e}"</code> → <code>1.234560e+04</code> </td></tr><tr><td> Significant digits </td><td> <code>.3g</code> </td><td> <code>f"{12345.6:.3g}"</code> → <code>1.23e+04</code> </td></tr><tr><td> Debug dump </td><td> <code>=</code> </td><td> <code>f"{price=}"</code> → <code>price=19.99</code> </td></tr><tr><td> repr </td><td> <code>!r</code> </td><td> <code>f"{'a'!r}"</code> → <code>"'a'"</code> </td></tr><tr><td> nested width </td><td> <code>{v:&amp;gt;{w}}</code> </td><td> dynamic width from variable </td></tr><tr><td> datetime </td><td> <code>:%Y-%m-%d</code> </td><td> inline date formatting </td></tr></tbody></table></div>
+<h2 id="appendix-e-the-exceptions-youll-actually-meet">Appendix E — The Exceptions You'll Actually Meet</h2>
+<div class="table-wrap"><table><thead><tr><th> Exception </th><th> Typical cause → fix </th></tr></thead><tbody><tr><td> <code>SyntaxError</code> </td><td> Typo/unclosed bracket — read the caret line </td></tr><tr><td> <code>IndentationError</code>/<code>TabError</code> </td><td> Mixed tabs+spaces — configure editor to spaces </td></tr><tr><td> <code>NameError</code> / <code>UnboundLocal</code> </td><td> Typo'd or pre-import use; missing <code>global</code>/<code>nonlocal</code> </td></tr><tr><td> <code>TypeError</code> </td><td> Wrong types (<code>"a"+1</code>) or wrong arg count — check signatures </td></tr><tr><td> <code>ValueError</code> </td><td> Right type, bad value: <code>int("abc")</code> — validate first </td></tr><tr><td> <code>IndexError</code> / <code>KeyError</code> </td><td> Out of range / missing key — <code>.get()</code>, guard lengths </td></tr><tr><td> <code>AttributeError</code> </td><td> <code>'NoneType' has no attribute x</code> — a function returned None (missing return!) </td></tr><tr><td> <code>ImportError</code>/<code>ModuleNotFoundError</code> </td><td> Not installed / wrong venv / wrong name — <code>pip install</code>, check <code>sys.path</code> </td></tr><tr><td> <code>FileNotFoundError</code> / <code>PermissionError</code> </td><td> Wrong cwd, relative paths — use absolute <code>Path</code>s; run as admin </td></tr><tr><td> <code>ZeroDivisionError</code> </td><td> Guard denominators </td></tr><tr><td> <code>StopIteration</code> leaked </td><td> <code>next()</code> past end outside a for-loop — give <code>next(it, default)</code> </td></tr><tr><td> <code>RecursionError</code> </td><td> Missing base case — rewrite iteratively </td></tr><tr><td> <code>UnicodeDecodeError</code> </td><td> Read bytes as utf-8 of a non-utf8 file — pass <code>encoding=</code> / <code>errors=</code> </td></tr><tr><td> <code>TypeError: can't pickle</code> </td><td> Lambdas/local objects crossing process boundaries </td></tr><tr><td> <code>OSError errno 22</code> </td><td> Invalid path chars (<code>:</code> in Windows filenames!) </td></tr></tbody></table></div>
+<p>Full hierarchy tree: §18. Custom errors: subclass <code>Exception</code>, name it <code>SomethingError</code>.</p>
+<h2 id="appendix-f-one-liner-cookbook">Appendix F — One-Liner Cookbook</h2>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># Files &amp; data
+python -c "import json;print(json.dumps(json.load(open('x.json')),indent=2))"   # pretty JSON
+sorted(paths, key=lambda p: p.stat().st_size)[-1]      # biggest file
+Path("f.txt").read_text().count("ERROR")               # occurrences
+[*{line.split(',')[0] for line in open('t.csv')}]      # unique first column
+
+# Collections
+sorted(d.items(), key=lambda kv: -kv[1])               # dict by value desc
+[x for x in xs if x not in seen]                       # dedupe, keep order
+list(zip(*matrix))                                     # transpose
+max(words, key=len)                                    # longest word
+collections.Counter(nums).most_common(1)[0]            # mode
+
+# Strings
+", ".join(sorted(set(names)))                          # unique, sorted, comma'd
+s.title() ; s.capitalize() ; " ".join(w.capitalize() for w in s.split())
+any(p in text.lower() for p in ["err","fail"])         # keyword alarm
+str(int("ff",16)) ; f"{255:08b}"                       # base conversions
+
+# Clever stdlib
+python -m http.server 8000                             # share this folder
+python -m json.tool messy.json                         # validate JSON
+python -m zipfile -e app.zip out/                      # unzip anything
+sum(a[1]*b[1] for a,b in zip(prices,qtys))             # dot product
+__import__("sys").exit(1)                              # last-resort inline exit</code></pre></div>
+<h2 id="appendix-g-traceback-decoding-errors-best-practices">Appendix G — Traceback Decoding, Errors &amp; Best Practices</h2>
+<p><strong>Reading a traceback (bottom-up):</strong></p>
+<div class="codewrap"><div class="codebar"><span class="lang">text</span><button class="copybtn" type="button">Copy</button></div><pre><code>Traceback (most recent call last):        ← read DOWN to find your code…
+  File "app.py", line 10, in &lt;module&gt;     ← your entry: process(invoice)
+  File "lib.py", line 4, in process
+    total = sum(row["qty"] for row in rows)
+  File "lib.py", line 4, in &lt;genexpr&gt;
+KeyError: 'qty'                           ← …the LAST line names the disease</code></pre></div>
+<ol><li><strong>Last line</strong> = exception type + message — the actual problem. 2. Walk <strong>up</strong> the frames to the first file that is <em>yours</em> — that's where to look. 3. The nearest source line shows the crashing expression. Search the exact last line + "python" when stuck.</li></ol>
+<p><strong>Best-practice checklist</strong></p>
+<ol><li><code>python -m venv .venv</code> per project — always; commit <code>requirements.txt</code>/lock file, never the env.</li><li><code>python -m pip …</code> inside the env; <code>pipx</code> for tools.</li><li><code>with open(...) as f:</code> and explicit <code>encoding="utf-8"</code> — every time.</li><li>f-strings for humans, <code>logging</code> (not print) for operations, <code>--help</code> for every script.</li><li>Type-hint public functions; run <code>ruff check</code> + <code>mypy</code> in CI; test with <code>pytest</code>.</li><li>Prefer <code>pathlib</code> over <code>os.path</code>; <code>subprocess.run(list, check=True, timeout=)</code> over <code>shell=True</code>.</li><li>Exceptions: catch narrow, <code>raise</code> to re-throw, <code>logging.exception</code> to record.</li><li>Functions do one thing; dataclasses over bare dicts at API boundaries; comprehensions over map/filter when readable.</li><li>Profile before optimizing (<code>cProfile</code>, <code>timeit</code>) — 90 % of slowness is I/O or an accidental O(n²).</li><li>Pin versions in production (<code>==</code>/lock), float ranges (<code>&amp;gt;=x,&amp;lt;y</code>) in libraries.</li></ol>
+<hr>
+<h2 id="keep-learning">Keep Learning</h2>
+<ul><li>Official tutorial &amp; library reference: <strong>docs.python.org/3</strong> (the single best free resource)</li><li>Practice: <strong>exercism.org/tracks/python</strong>, <strong>adventofcode.com</strong>, project ideas → build, don't just read</li><li>Real-world code reading: browse the stdlib source (<code>Lib/</code> in the CPython repo) — it's readable Python!</li><li>7-day path with this doc: Day 1 §0–1 · Day 2 §11–14 · Day 3 §15–17 · Day 4 §18–19 · Day 5 §20 · Day 6 §21–22 · Day 7 T1–T10 of your choice</li><li>When stuck: read the traceback bottom-up → <code>help()</code>/<code>dir()</code> → docs.python.org → search the exact error line</li></ul>
+<p><em>End of reference — 70 built-ins, 40+ tool subcommand tables, complete language core, 10 tutorials. Happy hissing.</em> 🐍</p>
+      <div class="footer-note">The Complete Python Master Reference &middot; single-file HTML edition &middot; works fully offline</div>
+    </div>
+  </main>
+</div>
+<button id="toTop" title="Back to top">↑</button>
+<script>
+(function(){
+  var body = document.getElementById('docbody');
+  var nodes = Array.prototype.slice.call(body.childNodes), sections = [];
+  var cur = null, first = null;
+  nodes.forEach(function(n){
+    if(n.nodeType===1 && /^H[12]$/.test(n.tagName)){
+      cur = document.createElement('section'); cur.className='section';
+      body.insertBefore(cur, n); cur.appendChild(n); sections.push(cur);
+    } else if(cur){ cur.appendChild(n); }
+    else if(n.nodeType!==8){
+      if(!first){first=document.createElement('section');first.className='section';body.insertBefore(first,n);first.appendChild(n);sections.push(first);cur=first;}
+      else {first.appendChild(n);}
+    }
+  });
+  sections.forEach(function(s){ s._q = s.textContent.toLowerCase(); });
+
+  var input=document.getElementById('search'), count=document.getElementById('matchcount');
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocnav a'));
+  function runFilter(){
+    var q=input.value.trim().toLowerCase(), n=0;
+    sections.forEach(function(s){ var hit=!q || s._q.indexOf(q)>-1; s.classList.toggle('hidden',!hit); if(hit)n++; });
+    tocLinks.forEach(function(a){ var li=a.parentNode, hit=!q || a.textContent.toLowerCase().indexOf(q)>-1; li.classList.toggle('filtered',!hit); });
+    count.textContent = q ? n+' / '+sections.length+' sections' : '';
+  }
+  input.addEventListener('input', runFilter);
+  document.addEventListener('keydown', function(e){
+    if(e.key==='/' && document.activeElement!==input){ e.preventDefault(); input.focus(); }
+    if(e.key==='Escape' && document.activeElement===input){ input.value=''; runFilter(); input.blur(); }
+  });
+
+  document.addEventListener('click', function(e){
+    var btn=e.target.closest('.copybtn'); if(!btn) return;
+    var code=btn.closest('.codewrap').querySelector('code'), txt=code.innerText, ok=false;
+    function done(){ btn.textContent = ok?'Copied \u2713':'Ctrl+C'; setTimeout(function(){btn.textContent='Copy';},1500); }
+    function fallback(){
+      var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ ok=document.execCommand('copy'); }catch(err){}
+      ta.remove(); done();
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){ok=true;done();},fallback);
+    } else fallback();
+  });
+
+  var byId={}; tocLinks.forEach(function(a){ byId[a.getAttribute('href').slice(1)]=a; });
+  function setActive(id){
+    tocLinks.forEach(function(a){a.classList.remove('active');});
+    var a=byId[id]; if(a){ a.classList.add('active');
+      var d=a.closest('details'); if(d) d.open=true;
+      a.scrollIntoView({block:'nearest'});
+    }
+  }
+  if('IntersectionObserver' in window){
+    var visible=[];
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ visible=visible.filter(function(s){return s.target!==en.target;}); if(en.isIntersecting) visible.push(en); });
+      visible.sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top;});
+      if(visible[0]) setActive(visible[0].target.id || visible[0].target.querySelector('[id]').id);
+    },{rootMargin:'-80px 0px -75% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  var root=document.documentElement, tbtn=document.getElementById('themeToggle'), stored=null;
+  try{ stored=localStorage.getItem('pymr-theme'); }catch(e){}
+  var initial = stored || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light');
+  applyTheme(initial);
+  tbtn.addEventListener('click', function(){ applyTheme(root.dataset.theme==='dark'?'light':'dark'); });
+  function applyTheme(t){ root.dataset.theme=t; tbtn.textContent = t==='dark'?'☀️':'🌙';
+    try{ localStorage.setItem('pymr-theme',t); }catch(e){} }
+
+  var top=document.getElementById('toTop');
+  window.addEventListener('scroll', function(){ top.classList.toggle('show', window.scrollY>600); });
+  top.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+
+  document.getElementById('menuBtn').addEventListener('click', function(){ document.body.classList.toggle('nav-open'); });
+  document.getElementById('tocnav').addEventListener('click', function(e){
+    if(e.target.tagName==='A') document.body.classList.remove('nav-open');
+  });
+})();
+</script>
+</body>
+</html>
