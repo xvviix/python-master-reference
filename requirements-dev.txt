@@ -1,0 +1,11 @@
+# ── Development & quality tools ──
+# Install:  python -m pip install -r requirements-dev.txt
+
+pytest>=9.1   # latest: 9.1.1
+pytest-cov>=7.1   # latest: 7.1.0
+hypothesis>=6.167   # latest: 6.167.0
+faker>=40.37   # latest: 40.37.0
+ruff>=0.16   # latest: 0.16.5
+mypy>=2.3   # latest: 2.3.1
+pre-commit>=4.6   # latest: 4.6.2
+ipython>=9.17   # latest: 9.17.0

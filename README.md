@@ -14,6 +14,23 @@ A complete, offline-capable Python 3 reference covering:
 | **Part 3** | Tutorials T1–T10 — first hour, log parsing, REST APIs, CLI apps, dataclass OOP, publish to PyPI, pytest, automation, asyncio, debugging & profiling |
 | **Part 4** | Appendices A–H — tool index, all 70 built-ins, dunder protocol, format specs, real-world exceptions, one-liners, best practices, **complete library catalog** (full standard library + ~250 essential third-party libraries by domain) |
 
+## Install the libraries
+
+The repo ships ready-made requirements files (all verified on a clean Python 3.13 venv):
+
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+python -m pip install -r requirements.txt            # core: requests, httpx, pydantic, numpy, pandas, matplotlib, rich, typer…
+python -m pip install -r requirements-dev.txt        # dev: pytest, ruff, mypy, hypothesis, pre-commit…
+# need more? uncomment a group in requirements-domains.txt (web, ML, GUI, security, science…)
+```
+
+| File | Contents |
+|---|---|
+| `requirements.txt` | 19 core runtime libraries, version-floored to current releases |
+| `requirements-dev.txt` | 8 development & quality tools |
+| `requirements-domains.txt` | ~90 libraries in commented domain groups — uncomment what you need |
+
 ## Files
 
 | File | Description |

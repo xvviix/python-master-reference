@@ -1,0 +1,147 @@
+# ── Domain libraries — uncomment the groups you need ────────────────────────
+# Usage: uncomment a block, then:  python -m pip install -r requirements-domains.txt
+# Or install directly, e.g.:        python -m pip install fastapi uvicorn jinja2
+# Full catalog with descriptions: see Appendix H of Python_Master_Reference.md
+
+# ── Web frameworks & servers ──
+# fastapi
+# uvicorn
+# jinja2
+# flask
+# django
+
+# ── Async networking ──
+# aiohttp
+# websockets
+
+# ── Scraping & browser automation ──
+# scrapy
+# selenium
+# playwright
+
+# ── Databases & ORMs ──
+# alembic
+# psycopg
+# pymysql
+# pymongo
+# redis
+
+# ── Dataframes & big data ──
+# polars
+# pyarrow
+# dask
+
+# ── Visualization ──
+# seaborn
+# plotly
+
+# ── Classical ML ──
+# scikit-learn
+# xgboost
+# statsmodels
+# optuna
+
+# ── Deep learning & LLMs (very large downloads!) ──
+# torch
+# tensorflow
+# transformers
+# openai
+# anthropic
+# langchain
+# sentence-transformers
+
+# ── Computer vision & OCR ──
+# opencv-python
+# scikit-image
+# easyocr
+
+# ── Audio & video ──
+# pydub
+# librosa
+# moviepy
+
+# ── GUI & desktop ──
+# pyside6
+# kivy
+# customtkinter
+# flet
+# pywin32
+
+# ── Terminal UI & pretty CLI ──
+# textual
+# prompt-toolkit
+# questionary
+
+# ── Task queues & scheduling ──
+# celery
+# redis
+# apscheduler
+# rq
+
+# ── Messaging ──
+# kafka-python
+# pika
+
+# ── Validation & serialization ──
+# orjson
+# msgspec
+# marshmallow
+
+# ── Config management ──
+# dynaconf
+# hydra-core
+
+# ── Office documents & PDF ──
+# python-docx
+# python-pptx
+# pypdf
+# pdfplumber
+# reportlab
+
+# ── Utilities ──
+# humanize
+# prettytable
+# more-itertools
+# pendulum
+# freezegun
+
+# ── System, files & observability ──
+# watchdog
+# pyperclip
+# send2trash
+# diskcache
+# cachetools
+# loguru
+# structlog
+# sentry-sdk
+
+# ── Security & crypto ──
+# cryptography
+# pyjwt
+# passlib
+# argon2-cffi
+# paramiko
+# fabric
+
+# ── Science & engineering ──
+# scipy
+# sympy
+# networkx
+# pint
+# geopandas
+
+# ── Testing extras ──
+# tox
+# locust
+# factory-boy
+
+# ── Docs & notebooks ──
+# jupyterlab
+# sphinx
+# mkdocs-material
+
+# ── Packaging & distribution ──
+# build
+# twine
+# pipx
+# pyinstaller
