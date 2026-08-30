@@ -1,8 +1,8 @@
 # 🐍 The Complete Python Master Reference
 
-**CLI commands & subcommands · the whole language · standard library · full step-by-step tutorials**
+**CLI commands & subcommands · the whole language · standard library · full step-by-step tutorials · 10 library tutorials**
 
-> **The Python edition of the Command-Line Master Reference.** Covers every way you *run* Python (interpreter flags, `pip`, `venv`, packaging tools, debuggers), the complete core language with every important method table, the essential standard library, 10 hands-on tutorials, and 8 quick-reference appendices. Examples target **Python 3.10–3.13**.
+> **The Python edition of the Command-Line Master Reference.** Covers every way you *run* Python (interpreter flags, `pip`, `venv`, packaging tools, debuggers), the complete core language with every important method table, the essential standard library, 20 hands-on tutorials (T1–T10 core + L1–L10 libraries), and 8 quick-reference appendices. Examples target **Python 3.10–3.13**.
 >
 > Conventions: `command` = type exactly · `⟨required⟩` · `[optional]` · `a|b` = choose one · ⚠ = destructive/risky · † = deprecated or removed (modern replacement given) · `$` = shell prompt (CMD/PowerShell/Bash all fine) · `>>>` = Python REPL.
 
@@ -25,8 +25,9 @@
 
 20. Files & I/O: `open`, `pathlib` (all methods), `os`/`shutil`, JSON/CSV/pickle, `sqlite3`, `tempfile` · 21. Concurrency: `threading`, `multiprocessing`, `asyncio`, `concurrent.futures` · 22. Standard-library essentials: `datetime`, `collections`, `itertools`, `random`, `hashlib`, `subprocess`, `argparse` (full tutorial), `logging` (full tutorial), networking, `zipfile`
 
-**PART 3 — Hands-On Tutorials (T1–T10)**
+**PART 3 — Hands-On Tutorials (T1–T10) + Library Tutorials (L1–L10)**
 T1 Your first hour · T2 Parse a log file → CSV report · T3 Consume any REST API (JSON) · T4 Build a real CLI app with `argparse` · T5 OOP with dataclasses: an inventory manager · T6 Package & publish a library to PyPI · T7 Test like a pro with `pytest` · T8 Automate the boring stuff (files, Excel, email) · T9 Async: concurrent downloader · T10 Debug & profile like a detective
+L1 `requests`/`httpx` · L2 `pydantic` · L3 `numpy` · L4 `pandas` · L5 `matplotlib` · L6 `typer`+`rich` · L7 `SQLAlchemy` · L8 `BeautifulSoup` · L9 `Pillow`+`openpyxl` · L10 capstone — dotenv+tenacity+tqdm+rich together
 
 **PART 4 — Appendices**
 A. A–Z command/tool index · B. All built-in functions (70) · C. Dunder methods protocol table · D. f-string & `format()` spec table · E. Exceptions hierarchy tree · F. One-liner cookbook · G. Traceback decoding, common errors, best-practice checklist · H. Every Python library — complete stdlib + essential third-party
@@ -1787,6 +1788,621 @@ python -m cProfile -s cumtime app.py | head -25
 Method: (1) make it fail deterministically (smallest input), (2) read the traceback **bottom-up** — last frame is where it died, walk up for who caused it, (3) inspect state with pdb rather than guessing, (4) profile before optimizing, (5) after fixing: add the regression test (T7).
 
 ---
+## Library Tutorials (L1–L10) — the essential packages, hands-on
+
+> The ten tutorials below teach the libraries shipped in this repo's `requirements.txt` — the same code, the same style as T1–T10. Set up once, then do them in any order:
+>
+> ```bash
+> python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
+> python -m pip install -r requirements.txt              # installs every library used below
+> ```
+
+## L1. `requests` & `httpx` — HTTP Like a Human
+
+**Goal:** fetch pages and APIs, handle auth, sessions, errors and retries — the right way.
+
+```python
+import requests
+
+# 1 — the basic GET (ALWAYS pass a timeout)
+r = requests.get("https://api.github.com/users/torvalds", timeout=10)
+r.raise_for_status()                 # 4xx/5xx → exception instead of silent garbage
+print(r.status_code, r.headers["content-type"])
+bio = r.json()                       # parse the body as JSON → dict
+
+# 2 — query params, headers, auth
+r = requests.get("https://api.github.com/search/repositories",
+                 params={"q": "python cli", "sort": "stars", "per_page": 3},
+                 headers={"Accept": "application/vnd.github+json"},
+                 timeout=10)
+for item in r.json()["items"]:
+    print(f"{item['full_name']:40} ★{item['stargazers_count']}")
+
+# 3 — POST with a JSON body (what 95 % of APIs want)
+created = requests.post("https://httpbin.org/post",
+                        json={"title": "hello", "done": False}, timeout=10)
+
+# 4 — Session: connection reuse + persistent cookies + one place for defaults
+with requests.Session() as s:
+    s.headers.update({"Authorization": "Bearer YOUR_TOKEN", "User-Agent": "learn/1.0"})
+    s.get("https://api.github.com/user", timeout=10)          # authenticated!
+    for page in range(1, 3):                                   # pagination
+        resp = s.get("https://api.github.com/users/torvalds/repos",
+                     params={"page": page}, timeout=10)
+        repos = resp.json()
+        if not repos: break
+        print([repo["name"] for repo in repos])
+```
+
+**Error handling pattern** (copy this into every project):
+
+```python
+try:
+    r = requests.get(url, timeout=10)
+    r.raise_for_status()
+except requests.Timeout:
+    print("server too slow")
+except requests.HTTPError as e:
+    print(f"HTTP {e.response.status_code} — check the URL/token")
+except requests.ConnectionError:
+    print("no network / DNS fail")
+else:
+    data = r.json()
+```
+
+**`httpx`** — same API, plus async and HTTP/2:
+
+```python
+import httpx
+r = httpx.get("https://example.org", timeout=10)        # drop-in for requests
+
+import asyncio
+async def fetch_all(urls):
+    async with httpx.AsyncClient(timeout=10) as client:   # concurrent fetches
+        replies = await asyncio.gather(*(client.get(u) for u in urls))
+        return [r.status_code for r in replies]
+print(asyncio.run(fetch_all(["https://example.org"] * 5)))
+```
+
+**Checkpoint:** you can talk to any REST API with params, auth, sessions and proper errors. *Exercise: fetch your own GitHub profile and print follower count; then list the first page of your repos.*
+
+## L2. `pydantic` — Data That Validates Itself
+
+**Goal:** stop hand-checking dicts — declare what data should look like and let pydantic enforce it.
+
+```python
+from pydantic import BaseModel, Field, field_validator, model_validator
+from datetime import date
+from typing import Literal
+
+class Address(BaseModel):                       # nested model
+    city: str
+    zip_code: str = Field(pattern=r"^\d{4,10}$")   # regex-constrained
+
+class User(BaseModel):
+    id: int
+    name: str = Field(min_length=1, max_length=60)
+    email: str                                   # basic type checks
+    role: Literal["admin", "user"] = "user"      # only these values allowed
+    birthday: date | None = None
+    address: Address
+
+    @field_validator("email")                    # custom rule
+    @classmethod
+    def email_lowercase(cls, v): return v.lower()
+
+    @model_validator(mode="after")               # cross-field rule
+    def check(self):
+        if self.role == "admin" and self.name.lower() == "guest":
+            raise ValueError("admin cannot be named guest")
+        return self
+```
+
+**Watch it work:**
+
+```python
+u = User.model_validate({                        # messy input → validated object
+    "id": "7",                                   # str → coerced to int!
+    "name": "Matin",
+    "email": "MATIN@Example.COM",
+    "address": {"city": "Vienna", "zip_code": "1010"},
+})
+print(u.id, u.email, u.address.city)             # 7 matin@example.com Vienna
+print(u.model_dump())                            # back to a plain dict
+print(User.model_json_schema())                  # a JSON Schema, for free
+
+from pydantic import ValidationError
+try:
+    User(id=1, name="x", email="nope", address={"city": "c", "zip_code": "ABC"})
+except ValidationError as e:
+    print(e.error_count(), "errors")             # precise, structured error report
+```
+
+**Config with `pydantic-settings` + `.env`** (the clean way to read environment variables):
+
+```python
+# .env file:   API_TOKEN=abc123   DEBUG=true
+from pydantic_settings import BaseSettings
+from pydantic import Field
+
+class Settings(BaseSettings):
+    api_token: str = Field(repr=False)           # repr=False hides it from logs
+    debug: bool = False
+    model_config = {"env_file": ".env"}          # reads .env automatically
+
+settings = Settings()
+print(settings.debug)                            # True — typed, validated config
+```
+
+**Where it shines:** validating API responses (`User.model_validate(resp.json())`), FastAPI request bodies, and typed settings. **Checkpoint:** write a `Product` model with price > 0, stock ≥ 0, and a category from a fixed set.
+
+## L3. `numpy` — Think in Arrays
+
+**Goal:** replace Python loops with vectorized array math — the foundation under pandas, ML, and image processing.
+
+```python
+import numpy as np
+
+# 1 — creation
+a = np.array([1, 2, 3, 4])                       # from a list
+z = np.zeros(5); ones = np.ones((2, 3))          # shapes: (rows, cols)
+rng = np.random.default_rng(seed=42)
+noise = rng.normal(0, 1, size=1_000_000)         # a million samples, instantly
+grid = np.arange(12).reshape(3, 4)               # 0..11 in a 3×4 matrix
+
+# 2 — elementwise math WITHOUT loops (this is the whole point)
+temps_c = np.array([12.5, 18.0, 24.3, 31.2, 27.8])
+temps_f = temps_c * 9 / 5 + 32                   # one line, C speed
+print(temps_f.round(1))
+
+# 3 — slicing returns VIEWS (no copy!) — 2D: [rows, cols]
+grid[0, 1]          # row 0, col 1
+grid[:, 0]          # entire first column
+grid[1:, ::2]       # rows 1+, every 2nd column
+grid[grid > 5]      # boolean mask → 1D of matches
+np.where(temps_c > 25, "hot", "mild")            # vectorized conditional
+
+# 4 — aggregations and the axis argument
+grid.sum(), grid.mean(), grid.std()
+grid.sum(axis=0)     # down the columns → per-column totals
+grid.sum(axis=1)     # across the rows   → per-row totals
+np.argmax(temps_c)   # index of the max
+
+# 5 — broadcasting: combine different shapes sensibly
+prices = np.array([10.0, 20.0, 30.0])            # shape (3,)
+quantities = np.array([[1, 2, 3], [4, 5, 6]])    # shape (2, 3)
+totals = prices * quantities                      # (3,) stretches to (2, 3) — row-wise
+print(totals.sum(axis=1))                         # per-order totals
+```
+
+**Why it matters:** a vectorized numpy operation is typically 10–100× faster than the equivalent Python `for` loop. Rule of thumb — **if you wrote a loop over numbers, there's a numpy one-liner.**
+
+```python
+# before                       # after
+out = []                       import numpy as np
+for x in data:                 out = np.sqrt(np.abs(data))
+    out.append(abs(x)**0.5)
+```
+
+**Checkpoint:** generate 100,000 random exam scores (mean 65, std 12), clip them to 0–100 (`np.clip`), and print the mean, median (`np.median`), and the percentage ≥ 50.
+
+## L4. `pandas` — DataFrames End to End
+
+**Goal:** load messy tabular data, clean it, interrogate it, export it — the complete workflow on one realistic file.
+
+```python
+import pandas as pd
+
+# 1 — load (csv / excel / json / sql all work)
+df = pd.read_csv("sales.csv", parse_dates=["date"])
+
+# 2 — inspect before touching anything
+df.head()            # first rows
+df.shape             # (rows, cols)
+df.info()            # dtypes + missing-value counts
+df.describe()        # numeric summary
+
+# 3 — select: columns, rows, filters
+df[["region", "amount"]]                    # column subset
+df.loc[df["amount"] > 500, ["region", "amount"]]   # boolean rows + column subset
+df.iloc[0:10]                               # positional slice
+df.query("region == 'East' and amount > 200")      # SQL-ish syntax
+
+# 4 — clean: missing values and broken types
+df["amount"] = pd.to_numeric(df["amount"], errors="coerce")  # bad values → NaN
+df = df.dropna(subset=["amount"])            # drop rows without an amount
+df["region"] = df["region"].str.strip().str.title()          # normalize text
+
+# 5 — derive columns
+df["month"] = df["date"].dt.to_period("M")
+df["amount_with_tax"] = df["amount"] * 1.2
+df["size"] = pd.cut(df["amount"], bins=[0, 100, 500, np.inf],
+                    labels=["small", "medium", "large"])
+
+# 6 — the groupby reflex: split → apply → combine
+df.groupby("region")["amount"].agg(["count", "sum", "mean"])
+df.groupby(["region", "month"])["amount"].sum().unstack()    # pivot wide
+df.pivot_table(index="region", columns="size", values="amount",
+               aggfunc="sum", fill_value=0)
+
+# 7 — combine frames
+pd.merge(orders, customers, on="customer_id", how="left")    # SQL join
+pd.concat([q1, q2, q3])                                      # stack frames
+
+# 8 — export
+df.to_csv("clean.csv", index=False)
+df.to_excel("report.xlsx", sheet_name="sales")
+df.to_sql("sales", engine, if_exists="replace")              # into a database
+```
+
+**Realistic mini-analysis (run this on any CSV):**
+
+```python
+top = (df.groupby("region")["amount"]
+         .sum()
+         .sort_values(ascending=False))
+print(top.head(10))
+growth = df.set_index("date").resample("ME")["amount"].sum()  # monthly trend
+print(growth.pct_change().round(3).tail())                     # % change
+```
+
+**Performance habits:** use `pd.read_csv(..., chunksize=100_000)` for huge files; `df["cat"] = df["cat"].astype("category")` for repeated strings; and know that `polars` (Appendix H) is the fast alternative for very large data.
+
+**Checkpoint:** load any CSV, find the numeric column, and produce a per-category summary table sorted by total. *Exercise: which month had the biggest jump over the previous month?*
+
+## L5. `matplotlib` — Charts That Explain Themselves
+
+**Goal:** the eight charts you'll actually use, with proper labels, and saving to files.
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 0 — the anatomy: figure = the canvas, axes = one chart
+fig, ax = plt.subplots(figsize=(8, 4))          # one axes
+
+x = np.linspace(0, 10, 100)
+
+# 1 — line (trends over ordered x)
+ax.plot(x, np.sin(x), label="sin", linewidth=2)
+ax.plot(x, np.cos(x), label="cos", linestyle="--")
+
+ax.set_title("Trig functions")                  # ALWAYS title + label axes
+ax.set_xlabel("x"); ax.set_ylabel("y")
+ax.legend(); ax.grid(alpha=0.3)
+fig.savefig("trig.png", dpi=150, bbox_inches="tight")   # save BEFORE show
+plt.show()
+```
+
+**The chart menu — pick by question:**
+
+```python
+fig, axes = plt.subplots(2, 2, figsize=(10, 8))   # 2×2 grid of axes
+ax = axes[0, 0]
+ax.bar(["A", "B", "C"], [3, 7, 5])                 # compare categories
+ax.set_title("bar — comparison")
+
+axes[0, 1].scatter(rng.normal(size=50), rng.normal(size=50),
+                   alpha=0.7)                      # relationship between 2 vars
+axes[0, 1].set_title("scatter — relationship")
+
+axes[1, 0].hist(rng.normal(0, 1, 1000), bins=30)   # distribution of one var
+axes[1, 1].set_title("hist — distribution")
+
+data = [rng.normal(0, 1, 100), rng.normal(2, 1, 100)]
+axes[1, 1].boxplot(data)                           # spread + outliers
+axes[1, 1].set_title("box — spread")
+fig.tight_layout()
+fig.savefig("dashboard.png", dpi=150)
+```
+
+**Daily-driver tricks:**
+
+```python
+plt.style.use("seaborn-v0_8-darkgrid")     # instant decent look (plt.style.available)
+df.plot(kind="line", x="date", y="amount", title="Sales")   # pandas one-liner!
+df.groupby("region")["amount"].sum().plot(kind="barh")      # groupby → chart
+fig, ax = plt.subplots()
+im = ax.imshow(np.random.random((5, 5)), cmap="viridis")    # heatmap
+fig.colorbar(im)
+```
+
+**Checkpoint:** plot the monthly-totals Series you made in L4 as a line chart, and the per-region totals as a horizontal bar chart — with titles, labels, and a saved PNG.
+
+## L6. `typer` + `rich` — Beautiful Command-Line Apps
+
+**Goal:** build a real CLI tool with typed arguments, colored tables and progress — in 30 lines.
+
+```python
+"""notes.py — typer + rich demo CLI"""
+from pathlib import Path
+import json, typer
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
+
+app = typer.Typer(help="Tiny note manager")
+DB = Path.home() / ".notes.json"
+console = Console()
+
+def load() -> list[dict]:
+    return json.loads(DB.read_text()) if DB.exists() else []
+
+@app.command()
+def add(text: str, tag: str = typer.Option("general", help="category tag")):
+    """Add a note."""
+    notes = load()
+    notes.append({"text": text, "tag": tag})
+    DB.write_text(json.dumps(notes, indent=2))
+    console.print(Panel(f"[green]Saved[/] '{text}' [dim]({tag})[/]"))
+
+@app.command()
+def list(tag: str = typer.Option(None, help="filter by tag"),
+         limit: int = typer.Option(10, min=1, max=100)):
+    """List notes as a rich table."""
+    notes = [n for n in load() if tag is None or n["tag"] == tag][:limit]
+    table = Table(title="Notes")
+    table.add_column("#", justify="right", style="cyan")
+    table.add_column("Tag", style="magenta")
+    table.add_column("Text")
+    for i, n in enumerate(notes, 1):
+        table.add_row(str(i), n["tag"], n["text"])
+    console.print(table)
+
+@app.command()
+def stats():
+    """Counts per tag, with a progress bar for show."""
+    from collections import Counter
+    with console.status("counting..."):
+        counts = Counter(n["tag"] for n in load())
+    for tag, count in counts.most_common():
+        console.print(f"[bold]{tag}[/]: {count}")
+
+if __name__ == "__main__":
+    app()
+```
+
+```bash
+python notes.py add "ship the report" --tag work
+python notes.py add "buy milk"
+python notes.py list --tag work
+python notes.py --help            # typer wrote all this help for you
+```
+
+Why typer wins: **type hints become validation** (`limit: int = typer.Option(10, min=1, max=100)` rejects bad input with a clear error), and `--help` documents itself. Why rich: tables, panels, colors, `rich.progress.Progress` for long loops, `Console().log()` for pretty debugging.
+
+**Checkpoint:** add a `clear` command that empties the database (ask `typer.confirm("Sure?")` first).
+
+## L7. `SQLAlchemy` — A Real Database in 40 Lines
+
+**Goal:** define tables as classes, create the database, insert, query — the modern 2.0 style.
+
+```python
+from sqlalchemy import create_engine, select, ForeignKey
+from sqlalchemy.orm import (DeclarativeBase, Mapped, mapped_column,
+                            Session, relationship)
+
+class Base(DeclarativeBase): pass
+
+class Bookmark(Base):
+    __tablename__ = "bookmarks"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    url: Mapped[str]
+    title: Mapped[str]
+    tags: Mapped[list["Tag"]] = relationship(back_populates="bookmark")
+
+class Tag(Base):
+    __tablename__ = "tags"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    bookmark_id: Mapped[int] = mapped_column(ForeignKey("bookmarks.id"))
+    bookmark: Mapped[Bookmark] = relationship(back_populates="tags")
+
+engine = create_engine("sqlite:///bookmarks.db")   # just a file; use
+Base.metadata.create_all(engine)                   #   postgresql://… for real DBs
+
+with Session(engine) as session:                   # CREATE
+    session.add_all([
+        Bookmark(url="https://docs.python.org", title="Python docs",
+                 tags=[Tag(name="docs"), Tag(name="daily")]),
+        Bookmark(url="https://pypi.org", title="PyPI", tags=[Tag(name="docs")]),
+    ])
+    session.commit()
+
+with Session(engine) as session:                   # READ
+    for bm in session.scalars(select(Bookmark).where(Bookmark.url.like("%py%"))):
+        print(bm.title, [t.name for t in bm.tags])
+
+    stmt = (select(Bookmark)                                # UPDATE + DELETE
+            .where(Bookmark.title == "PyPI"))
+    session.scalars(stmt).one().title = "Python Package Index"
+    session.commit()
+```
+
+**The patterns you'll reuse forever:** `engine` (one per app) → `Session` (short-lived, per task) → `select()` queries with `.where/.order_by/.limit` → `session.commit()`. For schema changes later, that's Alembic (Appendix H). Pandas bridge: `pd.read_sql(select(Bookmark), engine)`.
+
+**Checkpoint:** add a `visited: Mapped[bool]` column and a query that counts unvisited bookmarks.
+
+## L8. `BeautifulSoup` + `lxml` — Scraping Politely
+
+**Goal:** download a page, extract structured data, and respect the site while doing it.
+
+```python
+import time
+import requests
+from bs4 import BeautifulSoup
+
+def get_soup(url):
+    r = requests.get(url, timeout=10,
+                     headers={"User-Agent": "learning-bot/1.0"})   # identify yourself
+    r.raise_for_status()
+    return BeautifulSoup(r.text, "lxml")            # lxml parser = fast
+
+soup = get_soup("https://quotes.toscrape.com/")     # a site built for practice
+
+# 1 — find vs select: pick your weapon
+first_quote = soup.find("div", class_="quote")      # first match by tag+class
+all_quotes  = soup.find_all("div", class_="quote")  # all matches
+top_tags    = soup.select(".tag-item .tag")         # CSS selectors (most flexible)
+
+# 2 — dig into one element
+for q in all_quotes:
+    text = q.select_one(".text").get_text(strip=True)
+    author = q.select_one(".author").get_text()
+    tags = [t.get_text() for t in q.select(".tag")]
+    print(f"{author}: {text[:50]}…  {tags}")
+
+# 3 — attributes, links, tables
+link = soup.select_one("a")["href"]                  # attribute access
+table_rows = soup.select("table tr")                 # any table → rows
+import pandas as pd
+# df = pd.read_html(r.text)[0]                       # tables in ONE line
+
+# 4 — follow pagination like a courteous visitor
+page = 1
+while True:
+    soup = get_soup(f"https://quotes.toscrape.com/page/{page}/")
+    quotes = soup.select("div.quote")
+    if not quotes: break
+    print(f"page {page}: {len(quotes)} quotes")
+    page += 1
+    time.sleep(1)                                    # rate-limit yourself — always
+```
+
+**Scraping etiquette:** check `robots.txt`, keep a delay between requests, cache pages while developing (`r.text` to a file), prefer an official API or RSS when one exists, and set an honest User-Agent. Use `scrapy` (Appendix H) when a site grows into a real crawling project.
+
+**Checkpoint:** scrape 5 pages of quotes and build a DataFrame of (author, text, tags) — then count quotes per author (hello again, L4).
+
+## L9. `Pillow` + `openpyxl` — Images & Excel Reports
+
+**Goal:** batch-process a photo folder and write a real styled Excel report about it.
+
+```python
+from pathlib import Path
+from PIL import Image
+
+# 1 — open · inspect · save (format conversion is just save-as)
+img = Image.open("photo.jpg")
+print(img.size, img.mode)             # (width, height) e.g. (4032, 3024) RGB
+img.save("photo.png")
+
+# 2 — the everyday transforms
+img.resize((800, 600))                # exact size (distorts)
+img.crop((100, 100, 500, 500))        # (left, top, right, bottom)
+img.rotate(90, expand=True)
+img.convert("L")                      # grayscale
+img.filter(Image.Filter.BLUR)
+
+# 3 — thumbnail: fits the box, KEEPS the aspect ratio — use this for web images
+img.thumbnail((300, 300))
+
+# 4 — batch a whole folder
+src, out = Path("photos"), Path("photos/thumbs")
+out.mkdir(exist_ok=True)
+records = []
+for file in sorted(src.glob("*.jpg")):
+    with Image.open(file) as im:
+        im.thumbnail((300, 300))
+        thumb = out / f"{file.stem}_thumb.jpg"
+        im.convert("RGB").save(thumb, "JPEG", quality=85)
+        records.append((file.name, *im.size, thumb.name))
+```
+
+**Now report it in Excel with `openpyxl`:**
+
+```python
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill
+from openpyxl.utils import get_column_letter
+
+wb = Workbook()
+ws = wb.active
+ws.title = "Thumbnails"
+
+header_font = Font(bold=True, color="FFFFFF")
+header_fill = PatternFill("solid", fgColor="2F7DAE")
+for col, title in enumerate(["Original", "Width", "Height", "Thumbnail"], 1):
+    c = ws.cell(row=1, column=col, value=title)
+    c.font, c.fill = header_font, header_fill
+
+for row, rec in enumerate(records, 2):
+    for col, value in enumerate(rec, 1):
+        ws.cell(row=row, column=col, value=value)
+
+for col, width in enumerate([28, 10, 10, 28], 1):   # readable columns
+    ws.column_dimensions[get_column_letter(col)].width = width
+ws.freeze_panes = "A2"                              # keep the header visible
+ws.cell(row=len(records) + 3, column=1,
+        value=f"=COUNTA(A2:A{len(records) + 1})").comment = None   # real formula
+wb.save("thumbs_report.xlsx")
+```
+
+**Checkpoint:** add a `Size (KB)` column comparing original vs thumbnail file sizes, and a sum formula at the bottom. (Reading Excel back: `pd.read_excel` — L4.)
+
+## L10. Capstone — All the Small Tools, One Robust Script
+
+**Goal:** combine `python-dotenv` + `tenacity` + `tqdm` + `rich` + `pydantic` + `requests` into one production-shaped program: a resilient API reporter.
+
+```python
+"""github_report.py — the utilities tutorial, assembled."""
+from dotenv import load_dotenv                     # 1. config from .env
+import os, requests, typer
+from tenacity import retry, stop_after_attempt, wait_exponential
+from tqdm import tqdm
+from rich.console import Console
+from rich.table import Table
+from pydantic import BaseModel, Field
+
+load_dotenv()                                      # reads .env into os.environ
+TOKEN = os.getenv("GITHUB_TOKEN", "")
+
+class Repo(BaseModel):                             # 2. validated data
+    name: str
+    stars: int = Field(alias="stargazers_count")
+    language: str | None = None
+    model_config = {"populate_by_name": True}
+
+@retry(stop=stop_after_attempt(4),                 # 3. retries with backoff
+       wait=wait_exponential(multiplier=1, min=2, max=30),
+       reraise=True)
+def fetch_repos(user: str, page: int) -> list[dict]:
+    r = requests.get(f"https://api.github.com/users/{user}/repos",
+                     params={"page": page, "per_page": 30},
+                     headers={"Authorization": f"Bearer {TOKEN}"},
+                     timeout=10)
+    r.raise_for_status()
+    return r.json()
+
+def main(user: str):
+    console = Console()
+    rows, page = [], 1
+    with tqdm(desc="fetching", unit="page") as bar:     # 4. honest progress
+        while batch := fetch_repos(user, page):
+            rows.extend(Repo.model_validate(x) for x in batch)
+            page += 1; bar.update()
+    if not rows:
+        console.print("[yellow]no repos found[/]"); return
+
+    table = Table(title=f"{user} — {len(rows)} repositories")   # 5. rich output
+    for col in ["Repo", "Language", "★ Stars"]:
+        table.add_column(col)
+    for repo in sorted(rows, key=lambda r: -r.stars)[:15]:
+        table.add_row(repo.name, repo.language or "—", f"{repo.stars:,}")
+    console.print(table)
+
+if __name__ == "__main__":
+    typer.run(main)
+```
+
+```bash
+# .env:   GITHUB_TOKEN=ghp_...
+python github_report.py torvalds
+```
+
+**What each piece contributed:** `dotenv` — config without hardcoding secrets · `tenacity` — survives rate-limits and blips (exponential backoff) · `tqdm` — progress you can trust · `pydantic` — the API response is now typed, validated data · `rich` — output worth screenshotting · `typer` — `--help` for free. This is the shape of a real production tool.
+
+**Checkpoint — final exercises:** (1) add a `--language` filter option; (2) export the table to CSV (L4); (3) swap `fetch_repos` to `httpx.AsyncClient` and gather pages concurrently (L1).
+
 ---
 
 # PART 4 — APPENDICES
@@ -2544,7 +3160,7 @@ Every package above is installable with `pip install name` / `uv pip install nam
 - Official tutorial & library reference: **docs.python.org/3** (the single best free resource)
 - Practice: **exercism.org/tracks/python**, **adventofcode.com**, project ideas → build, don't just read
 - Real-world code reading: browse the stdlib source (`Lib/` in the CPython repo) — it's readable Python!
-- 7-day path with this doc: Day 1 §0–1 · Day 2 §11–14 · Day 3 §15–17 · Day 4 §18–19 · Day 5 §20 · Day 6 §21–22 · Day 7 T1–T10 of your choice
+- 7-day path with this doc: Day 1 §0–1 · Day 2 §11–14 · Day 3 §15–17 · Day 4 §18–19 · Day 5 §20 · Day 6 §21–22 · Day 7 any of T/L tutorials — then L1→L10 across week two
 - When stuck: read the traceback bottom-up → `help()`/`dir()` → docs.python.org → search the exact error line
 
-*End of reference — 70 built-ins, 40+ tool subcommand tables, complete language core, 10 tutorials, complete library catalog. Happy hissing.* 🐍
+*End of reference — 70 built-ins, 40+ tool subcommand tables, complete language core, 20 tutorials (T1–T10 + L1–L10), complete library catalog. Happy hissing.* 🐍

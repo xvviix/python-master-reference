@@ -83,7 +83,7 @@ pre{white-space:pre-wrap;word-break:break-all}}
 <body>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
-    <div class="brand">🐍 Python Master Reference<span class="sub">CLI tools · the whole language · stdlib · tutorials · every library</span></div>
+    <div class="brand">🐍 Python Master Reference<span class="sub">CLI tools · the whole language · stdlib · 20 tutorials · every library</span></div>
     <nav id="tocnav">
 <details open class="part"><summary><a href="#the-complete-python-master-reference">🐍 The Complete Python Master Reference</a></summary><ul>
 <li class="main"><a href="#table-of-contents">Table of Contents</a></li>
@@ -184,6 +184,17 @@ pre{white-space:pre-wrap;word-break:break-all}}
 <li class="main"><a href="#t8-automate-the-boring-stuff">T8. Automate the Boring Stuff</a></li>
 <li class="main"><a href="#t9-async-a-concurrent-downloader">T9. Async — a Concurrent Downloader</a></li>
 <li class="main"><a href="#t10-debug-profile-like-a-detective">T10. Debug &amp; Profile Like a Detective</a></li>
+<li class="main"><a href="#library-tutorials-l1l10-the-essential-packages-hands-on">Library Tutorials (L1–L10) — the essential packages, hands-on</a></li>
+<li class="main"><a href="#l1-requests-httpx-http-like-a-human">L1. requests &amp; httpx — HTTP Like a Human</a></li>
+<li class="main"><a href="#l2-pydantic-data-that-validates-itself">L2. pydantic — Data That Validates Itself</a></li>
+<li class="main"><a href="#l3-numpy-think-in-arrays">L3. numpy — Think in Arrays</a></li>
+<li class="main"><a href="#l4-pandas-dataframes-end-to-end">L4. pandas — DataFrames End to End</a></li>
+<li class="main"><a href="#l5-matplotlib-charts-that-explain-themselves">L5. matplotlib — Charts That Explain Themselves</a></li>
+<li class="main"><a href="#l6-typer-rich-beautiful-command-line-apps">L6. typer + rich — Beautiful Command-Line Apps</a></li>
+<li class="main"><a href="#l7-sqlalchemy-a-real-database-in-40-lines">L7. SQLAlchemy — A Real Database in 40 Lines</a></li>
+<li class="main"><a href="#l8-beautifulsoup-lxml-scraping-politely">L8. BeautifulSoup + lxml — Scraping Politely</a></li>
+<li class="main"><a href="#l9-pillow-openpyxl-images-excel-reports">L9. Pillow + openpyxl — Images &amp; Excel Reports</a></li>
+<li class="main"><a href="#l10-capstone-all-the-small-tools-one-robust-script">L10. Capstone — All the Small Tools, One Robust Script</a></li>
 </ul></details>
 <details open class="part"><summary><a href="#part-4-appendices">PART 4 — APPENDICES</a></summary><ul>
 <li class="main"><a href="#appendix-a-az-command-tool-index-part-1">Appendix A — A–Z Command &amp; Tool Index (Part 1)</a></li>
@@ -215,8 +226,8 @@ pre{white-space:pre-wrap;word-break:break-all}}
     </div>
     <div class="inner" id="docbody">
 <h1 id="the-complete-python-master-reference">🐍 The Complete Python Master Reference</h1>
-<p><strong>CLI commands &amp; subcommands · the whole language · standard library · full step-by-step tutorials</strong></p>
-<blockquote><strong>The Python edition of the Command-Line Master Reference.</strong> Covers every way you <em>run</em> Python (interpreter flags, <code>pip</code>, <code>venv</code>, packaging tools, debuggers), the complete core language with every important method table, the essential standard library, 10 hands-on tutorials, and 8 quick-reference appendices. Examples target <strong>Python 3.10–3.13</strong>. Conventions: <code>command</code> = type exactly · <code>⟨required⟩</code> · <code>[optional]</code> · <code>a|b</code> = choose one · ⚠ = destructive/risky · † = deprecated or removed (modern replacement given) · <code>$</code> = shell prompt (CMD/PowerShell/Bash all fine) · <code>&amp;gt;&amp;gt;&amp;gt;</code> = Python REPL.</blockquote>
+<p><strong>CLI commands &amp; subcommands · the whole language · standard library · full step-by-step tutorials · 10 library tutorials</strong></p>
+<blockquote><strong>The Python edition of the Command-Line Master Reference.</strong> Covers every way you <em>run</em> Python (interpreter flags, <code>pip</code>, <code>venv</code>, packaging tools, debuggers), the complete core language with every important method table, the essential standard library, 20 hands-on tutorials (T1–T10 core + L1–L10 libraries), and 8 quick-reference appendices. Examples target <strong>Python 3.10–3.13</strong>. Conventions: <code>command</code> = type exactly · <code>⟨required⟩</code> · <code>[optional]</code> · <code>a|b</code> = choose one · ⚠ = destructive/risky · † = deprecated or removed (modern replacement given) · <code>$</code> = shell prompt (CMD/PowerShell/Bash all fine) · <code>&amp;gt;&amp;gt;&amp;gt;</code> = Python REPL.</blockquote>
 <hr>
 <h2 id="table-of-contents">Table of Contents</h2>
 <p><strong>PART 0 — Getting Started (Beginner Course)</strong> 0.1 Python versions &amp; implementations · 0.2 Installing Python everywhere · 0.3 Running Python: 7 ways · 0.4 The REPL &amp; IPython · 0.5 Virtual environments &amp; the packaging zoo · 0.6 Getting help anywhere · 0.7 Your first 10 programs</p>
@@ -227,7 +238,7 @@ pre{white-space:pre-wrap;word-break:break-all}}
 <ol><li>Structure &amp; syntax rules · 12. Built-in types — every method (<code>str</code>, <code>list</code>, <code>dict</code>, <code>set</code>, <code>bytes</code>…) · 13. Operators &amp; precedence — full tables · 14. Strings deep-dive: slicing, all methods, f-string format specs, <code>re</code> regex</li></ol>
 <ol><li>Control flow: <code>if</code>/<code>match</code>/<code>for</code>/<code>while</code>, comprehensions, generators, <code>itertools</code> — every function · 16. Functions: <code>*args</code>/<code>**kwargs</code>, lambdas, closures, decorators, <code>functools</code>, typing · 17. Classes &amp; OOP: inheritance, <code>dataclasses</code>, properties, dunder protocol · 18. Exceptions: full hierarchy + best practices · 19. Modules, packages &amp; imports</li></ol>
 <ol><li>Files &amp; I/O: <code>open</code>, <code>pathlib</code> (all methods), <code>os</code>/<code>shutil</code>, JSON/CSV/pickle, <code>sqlite3</code>, <code>tempfile</code> · 21. Concurrency: <code>threading</code>, <code>multiprocessing</code>, <code>asyncio</code>, <code>concurrent.futures</code> · 22. Standard-library essentials: <code>datetime</code>, <code>collections</code>, <code>itertools</code>, <code>random</code>, <code>hashlib</code>, <code>subprocess</code>, <code>argparse</code> (full tutorial), <code>logging</code> (full tutorial), networking, <code>zipfile</code></li></ol>
-<p><strong>PART 3 — Hands-On Tutorials (T1–T10)</strong> T1 Your first hour · T2 Parse a log file → CSV report · T3 Consume any REST API (JSON) · T4 Build a real CLI app with <code>argparse</code> · T5 OOP with dataclasses: an inventory manager · T6 Package &amp; publish a library to PyPI · T7 Test like a pro with <code>pytest</code> · T8 Automate the boring stuff (files, Excel, email) · T9 Async: concurrent downloader · T10 Debug &amp; profile like a detective</p>
+<p><strong>PART 3 — Hands-On Tutorials (T1–T10) + Library Tutorials (L1–L10)</strong> T1 Your first hour · T2 Parse a log file → CSV report · T3 Consume any REST API (JSON) · T4 Build a real CLI app with <code>argparse</code> · T5 OOP with dataclasses: an inventory manager · T6 Package &amp; publish a library to PyPI · T7 Test like a pro with <code>pytest</code> · T8 Automate the boring stuff (files, Excel, email) · T9 Async: concurrent downloader · T10 Debug &amp; profile like a detective L1 <code>requests</code>/<code>httpx</code> · L2 <code>pydantic</code> · L3 <code>numpy</code> · L4 <code>pandas</code> · L5 <code>matplotlib</code> · L6 <code>typer</code>+<code>rich</code> · L7 <code>SQLAlchemy</code> · L8 <code>BeautifulSoup</code> · L9 <code>Pillow</code>+<code>openpyxl</code> · L10 capstone — dotenv+tenacity+tqdm+rich together</p>
 <p><strong>PART 4 — Appendices</strong> A. A–Z command/tool index · B. All built-in functions (70) · C. Dunder methods protocol table · D. f-string &amp; <code>format()</code> spec table · E. Exceptions hierarchy tree · F. One-liner cookbook · G. Traceback decoding, common errors, best-practice checklist · H. Every Python library — complete stdlib + essential third-party</p>
 <hr>
 <h1 id="part-0-getting-started-beginner-course">PART 0 — GETTING STARTED (Beginner Course)</h1>
@@ -1082,6 +1093,508 @@ python -m cProfile -s cumtime app.py | head -25
 # or: python -X importtime -c "import app" 2&gt;&amp;1 | sort -t'|' -k2 -n | tail</code></pre></div>
 <p>Method: (1) make it fail deterministically (smallest input), (2) read the traceback <strong>bottom-up</strong> — last frame is where it died, walk up for who caused it, (3) inspect state with pdb rather than guessing, (4) profile before optimizing, (5) after fixing: add the regression test (T7).</p>
 <hr>
+<h2 id="library-tutorials-l1l10-the-essential-packages-hands-on">Library Tutorials (L1–L10) — the essential packages, hands-on</h2>
+<blockquote>The ten tutorials below teach the libraries shipped in this repo's <code>requirements.txt</code> — the same code, the same style as T1–T10. Set up once, then do them in any order: ```bash python -m venv .venv &amp;&amp; source .venv/bin/activate      # Windows: .venv\Scripts\activate python -m pip install -r requirements.txt              # installs every library used below ```</blockquote>
+<h2 id="l1-requests-httpx-http-like-a-human">L1. <code>requests</code> &amp; <code>httpx</code> — HTTP Like a Human</h2>
+<p><strong>Goal:</strong> fetch pages and APIs, handle auth, sessions, errors and retries — the right way.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import requests
+
+# 1 — the basic GET (ALWAYS pass a timeout)
+r = requests.get("https://api.github.com/users/torvalds", timeout=10)
+r.raise_for_status()                 # 4xx/5xx → exception instead of silent garbage
+print(r.status_code, r.headers["content-type"])
+bio = r.json()                       # parse the body as JSON → dict
+
+# 2 — query params, headers, auth
+r = requests.get("https://api.github.com/search/repositories",
+                 params={"q": "python cli", "sort": "stars", "per_page": 3},
+                 headers={"Accept": "application/vnd.github+json"},
+                 timeout=10)
+for item in r.json()["items"]:
+    print(f"{item['full_name']:40} ★{item['stargazers_count']}")
+
+# 3 — POST with a JSON body (what 95 % of APIs want)
+created = requests.post("https://httpbin.org/post",
+                        json={"title": "hello", "done": False}, timeout=10)
+
+# 4 — Session: connection reuse + persistent cookies + one place for defaults
+with requests.Session() as s:
+    s.headers.update({"Authorization": "Bearer YOUR_TOKEN", "User-Agent": "learn/1.0"})
+    s.get("https://api.github.com/user", timeout=10)          # authenticated!
+    for page in range(1, 3):                                   # pagination
+        resp = s.get("https://api.github.com/users/torvalds/repos",
+                     params={"page": page}, timeout=10)
+        repos = resp.json()
+        if not repos: break
+        print([repo["name"] for repo in repos])</code></pre></div>
+<p><strong>Error handling pattern</strong> (copy this into every project):</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>try:
+    r = requests.get(url, timeout=10)
+    r.raise_for_status()
+except requests.Timeout:
+    print("server too slow")
+except requests.HTTPError as e:
+    print(f"HTTP {e.response.status_code} — check the URL/token")
+except requests.ConnectionError:
+    print("no network / DNS fail")
+else:
+    data = r.json()</code></pre></div>
+<p><strong><code>httpx</code></strong> — same API, plus async and HTTP/2:</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import httpx
+r = httpx.get("https://example.org", timeout=10)        # drop-in for requests
+
+import asyncio
+async def fetch_all(urls):
+    async with httpx.AsyncClient(timeout=10) as client:   # concurrent fetches
+        replies = await asyncio.gather(*(client.get(u) for u in urls))
+        return [r.status_code for r in replies]
+print(asyncio.run(fetch_all(["https://example.org"] * 5)))</code></pre></div>
+<p><strong>Checkpoint:</strong> you can talk to any REST API with params, auth, sessions and proper errors. <em>Exercise: fetch your own GitHub profile and print follower count; then list the first page of your repos.</em></p>
+<h2 id="l2-pydantic-data-that-validates-itself">L2. <code>pydantic</code> — Data That Validates Itself</h2>
+<p><strong>Goal:</strong> stop hand-checking dicts — declare what data should look like and let pydantic enforce it.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from pydantic import BaseModel, Field, field_validator, model_validator
+from datetime import date
+from typing import Literal
+
+class Address(BaseModel):                       # nested model
+    city: str
+    zip_code: str = Field(pattern=r"^\d{4,10}$")   # regex-constrained
+
+class User(BaseModel):
+    id: int
+    name: str = Field(min_length=1, max_length=60)
+    email: str                                   # basic type checks
+    role: Literal["admin", "user"] = "user"      # only these values allowed
+    birthday: date | None = None
+    address: Address
+
+    @field_validator("email")                    # custom rule
+    @classmethod
+    def email_lowercase(cls, v): return v.lower()
+
+    @model_validator(mode="after")               # cross-field rule
+    def check(self):
+        if self.role == "admin" and self.name.lower() == "guest":
+            raise ValueError("admin cannot be named guest")
+        return self</code></pre></div>
+<p><strong>Watch it work:</strong></p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>u = User.model_validate({                        # messy input → validated object
+    "id": "7",                                   # str → coerced to int!
+    "name": "Matin",
+    "email": "MATIN@Example.COM",
+    "address": {"city": "Vienna", "zip_code": "1010"},
+})
+print(u.id, u.email, u.address.city)             # 7 matin@example.com Vienna
+print(u.model_dump())                            # back to a plain dict
+print(User.model_json_schema())                  # a JSON Schema, for free
+
+from pydantic import ValidationError
+try:
+    User(id=1, name="x", email="nope", address={"city": "c", "zip_code": "ABC"})
+except ValidationError as e:
+    print(e.error_count(), "errors")             # precise, structured error report</code></pre></div>
+<p><strong>Config with <code>pydantic-settings</code> + <code>.env</code></strong> (the clean way to read environment variables):</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># .env file:   API_TOKEN=abc123   DEBUG=true
+from pydantic_settings import BaseSettings
+from pydantic import Field
+
+class Settings(BaseSettings):
+    api_token: str = Field(repr=False)           # repr=False hides it from logs
+    debug: bool = False
+    model_config = {"env_file": ".env"}          # reads .env automatically
+
+settings = Settings()
+print(settings.debug)                            # True — typed, validated config</code></pre></div>
+<p><strong>Where it shines:</strong> validating API responses (<code>User.model_validate(resp.json())</code>), FastAPI request bodies, and typed settings. <strong>Checkpoint:</strong> write a <code>Product</code> model with price &gt; 0, stock ≥ 0, and a category from a fixed set.</p>
+<h2 id="l3-numpy-think-in-arrays">L3. <code>numpy</code> — Think in Arrays</h2>
+<p><strong>Goal:</strong> replace Python loops with vectorized array math — the foundation under pandas, ML, and image processing.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import numpy as np
+
+# 1 — creation
+a = np.array([1, 2, 3, 4])                       # from a list
+z = np.zeros(5); ones = np.ones((2, 3))          # shapes: (rows, cols)
+rng = np.random.default_rng(seed=42)
+noise = rng.normal(0, 1, size=1_000_000)         # a million samples, instantly
+grid = np.arange(12).reshape(3, 4)               # 0..11 in a 3×4 matrix
+
+# 2 — elementwise math WITHOUT loops (this is the whole point)
+temps_c = np.array([12.5, 18.0, 24.3, 31.2, 27.8])
+temps_f = temps_c * 9 / 5 + 32                   # one line, C speed
+print(temps_f.round(1))
+
+# 3 — slicing returns VIEWS (no copy!) — 2D: [rows, cols]
+grid[0, 1]          # row 0, col 1
+grid[:, 0]          # entire first column
+grid[1:, ::2]       # rows 1+, every 2nd column
+grid[grid &gt; 5]      # boolean mask → 1D of matches
+np.where(temps_c &gt; 25, "hot", "mild")            # vectorized conditional
+
+# 4 — aggregations and the axis argument
+grid.sum(), grid.mean(), grid.std()
+grid.sum(axis=0)     # down the columns → per-column totals
+grid.sum(axis=1)     # across the rows   → per-row totals
+np.argmax(temps_c)   # index of the max
+
+# 5 — broadcasting: combine different shapes sensibly
+prices = np.array([10.0, 20.0, 30.0])            # shape (3,)
+quantities = np.array([[1, 2, 3], [4, 5, 6]])    # shape (2, 3)
+totals = prices * quantities                      # (3,) stretches to (2, 3) — row-wise
+print(totals.sum(axis=1))                         # per-order totals</code></pre></div>
+<p><strong>Why it matters:</strong> a vectorized numpy operation is typically 10–100× faster than the equivalent Python <code>for</code> loop. Rule of thumb — <strong>if you wrote a loop over numbers, there's a numpy one-liner.</strong></p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># before                       # after
+out = []                       import numpy as np
+for x in data:                 out = np.sqrt(np.abs(data))
+    out.append(abs(x)**0.5)</code></pre></div>
+<p><strong>Checkpoint:</strong> generate 100,000 random exam scores (mean 65, std 12), clip them to 0–100 (<code>np.clip</code>), and print the mean, median (<code>np.median</code>), and the percentage ≥ 50.</p>
+<h2 id="l4-pandas-dataframes-end-to-end">L4. <code>pandas</code> — DataFrames End to End</h2>
+<p><strong>Goal:</strong> load messy tabular data, clean it, interrogate it, export it — the complete workflow on one realistic file.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import pandas as pd
+
+# 1 — load (csv / excel / json / sql all work)
+df = pd.read_csv("sales.csv", parse_dates=["date"])
+
+# 2 — inspect before touching anything
+df.head()            # first rows
+df.shape             # (rows, cols)
+df.info()            # dtypes + missing-value counts
+df.describe()        # numeric summary
+
+# 3 — select: columns, rows, filters
+df[["region", "amount"]]                    # column subset
+df.loc[df["amount"] &gt; 500, ["region", "amount"]]   # boolean rows + column subset
+df.iloc[0:10]                               # positional slice
+df.query("region == 'East' and amount &gt; 200")      # SQL-ish syntax
+
+# 4 — clean: missing values and broken types
+df["amount"] = pd.to_numeric(df["amount"], errors="coerce")  # bad values → NaN
+df = df.dropna(subset=["amount"])            # drop rows without an amount
+df["region"] = df["region"].str.strip().str.title()          # normalize text
+
+# 5 — derive columns
+df["month"] = df["date"].dt.to_period("M")
+df["amount_with_tax"] = df["amount"] * 1.2
+df["size"] = pd.cut(df["amount"], bins=[0, 100, 500, np.inf],
+                    labels=["small", "medium", "large"])
+
+# 6 — the groupby reflex: split → apply → combine
+df.groupby("region")["amount"].agg(["count", "sum", "mean"])
+df.groupby(["region", "month"])["amount"].sum().unstack()    # pivot wide
+df.pivot_table(index="region", columns="size", values="amount",
+               aggfunc="sum", fill_value=0)
+
+# 7 — combine frames
+pd.merge(orders, customers, on="customer_id", how="left")    # SQL join
+pd.concat([q1, q2, q3])                                      # stack frames
+
+# 8 — export
+df.to_csv("clean.csv", index=False)
+df.to_excel("report.xlsx", sheet_name="sales")
+df.to_sql("sales", engine, if_exists="replace")              # into a database</code></pre></div>
+<p><strong>Realistic mini-analysis (run this on any CSV):</strong></p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>top = (df.groupby("region")["amount"]
+         .sum()
+         .sort_values(ascending=False))
+print(top.head(10))
+growth = df.set_index("date").resample("ME")["amount"].sum()  # monthly trend
+print(growth.pct_change().round(3).tail())                     # % change</code></pre></div>
+<p><strong>Performance habits:</strong> use <code>pd.read_csv(..., chunksize=100_000)</code> for huge files; <code>df["cat"] = df["cat"].astype("category")</code> for repeated strings; and know that <code>polars</code> (Appendix H) is the fast alternative for very large data.</p>
+<p><strong>Checkpoint:</strong> load any CSV, find the numeric column, and produce a per-category summary table sorted by total. <em>Exercise: which month had the biggest jump over the previous month?</em></p>
+<h2 id="l5-matplotlib-charts-that-explain-themselves">L5. <code>matplotlib</code> — Charts That Explain Themselves</h2>
+<p><strong>Goal:</strong> the eight charts you'll actually use, with proper labels, and saving to files.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+# 0 — the anatomy: figure = the canvas, axes = one chart
+fig, ax = plt.subplots(figsize=(8, 4))          # one axes
+
+x = np.linspace(0, 10, 100)
+
+# 1 — line (trends over ordered x)
+ax.plot(x, np.sin(x), label="sin", linewidth=2)
+ax.plot(x, np.cos(x), label="cos", linestyle="--")
+
+ax.set_title("Trig functions")                  # ALWAYS title + label axes
+ax.set_xlabel("x"); ax.set_ylabel("y")
+ax.legend(); ax.grid(alpha=0.3)
+fig.savefig("trig.png", dpi=150, bbox_inches="tight")   # save BEFORE show
+plt.show()</code></pre></div>
+<p><strong>The chart menu — pick by question:</strong></p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>fig, axes = plt.subplots(2, 2, figsize=(10, 8))   # 2×2 grid of axes
+ax = axes[0, 0]
+ax.bar(["A", "B", "C"], [3, 7, 5])                 # compare categories
+ax.set_title("bar — comparison")
+
+axes[0, 1].scatter(rng.normal(size=50), rng.normal(size=50),
+                   alpha=0.7)                      # relationship between 2 vars
+axes[0, 1].set_title("scatter — relationship")
+
+axes[1, 0].hist(rng.normal(0, 1, 1000), bins=30)   # distribution of one var
+axes[1, 1].set_title("hist — distribution")
+
+data = [rng.normal(0, 1, 100), rng.normal(2, 1, 100)]
+axes[1, 1].boxplot(data)                           # spread + outliers
+axes[1, 1].set_title("box — spread")
+fig.tight_layout()
+fig.savefig("dashboard.png", dpi=150)</code></pre></div>
+<p><strong>Daily-driver tricks:</strong></p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>plt.style.use("seaborn-v0_8-darkgrid")     # instant decent look (plt.style.available)
+df.plot(kind="line", x="date", y="amount", title="Sales")   # pandas one-liner!
+df.groupby("region")["amount"].sum().plot(kind="barh")      # groupby → chart
+fig, ax = plt.subplots()
+im = ax.imshow(np.random.random((5, 5)), cmap="viridis")    # heatmap
+fig.colorbar(im)</code></pre></div>
+<p><strong>Checkpoint:</strong> plot the monthly-totals Series you made in L4 as a line chart, and the per-region totals as a horizontal bar chart — with titles, labels, and a saved PNG.</p>
+<h2 id="l6-typer-rich-beautiful-command-line-apps">L6. <code>typer</code> + <code>rich</code> — Beautiful Command-Line Apps</h2>
+<p><strong>Goal:</strong> build a real CLI tool with typed arguments, colored tables and progress — in 30 lines.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>"""notes.py — typer + rich demo CLI"""
+from pathlib import Path
+import json, typer
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
+
+app = typer.Typer(help="Tiny note manager")
+DB = Path.home() / ".notes.json"
+console = Console()
+
+def load() -&gt; list[dict]:
+    return json.loads(DB.read_text()) if DB.exists() else []
+
+@app.command()
+def add(text: str, tag: str = typer.Option("general", help="category tag")):
+    """Add a note."""
+    notes = load()
+    notes.append({"text": text, "tag": tag})
+    DB.write_text(json.dumps(notes, indent=2))
+    console.print(Panel(f"[green]Saved[/] '{text}' [dim]({tag})[/]"))
+
+@app.command()
+def list(tag: str = typer.Option(None, help="filter by tag"),
+         limit: int = typer.Option(10, min=1, max=100)):
+    """List notes as a rich table."""
+    notes = [n for n in load() if tag is None or n["tag"] == tag][:limit]
+    table = Table(title="Notes")
+    table.add_column("#", justify="right", style="cyan")
+    table.add_column("Tag", style="magenta")
+    table.add_column("Text")
+    for i, n in enumerate(notes, 1):
+        table.add_row(str(i), n["tag"], n["text"])
+    console.print(table)
+
+@app.command()
+def stats():
+    """Counts per tag, with a progress bar for show."""
+    from collections import Counter
+    with console.status("counting..."):
+        counts = Counter(n["tag"] for n in load())
+    for tag, count in counts.most_common():
+        console.print(f"[bold]{tag}[/]: {count}")
+
+if __name__ == "__main__":
+    app()</code></pre></div>
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>python notes.py add "ship the report" --tag work
+python notes.py add "buy milk"
+python notes.py list --tag work
+python notes.py --help            # typer wrote all this help for you</code></pre></div>
+<p>Why typer wins: <strong>type hints become validation</strong> (<code>limit: int = typer.Option(10, min=1, max=100)</code> rejects bad input with a clear error), and <code>--help</code> documents itself. Why rich: tables, panels, colors, <code>rich.progress.Progress</code> for long loops, <code>Console().log()</code> for pretty debugging.</p>
+<p><strong>Checkpoint:</strong> add a <code>clear</code> command that empties the database (ask <code>typer.confirm("Sure?")</code> first).</p>
+<h2 id="l7-sqlalchemy-a-real-database-in-40-lines">L7. <code>SQLAlchemy</code> — A Real Database in 40 Lines</h2>
+<p><strong>Goal:</strong> define tables as classes, create the database, insert, query — the modern 2.0 style.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from sqlalchemy import create_engine, select, ForeignKey
+from sqlalchemy.orm import (DeclarativeBase, Mapped, mapped_column,
+                            Session, relationship)
+
+class Base(DeclarativeBase): pass
+
+class Bookmark(Base):
+    __tablename__ = "bookmarks"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    url: Mapped[str]
+    title: Mapped[str]
+    tags: Mapped[list["Tag"]] = relationship(back_populates="bookmark")
+
+class Tag(Base):
+    __tablename__ = "tags"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    bookmark_id: Mapped[int] = mapped_column(ForeignKey("bookmarks.id"))
+    bookmark: Mapped[Bookmark] = relationship(back_populates="tags")
+
+engine = create_engine("sqlite:///bookmarks.db")   # just a file; use
+Base.metadata.create_all(engine)                   #   postgresql://… for real DBs
+
+with Session(engine) as session:                   # CREATE
+    session.add_all([
+        Bookmark(url="https://docs.python.org", title="Python docs",
+                 tags=[Tag(name="docs"), Tag(name="daily")]),
+        Bookmark(url="https://pypi.org", title="PyPI", tags=[Tag(name="docs")]),
+    ])
+    session.commit()
+
+with Session(engine) as session:                   # READ
+    for bm in session.scalars(select(Bookmark).where(Bookmark.url.like("%py%"))):
+        print(bm.title, [t.name for t in bm.tags])
+
+    stmt = (select(Bookmark)                                # UPDATE + DELETE
+            .where(Bookmark.title == "PyPI"))
+    session.scalars(stmt).one().title = "Python Package Index"
+    session.commit()</code></pre></div>
+<p><strong>The patterns you'll reuse forever:</strong> <code>engine</code> (one per app) → <code>Session</code> (short-lived, per task) → <code>select()</code> queries with <code>.where/.order_by/.limit</code> → <code>session.commit()</code>. For schema changes later, that's Alembic (Appendix H). Pandas bridge: <code>pd.read_sql(select(Bookmark), engine)</code>.</p>
+<p><strong>Checkpoint:</strong> add a <code>visited: Mapped[bool]</code> column and a query that counts unvisited bookmarks.</p>
+<h2 id="l8-beautifulsoup-lxml-scraping-politely">L8. <code>BeautifulSoup</code> + <code>lxml</code> — Scraping Politely</h2>
+<p><strong>Goal:</strong> download a page, extract structured data, and respect the site while doing it.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import time
+import requests
+from bs4 import BeautifulSoup
+
+def get_soup(url):
+    r = requests.get(url, timeout=10,
+                     headers={"User-Agent": "learning-bot/1.0"})   # identify yourself
+    r.raise_for_status()
+    return BeautifulSoup(r.text, "lxml")            # lxml parser = fast
+
+soup = get_soup("https://quotes.toscrape.com/")     # a site built for practice
+
+# 1 — find vs select: pick your weapon
+first_quote = soup.find("div", class_="quote")      # first match by tag+class
+all_quotes  = soup.find_all("div", class_="quote")  # all matches
+top_tags    = soup.select(".tag-item .tag")         # CSS selectors (most flexible)
+
+# 2 — dig into one element
+for q in all_quotes:
+    text = q.select_one(".text").get_text(strip=True)
+    author = q.select_one(".author").get_text()
+    tags = [t.get_text() for t in q.select(".tag")]
+    print(f"{author}: {text[:50]}…  {tags}")
+
+# 3 — attributes, links, tables
+link = soup.select_one("a")["href"]                  # attribute access
+table_rows = soup.select("table tr")                 # any table → rows
+import pandas as pd
+# df = pd.read_html(r.text)[0]                       # tables in ONE line
+
+# 4 — follow pagination like a courteous visitor
+page = 1
+while True:
+    soup = get_soup(f"https://quotes.toscrape.com/page/{page}/")
+    quotes = soup.select("div.quote")
+    if not quotes: break
+    print(f"page {page}: {len(quotes)} quotes")
+    page += 1
+    time.sleep(1)                                    # rate-limit yourself — always</code></pre></div>
+<p><strong>Scraping etiquette:</strong> check <code>robots.txt</code>, keep a delay between requests, cache pages while developing (<code>r.text</code> to a file), prefer an official API or RSS when one exists, and set an honest User-Agent. Use <code>scrapy</code> (Appendix H) when a site grows into a real crawling project.</p>
+<p><strong>Checkpoint:</strong> scrape 5 pages of quotes and build a DataFrame of (author, text, tags) — then count quotes per author (hello again, L4).</p>
+<h2 id="l9-pillow-openpyxl-images-excel-reports">L9. <code>Pillow</code> + <code>openpyxl</code> — Images &amp; Excel Reports</h2>
+<p><strong>Goal:</strong> batch-process a photo folder and write a real styled Excel report about it.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from pathlib import Path
+from PIL import Image
+
+# 1 — open · inspect · save (format conversion is just save-as)
+img = Image.open("photo.jpg")
+print(img.size, img.mode)             # (width, height) e.g. (4032, 3024) RGB
+img.save("photo.png")
+
+# 2 — the everyday transforms
+img.resize((800, 600))                # exact size (distorts)
+img.crop((100, 100, 500, 500))        # (left, top, right, bottom)
+img.rotate(90, expand=True)
+img.convert("L")                      # grayscale
+img.filter(Image.Filter.BLUR)
+
+# 3 — thumbnail: fits the box, KEEPS the aspect ratio — use this for web images
+img.thumbnail((300, 300))
+
+# 4 — batch a whole folder
+src, out = Path("photos"), Path("photos/thumbs")
+out.mkdir(exist_ok=True)
+records = []
+for file in sorted(src.glob("*.jpg")):
+    with Image.open(file) as im:
+        im.thumbnail((300, 300))
+        thumb = out / f"{file.stem}_thumb.jpg"
+        im.convert("RGB").save(thumb, "JPEG", quality=85)
+        records.append((file.name, *im.size, thumb.name))</code></pre></div>
+<p><strong>Now report it in Excel with <code>openpyxl</code>:</strong></p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill
+from openpyxl.utils import get_column_letter
+
+wb = Workbook()
+ws = wb.active
+ws.title = "Thumbnails"
+
+header_font = Font(bold=True, color="FFFFFF")
+header_fill = PatternFill("solid", fgColor="2F7DAE")
+for col, title in enumerate(["Original", "Width", "Height", "Thumbnail"], 1):
+    c = ws.cell(row=1, column=col, value=title)
+    c.font, c.fill = header_font, header_fill
+
+for row, rec in enumerate(records, 2):
+    for col, value in enumerate(rec, 1):
+        ws.cell(row=row, column=col, value=value)
+
+for col, width in enumerate([28, 10, 10, 28], 1):   # readable columns
+    ws.column_dimensions[get_column_letter(col)].width = width
+ws.freeze_panes = "A2"                              # keep the header visible
+ws.cell(row=len(records) + 3, column=1,
+        value=f"=COUNTA(A2:A{len(records) + 1})").comment = None   # real formula
+wb.save("thumbs_report.xlsx")</code></pre></div>
+<p><strong>Checkpoint:</strong> add a <code>Size (KB)</code> column comparing original vs thumbnail file sizes, and a sum formula at the bottom. (Reading Excel back: <code>pd.read_excel</code> — L4.)</p>
+<h2 id="l10-capstone-all-the-small-tools-one-robust-script">L10. Capstone — All the Small Tools, One Robust Script</h2>
+<p><strong>Goal:</strong> combine <code>python-dotenv</code> + <code>tenacity</code> + <code>tqdm</code> + <code>rich</code> + <code>pydantic</code> + <code>requests</code> into one production-shaped program: a resilient API reporter.</p>
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>"""github_report.py — the utilities tutorial, assembled."""
+from dotenv import load_dotenv                     # 1. config from .env
+import os, requests, typer
+from tenacity import retry, stop_after_attempt, wait_exponential
+from tqdm import tqdm
+from rich.console import Console
+from rich.table import Table
+from pydantic import BaseModel, Field
+
+load_dotenv()                                      # reads .env into os.environ
+TOKEN = os.getenv("GITHUB_TOKEN", "")
+
+class Repo(BaseModel):                             # 2. validated data
+    name: str
+    stars: int = Field(alias="stargazers_count")
+    language: str | None = None
+    model_config = {"populate_by_name": True}
+
+@retry(stop=stop_after_attempt(4),                 # 3. retries with backoff
+       wait=wait_exponential(multiplier=1, min=2, max=30),
+       reraise=True)
+def fetch_repos(user: str, page: int) -&gt; list[dict]:
+    r = requests.get(f"https://api.github.com/users/{user}/repos",
+                     params={"page": page, "per_page": 30},
+                     headers={"Authorization": f"Bearer {TOKEN}"},
+                     timeout=10)
+    r.raise_for_status()
+    return r.json()
+
+def main(user: str):
+    console = Console()
+    rows, page = [], 1
+    with tqdm(desc="fetching", unit="page") as bar:     # 4. honest progress
+        while batch := fetch_repos(user, page):
+            rows.extend(Repo.model_validate(x) for x in batch)
+            page += 1; bar.update()
+    if not rows:
+        console.print("[yellow]no repos found[/]"); return
+
+    table = Table(title=f"{user} — {len(rows)} repositories")   # 5. rich output
+    for col in ["Repo", "Language", "★ Stars"]:
+        table.add_column(col)
+    for repo in sorted(rows, key=lambda r: -r.stars)[:15]:
+        table.add_row(repo.name, repo.language or "—", f"{repo.stars:,}")
+    console.print(table)
+
+if __name__ == "__main__":
+    typer.run(main)</code></pre></div>
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code># .env:   GITHUB_TOKEN=ghp_...
+python github_report.py torvalds</code></pre></div>
+<p><strong>What each piece contributed:</strong> <code>dotenv</code> — config without hardcoding secrets · <code>tenacity</code> — survives rate-limits and blips (exponential backoff) · <code>tqdm</code> — progress you can trust · <code>pydantic</code> — the API response is now typed, validated data · <code>rich</code> — output worth screenshotting · <code>typer</code> — <code>--help</code> for free. This is the shape of a real production tool.</p>
+<p><strong>Checkpoint — final exercises:</strong> (1) add a <code>--language</code> filter option; (2) export the table to CSV (L4); (3) swap <code>fetch_repos</code> to <code>httpx.AsyncClient</code> and gather pages concurrently (L1).</p>
+<hr>
 <h1 id="part-4-appendices">PART 4 — APPENDICES</h1>
 <h2 id="appendix-a-az-command-tool-index-part-1">Appendix A — A–Z Command &amp; Tool Index (Part 1)</h2>
 <div class="table-wrap"><table><thead><tr><th> </th><th> Tools </th></tr></thead><tbody><tr><td> <strong>B</strong> </td><td> <code>black</code> §8 · <code>build</code> §6 · <code>bandit</code> §8 </td></tr><tr><td> <strong>C</strong> </td><td> <code>conda</code>/<code>mamba</code> §4 · <code>coverage</code> §7 </td></tr><tr><td> <strong>F</strong> </td><td> <code>flake8</code> §8 </td></tr><tr><td> <strong>I</strong> </td><td> <code>ipython</code> §0.4 · <code>isort</code> §8 · <code>ipdb</code>/<code>pudb</code> §9 </td></tr><tr><td> <strong>J</strong> </td><td> <code>jupyter lab/notebook/console/nbconvert/kernelspec</code> §10 </td></tr><tr><td> <strong>M</strong> </td><td> <code>mypy</code> §8 · <code>mamba</code> §4 </td></tr><tr><td> <strong>P</strong> </td><td> <code>python</code> §1 (all flags) · <code>py</code> launcher §2 · <code>pip</code> §3 · <code>pipx</code> §4 · <code>poetry</code> §4 · <code>pre-commit</code> §8 · <code>pylint</code> §8 · <code>pydoc</code> §5,§0.6 · <code>pdb</code> §9 · <code>pstats</code> §9 </td></tr><tr><td> <strong>R</strong> </td><td> <code>ruff</code> §8 </td></tr><tr><td> <strong>T</strong> </td><td> <code>twine</code> §6 · <code>timeit</code> §5,§9 · <code>tracemalloc</code> §9 </td></tr><tr><td> <strong>U</strong> </td><td> <code>uv</code> §4 (venv/pip/add/sync/run/tool/uvx) · <code>unittest</code> §7 </td></tr><tr><td> <strong>V</strong> </td><td> <code>venv</code> §4 · <code>virtualenv</code> §4 </td></tr></tbody></table></div>
@@ -1230,8 +1743,8 @@ KeyError: 'qty'                           ← …the LAST line names the disease
 <p>Every package above is installable with <code>pip install name</code> / <code>uv pip install name</code> (§3–§4) — and browsable at <code>pypi.org/project/&amp;lt;name&amp;gt;</code> with docs, changelog and dependency info.</p>
 <hr>
 <h2 id="keep-learning">Keep Learning</h2>
-<ul><li>Official tutorial &amp; library reference: <strong>docs.python.org/3</strong> (the single best free resource)</li><li>Practice: <strong>exercism.org/tracks/python</strong>, <strong>adventofcode.com</strong>, project ideas → build, don't just read</li><li>Real-world code reading: browse the stdlib source (<code>Lib/</code> in the CPython repo) — it's readable Python!</li><li>7-day path with this doc: Day 1 §0–1 · Day 2 §11–14 · Day 3 §15–17 · Day 4 §18–19 · Day 5 §20 · Day 6 §21–22 · Day 7 T1–T10 of your choice</li><li>When stuck: read the traceback bottom-up → <code>help()</code>/<code>dir()</code> → docs.python.org → search the exact error line</li></ul>
-<p><em>End of reference — 70 built-ins, 40+ tool subcommand tables, complete language core, 10 tutorials, complete library catalog. Happy hissing.</em> 🐍</p>
+<ul><li>Official tutorial &amp; library reference: <strong>docs.python.org/3</strong> (the single best free resource)</li><li>Practice: <strong>exercism.org/tracks/python</strong>, <strong>adventofcode.com</strong>, project ideas → build, don't just read</li><li>Real-world code reading: browse the stdlib source (<code>Lib/</code> in the CPython repo) — it's readable Python!</li><li>7-day path with this doc: Day 1 §0–1 · Day 2 §11–14 · Day 3 §15–17 · Day 4 §18–19 · Day 5 §20 · Day 6 §21–22 · Day 7 any of T/L tutorials — then L1→L10 across week two</li><li>When stuck: read the traceback bottom-up → <code>help()</code>/<code>dir()</code> → docs.python.org → search the exact error line</li></ul>
+<p><em>End of reference — 70 built-ins, 40+ tool subcommand tables, complete language core, 20 tutorials (T1–T10 + L1–L10), complete library catalog. Happy hissing.</em> 🐍</p>
       <div class="footer-note">The Complete Python Master Reference &middot; single-file HTML edition &middot; works fully offline</div>
     </div>
   </main>
