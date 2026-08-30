@@ -12,7 +12,7 @@ A complete, offline-capable Python 3 reference covering:
 | **Part 1** | The command line — `python` (every flag), `py`, `pip` (every subcommand), `venv`/`pipx`/`poetry`/`conda`/`uv`, `python -m` toolbox, packaging & publishing, `pytest`/`unittest`/coverage, ruff/black/mypy, `pdb` & profiling, Jupyter |
 | **Part 2** | The language — every built-in type & method, operators & precedence, f-strings & regex, control flow & comprehensions, `itertools`/`functools`, functions & typing, OOP & dataclasses, full exception hierarchy, imports, files & `pathlib`, concurrency (threads/async), stdlib essentials (`datetime`, `argparse`, `logging` full walkthroughs) |
 | **Part 3** | Tutorials T1–T10 — first hour, log parsing, REST APIs, CLI apps, dataclass OOP, publish to PyPI, pytest, automation, asyncio, debugging & profiling |
-| **Part 4** | Appendices A–G — tool index, all 70 built-ins, dunder protocol, format specs, real-world exceptions, one-liners, best practices |
+| **Part 4** | Appendices A–H — tool index, all 70 built-ins, dunder protocol, format specs, real-world exceptions, one-liners, best practices, **complete library catalog** (full standard library + ~250 essential third-party libraries by domain) |
 
 ## Files
 

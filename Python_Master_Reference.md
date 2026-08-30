@@ -2,7 +2,7 @@
 
 **CLI commands & subcommands · the whole language · standard library · full step-by-step tutorials**
 
-> **The Python edition of the Command-Line Master Reference.** Covers every way you *run* Python (interpreter flags, `pip`, `venv`, packaging tools, debuggers), the complete core language with every important method table, the essential standard library, 10 hands-on tutorials, and 7 quick-reference appendices. Examples target **Python 3.10–3.13**.
+> **The Python edition of the Command-Line Master Reference.** Covers every way you *run* Python (interpreter flags, `pip`, `venv`, packaging tools, debuggers), the complete core language with every important method table, the essential standard library, 10 hands-on tutorials, and 8 quick-reference appendices. Examples target **Python 3.10–3.13**.
 >
 > Conventions: `command` = type exactly · `⟨required⟩` · `[optional]` · `a|b` = choose one · ⚠ = destructive/risky · † = deprecated or removed (modern replacement given) · `$` = shell prompt (CMD/PowerShell/Bash all fine) · `>>>` = Python REPL.
 
@@ -29,7 +29,7 @@
 T1 Your first hour · T2 Parse a log file → CSV report · T3 Consume any REST API (JSON) · T4 Build a real CLI app with `argparse` · T5 OOP with dataclasses: an inventory manager · T6 Package & publish a library to PyPI · T7 Test like a pro with `pytest` · T8 Automate the boring stuff (files, Excel, email) · T9 Async: concurrent downloader · T10 Debug & profile like a detective
 
 **PART 4 — Appendices**
-A. A–Z command/tool index · B. All built-in functions (70) · C. Dunder methods protocol table · D. f-string & `format()` spec table · E. Exceptions hierarchy tree · F. One-liner cookbook · G. Traceback decoding, common errors, best-practice checklist
+A. A–Z command/tool index · B. All built-in functions (70) · C. Dunder methods protocol table · D. f-string & `format()` spec table · E. Exceptions hierarchy tree · F. One-liner cookbook · G. Traceback decoding, common errors, best-practice checklist · H. Every Python library — complete stdlib + essential third-party
 
 ---
 ---
@@ -1966,6 +1966,577 @@ KeyError: 'qty'                           ← …the LAST line names the disease
 9. Profile before optimizing (`cProfile`, `timeit`) — 90 % of slowness is I/O or an accidental O(n²).
 10. Pin versions in production (`==`/lock), float ranges (`>=x,<y`) in libraries.
 
+## Appendix H — Every Python Library: Complete Standard Library + Essential Third-Party
+
+> **Scope:** the standard library below is the **complete** set of public, documented modules (Python 3.12/3.13) — organized by purpose. Third-party can never be "complete" (PyPI hosts **600,000+ projects**), so Part 2 of this appendix is the curated essential set by domain — the libraries actually worth knowing, chosen by ecosystem share and quality.
+
+### H.1 The Standard Library — complete catalog by category
+
+**Runtime, interpreter & introspection**
+
+| Module | What it does |
+|---|---|
+| `sys` | Interpreter handles: argv, path, exit, stdout, modules, version |
+| `sysconfig` | Build/interpreter configuration & paths |
+| `builtins` | The built-in functions/names namespace |
+| `__main__` | Entry-point machinery (`if __name__ == "__main__"`) |
+| `warnings` | Warning control (`-W`, ` DeprecationWarning`) |
+| `atexit` | Run functions on interpreter shutdown |
+| `gc` | Garbage collector control & stats |
+| `inspect` | Live objects: signatures, source, stack frames |
+| `site` | Startup path setup (`site-packages`, `.pth`) |
+| `stat` | File-mode bit constants & interpreters |
+| `contextlib` | `with` helpers: `contextmanager`, `suppress`, `closing` |
+| `abc` | Abstract base classes (`ABC`, `abstractmethod`) |
+| `dataclasses` | Boilerplate-free classes (`@dataclass`) |
+| `types` | Dynamic type creation, `SimpleNamespace`, `NoneType` |
+| `copy` | Shallow/deep copies |
+
+**Text processing**
+
+| Module | What it does |
+|---|---|
+| `string` | Constants, `Template`, `Formatter` |
+| `re` | Regular expressions |
+| `difflib` | Diff/similarity (`SequenceMatcher`, `get_close_matches`) |
+| `textwrap` | Wrap/fill/dedent paragraphs |
+| `unicodedata` | Unicode names, categories, normalization |
+| `stringprep` | IDNA string preparation |
+| `readline` | Line editing/history (Unix; `pyreadline3` on Windows) |
+| `rlcompleter` | Tab-completion for the REPL |
+| `codecs` | Encoders/decoders registry, `open` codecs |
+
+**Binary data**
+
+| Module | What it does |
+|---|---|
+| `struct` | Pack/unpack C structs to/from bytes |
+| `binascii` | hex/base64/uudecode primitives |
+
+**Data types & containers**
+
+| Module | What it does |
+|---|---|
+| `datetime` | Dates, times, time zones, arithmetic |
+| `zoneinfo` (3.9+) | IANA time-zone database |
+| `calendar` | Calendar generation/formatting |
+| `collections` | `Counter`, `defaultdict`, `deque`, `namedtuple`, `ChainMap` |
+| `collections.abc` | Abstract base classes: `Iterable`, `Mapping`, … |
+| `heapq` | Min-heap priority queue |
+| `bisect` | Binary search in sorted lists |
+| `array` | Compact typed numeric arrays |
+| `weakref` | Garbage-collectable references |
+| `enum` | Enumerations (`Enum`, `IntEnum`, `StrEnum` 3.11+) |
+| `graphlib` (3.9+) | Topological sorting |
+| `pprint` | Pretty-print data structures |
+| `reprlib` | Bounded repr for big structures |
+
+**Numbers & math**
+
+| Module | What it does |
+|---|---|
+| `math` | Floating math functions & constants |
+| `cmath` | Complex-number math |
+| `decimal` | Exact decimal arithmetic (money!) |
+| `fractions` | Exact rational numbers |
+| `random` | Pseudo-random numbers (not crypto) |
+| `statistics` | Mean, median, stdev, quantiles, correlation |
+| `numbers` | Numeric tower ABCs (`Integral`, `Real`) |
+
+**Functional programming**
+
+| Module | What it does |
+|---|---|
+| `itertools` | Iterator algebra: product, chain, groupby… |
+| `functools` | `cache`, `partial`, `reduce`, `wraps` |
+| `operator` | Function forms of operators (`itemgetter`, `attrgetter`) |
+
+**Concurrency & parallelism**
+
+| Module | What it does |
+|---|---|
+| `asyncio` | The async event-loop framework |
+| `threading` | Threads, locks, events |
+| `multiprocessing` | Processes, pools, queues (true parallelism) |
+| `multiprocessing.shared_memory` | Zero-cross-process shared buffers |
+| `concurrent.futures` | `ThreadPoolExecutor`/`ProcessPoolExecutor` |
+| `subprocess` | Run external programs |
+| `queue` | Thread-safe queues (`Queue`, `LifoQueue`, `PriorityQueue`) |
+| `sched` | Delayed event scheduler |
+| `contextvars` | Context-local state (async-safe “globals”) |
+| `signal` | POSIX signal handlers |
+| `select` | Wait on streams (select/epoll/kqueue) |
+| `selectors` | High-level `select` abstraction |
+
+**File system & I/O**
+
+| Module | What it does |
+|---|---|
+| `pathlib` | Object-oriented paths (§20) |
+| `os` | OS interface: environ, process, walk |
+| `os.path` | Legacy path utilities |
+| `io` | Streams: `StringIO`, `BytesIO`, buffers |
+| `shutil` | High-level file ops: copytree, rmtree, which |
+| `tempfile` | Temporary files/directories |
+| `glob` | Wildcard path matching |
+| `fnmatch` | Unix-style pattern matching on names |
+| `fileinput` | Iterate over lines of many files/stdin |
+| `linecache` | Random access to file lines (tracebacks use it) |
+| `filecmp` | File/directory comparison |
+| `getpass` | Password prompts without echo |
+
+**Persistence & databases**
+
+| Module | What it does |
+|---|---|
+| `pickle` | Object serialization (⚠ untrusted data) |
+| `copyreg` | Register pickle support for types |
+| `shelve` | Persistent dict of pickled objects |
+| `marshal` | Fast internal serialization (bytecode) |
+| `dbm` | Simple key-value DBs (`dbm.sqlite` 3.13) |
+| `sqlite3` | Embedded SQL database (§20) |
+| `plistlib` | Apple property lists |
+
+**Compression & archives**
+
+| Module | What it does |
+|---|---|
+| `zlib` | Raw DEFLATE compression |
+| `gzip` | gzip files/streams |
+| `bz2` / `lzma` | bzip2 / xz (LZMA) |
+| `zipfile` | Zip archives (also creator of `.whl`) |
+| `tarfile` | tar archives |
+
+**Structured data & config formats**
+
+| Module | What it does |
+|---|---|
+| `json` | JSON encode/decode |
+| `csv` | CSV/TSV reading & writing |
+| `configparser` | INI files |
+| `tomllib` (3.11+) | Parse TOML (pyproject files) |
+| `netrc` | `.netrc` login files |
+| `email` | MIME message building/parsing (package) |
+| `mailbox` | mbox/MH mail folder access |
+| `mimetypes` | Filename ↔ MIME type mapping |
+
+**Markup & internet data**
+
+| Module | What it does |
+|---|---|
+| `html` / `html.parser` / `html.entities` | HTML escape/parse |
+| `xml.etree.ElementTree` | The sane XML API |
+| `xml.dom` / `xml.dom.minidom` / `xml.dom.pulldom` | DOM APIs |
+| `xml.sax` | SAX (streaming) parsing |
+| `xml.parsers.expat` | Expat parser bindings |
+| `base64` | Base16/32/64 encoding |
+| `quopri` | Quoted-printable encoding |
+| `urllib.parse` | URL splitting/joining/encoding |
+
+**Networking**
+
+| Module | What it does |
+|---|---|
+| `socket` | BSD sockets (TCP/UDP/Unix) |
+| `ssl` | TLS/SSL wrapping |
+| `socketserver` | TCP/UDP server skeletons |
+| `ipaddress` | IPv4/IPv6 address & network math |
+| `uuid` | UUID generation (1/3/4/5) |
+| `mmap` | Memory-mapped files |
+
+**Internet protocols (clients & servers)**
+
+| Module | What it does |
+|---|---|
+| `urllib.request` / `urllib.error` / `urllib.robotparser` | URL fetching (stdlib HTTP) |
+| `http.client` | Low-level HTTP client |
+| `http.server` | The quick dev web server |
+| `http.cookies` / `http.cookiejar` | Cookie handling |
+| `ftplib` | FTP client |
+| `imaplib` | IMAP mail client |
+| `poplib` | POP3 mail client |
+| `smtplib` | SMTP sending |
+| `nntplib` † | Usenet — removed in 3.13 |
+| `telnetlib` † | Telnet — removed in 3.13 |
+| `xmlrpc.client` / `xmlrpc.server` | XML-RPC |
+| `webbrowser` | Open the user's browser |
+| `wsgiref` | WSGI server/utilities |
+
+**Crypto & hashing**
+
+| Module | What it does |
+|---|---|
+| `hashlib` | SHA-2/3, blake2, MD5 digests |
+| `hmac` | Keyed message authentication |
+| `secrets` | Crypto-safe tokens/random |
+
+**OS, platform & environment**
+
+| Module | What it does |
+|---|---|
+| `time` | Clock reading, sleeping, formatting |
+| `argparse` / `getopt` | CLI parsing (§22) |
+| `logging` (+ `.config`, `.handlers`) | Logging framework (§22) |
+| `gettext` / `locale` | Internationalization |
+| `platform` | OS/machine/Python detection |
+| `errno` | System error-code constants |
+| `ctypes` | Call C shared libraries |
+| `curses` | Terminal UIs (Unix; `windows-curses` on Win) |
+| `msvcrt` / `winreg` | Windows: MSVC runtime, registry |
+| `pwd` / `grp` / `termios` / `tty` / `pty` / `resource` / `syslog` / `posix` | Unix-only system interfaces |
+
+**Multimedia**
+
+| Module | What it does |
+|---|---|
+| `wave` | WAV file read/write |
+| `colorsys` | RGB ↔ HLS/HSV conversion |
+| *(removed 3.13)* `audioop`, `aifc`, `sunau`, `chunk`, `imghdr`, `sndhdr` | Legacy audio/image helpers — now third-party |
+
+**GUI & simple frameworks**
+
+| Module | What it does |
+|---|---|
+| `tkinter` (+ `ttk`, `scrolledtext`) | Standard GUI toolkit (Tcl/Tk) |
+| `turtle` | Turtle graphics (learning) |
+| `cmd` | Line-oriented command interpreters |
+| `shlex` | Shell-like lexing/quoting |
+
+**Development, testing & debugging**
+
+| Module | What it does |
+|---|---|
+| `typing` | Type hints: `Optional`, `Literal`, `Protocol`… |
+| `doctest` | Tests embedded in docstrings |
+| `unittest` (+ `unittest.mock`) | xUnit test framework (§7) |
+| `pydoc` | Doc extraction (`python -m pydoc`) |
+| `pdb` / `bdb` | Debugger engine & builder base (§9) |
+| `faulthandler` | Tracebacks on hard crashes |
+| `timeit` | Micro-benchmarks |
+| `trace` | Execution tracing |
+| `tracemalloc` | Memory-allocation tracing |
+| `code` / `codeop` | Embedded interactive interpreters |
+
+**Import system & language services**
+
+| Module | What it does |
+|---|---|
+| `importlib` (+ `.resources`, `.metadata`) | Programmatic imports, data files, dist info |
+| `zipimport` | Import from zip archives |
+| `modulefinder` | Find modules a script imports |
+| `ast` | Parse/transform Python source trees |
+| `symtable` | Symbol tables from the compiler |
+| `token` / `keyword` / `tokenize` | Language tokens & keywords |
+| `tabnanny` | Ambiguous-indentation checker |
+| `pyclbr` | Class/function browser info |
+| `py_compile` / `compileall` | Bytecode compilation |
+| `dis` | Disassembler |
+
+**Removed-in-3.13 watchlist** (you'll still meet these in old code): `aifc` `audioop` `cgi` `cgitb` `chunk` `crypt` `imghdr` `mailcap` `msilib` `nis` `nntplib` `ossaudiodev` `pipes` `sndhdr` `spwd` `sunau` `telnetlib` `uu` `xdrlib` `lib2to3` — plus `formatter`/`parser` (gone in 3.10) and `asyncore`/`asynchat` (gone in 3.12).
+
+### H.2 Essential Third-Party Libraries by Domain
+
+**Web frameworks & APIs**
+
+| Library | What it does |
+|---|---|
+| `django` | The batteries-included web framework (ORM, admin, auth) |
+| `flask` | Micro-framework — you choose the pieces |
+| `fastapi` | Modern async APIs with automatic OpenAPI docs |
+| `starlette` | The ASGI toolkit under FastAPI |
+| `litestar` | Fast, typed, async framework (FastAPI rival) |
+| `sanic` / `tornado` | High-performance async frameworks |
+| `bottle` / `pyramid` | Minimal / mature mid-size options |
+| `jinja2` | The template engine (used by Flask & Ansible) |
+| `uvicorn` / `gunicorn` / `hypercorn` | ASGI / WSGI production servers |
+| `strawberry-graphql` / `graphene` | GraphQL APIs |
+
+**HTTP & network clients**
+
+| Library | What it does |
+|---|---|
+| `requests` | The human HTTP client — de-facto standard |
+| `httpx` | requests-compatible + async + HTTP/2 |
+| `aiohttp` | Async HTTP client & server |
+| `urllib3` | Power underneath requests |
+| `websockets` / `websocket-client` | Async / sync WebSocket |
+| `pysocks` / `python-socks` | SOCKS proxies |
+
+**Web scraping & parsing**
+
+| Library | What it does |
+|---|---|
+| `beautifulsoup4` | Tolerant HTML parsing & extraction |
+| `lxml` | Fast C XML/HTML (XPath, XSLT) |
+| `scrapy` | Full crawling/spider framework |
+| `selectolax` / `parsel` | Very fast HTML parsers / XPath+CSS selectors |
+
+**Databases & ORMs**
+
+| Library | What it does |
+|---|---|
+| `sqlalchemy` | The SQL toolkit & ORM — industry standard |
+| `peewee` / `pony` / `tortoise-orm` | Small sync ORMs / async ORM |
+| `alembic` | Schema migrations for SQLAlchemy |
+| `psycopg` (v3) / `psycopg2-binary` | PostgreSQL drivers |
+| `pymysql` / `mysql-connector-python` / `mariadb` | MySQL/MariaDB drivers |
+| `pymongo` / `motor` | MongoDB sync / async |
+| `redis` / `hiredis` | Redis client + C parser |
+| `elasticsearch` | Elasticsearch client |
+| `influxdb-client` | Time-series DB client |
+| `cassandra-driver` / `neo4j` | Wide-column / graph DB drivers |
+
+**Data analysis & dataframes**
+
+| Library | What it does |
+|---|---|
+| `numpy` | N-dim arrays — foundation of all science in Python |
+| `pandas` | DataFrames: wrangle, join, aggregate tabular data |
+| `polars` | Rust-powered DataFrames, much faster than pandas |
+| `pyarrow` | Columnar Arrow memory/format (parquet, interop) |
+| `dask` / `modin` | Parallel/out-of-core pandas scaling |
+| `great-expectations` / `pandera` | Data validation |
+
+**Visualization**
+
+| Library | What it does |
+|---|---|
+| `matplotlib` | The plotting foundation |
+| `seaborn` | Statistical charts on matplotlib |
+| `plotly` | Interactive charts & dashboards |
+| `bokeh` | Interactive browser visualizations |
+| `altair` | Declarative statistical graphics |
+| `folium` | Leaflet maps |
+
+**Machine learning & statistics**
+
+| Library | What it does |
+|---|---|
+| `scikit-learn` | Classical ML: regression, trees, clustering, pipelines |
+| `xgboost` / `lightgbm` / `catboost` | Gradient-boosting champions |
+| `statsmodels` | Classical statistics & econometrics |
+| `optuna` | Hyperparameter optimization |
+| `imbalanced-learn` | Resampling for skewed classes |
+
+**Deep learning & AI**
+
+| Library | What it does |
+|---|---|
+| `torch` (PyTorch) | Research-favorite deep-learning framework |
+| `tensorflow` / `keras` | Production DL stack |
+| `jax` / `flax` | Composable autodiff on GPU/TPU |
+| `transformers` (HF) | Pretrained models — NLP and beyond |
+| `diffusers` | Stable-diffusion image generation |
+| `ultralytics` | YOLO object detection |
+| `openai` / `anthropic` / `google-genai` | LLM provider SDKs |
+| `langchain` / `llama-index` | LLM application frameworks |
+| `sentence-transformers` | Embeddings & semantic search |
+| `whisper` (openai-whisper) | Speech-to-text |
+| `onnx` / `onnxruntime` | Model interchange & inference |
+| `mlflow` / `wandb` / `ray` | Experiment tracking / distributed compute |
+
+**Computer vision & images**
+
+| Library | What it does |
+|---|---|
+| `opencv-python` | The CV swiss army knife |
+| `pillow` | Image read/write/resize (PIL fork) |
+| `scikit-image` | CV algorithms on numpy arrays |
+| `imageio` / `imgaug` / `albumentations` | IO for all formats / training augmentations |
+| `easyocr` / `paddleocr` | OCR engines |
+| `cairosvg` / `wand` | SVG→PNG / ImageMagick bindings |
+
+**Audio, video & multimedia**
+
+| Library | What it does |
+|---|---|
+| `pydub` | Easy audio cutting/conversion |
+| `librosa` | Music & audio analysis |
+| `soundfile` / `pyaudio` | Read-write sound / record & play |
+| `speechrecognition` | STT front-ends |
+| `moviepy` / `ffmpeg-python` | Video editing / ffmpeg bindings |
+
+**GUI & desktop apps**
+
+| Library | What it does |
+|---|---|
+| `pyside6` / `pyqt6` | Qt applications (official / commercial-ish) |
+| `kivy` | Natural UIs, touch, mobile |
+| `wxpython` | Native-widget toolkit |
+| `customtkinter` | Modern-looking tkinter |
+| `dearpygui` | GPU-rendered immediate-mode GUI |
+| `flet` / `nicegui` | Flutter-style / web-tech UIs in Python |
+| `pystray` / `pywin32` | Tray icons / full Windows API |
+
+**Games**
+
+| Library | What it does |
+|---|---|
+| `pygame` / `pygame-ce` | The classic 2D game engine (CE = community fork) |
+| `arcade` | Modern 2D, OpenGL |
+| `panda3d` / `ursina` | 3D engine / cute 3D wrapper |
+| `renpy` | Visual novels |
+
+**CLI & terminal UX**
+
+| Library | What it does |
+|---|---|
+| `typer` / `click` | Type-hint / decorator CLI builders |
+| `rich` | Rich text, tables, progress in terminal |
+| `textual` | Full TUI apps (by the rich author) |
+| `prompt-toolkit` / `questionary` / `inquirer` | Interactive prompts |
+| `tqdm` / `alive-progress` | Progress bars for loops |
+| `colorama` / `blessed` | Cross-platform colors / terminal control |
+
+**Testing & quality**
+
+| Library | What it does |
+|---|---|
+| `pytest` (+ `pytest-cov`, `pytest-xdist`, `pytest-mock`, `pytest-asyncio`) | Testing framework & plugins |
+| `hypothesis` | Property-based testing |
+| `tox` / `nox` | Matrix test automation |
+| `faker` / `factory-boy` | Fake data / object factories |
+| `selenium` / `playwright` | Browser automation & E2E |
+| `locust` | Load testing |
+| `robotframework` | Keyword-driven acceptance testing |
+| `coverage` | Line/branch coverage |
+
+**Linting, formatting & typing**
+
+| Library | What it does |
+|---|---|
+| `ruff` ⭐ | Linter+formatter, Rust-fast (replaces many below) |
+| `black` / `isort` | Formatter / import sorter |
+| `mypy` / `pyright` | Static type checkers |
+| `pylint` / `flake8` / `pydocstyle` | Classic linters / docstring style |
+| `bandit` / `semgrep` | Security scanners |
+| `pre-commit` | Git hook manager |
+| `pylint-django` etc. | Framework-aware plugins |
+
+**Packaging, build & environments**
+
+| Library | What it does |
+|---|---|
+| `pip` / `setuptools` / `wheel` | The install/build base |
+| `build` / `twine` | Build sdist+wheel / upload to PyPI |
+| `poetry` / `pdm` / `hatch` | Project managers |
+| `uv` ⭐ | Blazing-fast everything (pip/venv/pipx/python) |
+| `pipx` | Install CLI apps isolated |
+| `pipenv` / `virtualenv` | Legacy env managers |
+| `pyinstaller` / `nuitka` / `cx-freeze` | Freeze to standalone executables |
+| `shiv` / `pex` | Zipapps — single-file executables |
+| `conda` / `mamba` | Science-oriented env/package managers |
+
+**Task queues, scheduling & workflow**
+
+| Library | What it does |
+|---|---|
+| `celery` | Distributed task queue standard |
+| `rq` / `dramatiq` / `huey` | Lighter task queues |
+| `apscheduler` | In-process job scheduling |
+| `airflow` / `prefect` / `dagster` | Data-pipeline orchestrators |
+| `kafka-python` / `confluent-kafka` | Kafka clients |
+| `pika` | RabbitMQ (AMQP) |
+| `pyzmq` | ZeroMQ messaging |
+| `nats-py` | NATS messaging |
+
+**Serialization, validation & settings**
+
+| Library | What it does |
+|---|---|
+| `pydantic` (v2) | Data validation via type hints (FastAPI's core) |
+| `attrs` / `cattrs` | Class builder without inheritance |
+| `marshmallow` | Schema serialization |
+| `orjson` / `ujson` | Ultra-fast JSON |
+| `msgspec` ⭐ | Fast JSON/msgpack + validation |
+| `protobuf` / `flatbuffers` / `thrift` | Binary schema formats |
+| `python-dotenv` / `pydantic-settings` / `dynaconf` | Env/config loading |
+| `hydra-core` / `omegaconf` | Hierarchical experiment configs |
+
+**Office documents & PDFs**
+
+| Library | What it does |
+|---|---|
+| `openpyxl` / `xlsxwriter` | Excel xlsx read-write / fast writing |
+| `python-docx` / `python-pptx` | Word / PowerPoint editing |
+| `pypdf` / `pdfplumber` | PDF merge/split / text+table extraction |
+| `reportlab` / `fpdf2` / `weasyprint` | PDF generation (programmatic / HTML→PDF) |
+| `camelot` / `tabula-py` | Table extraction from PDFs |
+| `python-docx-template` / `docxtpl` | Jinja2 templates for Word |
+| `pandoc` (`pypandoc`) | Universal document conversion |
+
+**Date, time & utilities**
+
+| Library | What it does |
+|---|---|
+| `python-dateutil` | Parser (`parse("3 days ago"…)`), rrule |
+| `pendulum` / `arrow` | Nicer datetime libraries |
+| `pytz` | Legacy tz database (use `zoneinfo` now) |
+| `freezegun` / `time-machine` | Freeze time in tests |
+| `humanize` / `prettytable` / `tabulate` | Human strings / ASCII tables |
+| `more-itertools` / `toolz` | Even more iterator/functional helpers |
+| `cytoolz` | C-accelerated toolz |
+
+**System, environment & observability**
+
+| Library | What it does |
+|---|---|
+| `psutil` | Processes, CPU, memory, disks, network |
+| `watchdog` | Cross-platform filesystem events |
+| `pyperclip` | Clipboard access |
+| `send2trash` | Safe delete-to-recycle-bin |
+| `diskcache` / `cachetools` / `aiocache` | Persistent / in-proc / async caches |
+| `loguru` / `structlog` | Painless / structured logging |
+| `sentry-sdk` / `opentelemetry` | Crash reporting / tracing |
+
+**Security & crypto**
+
+| Library | What it does |
+|---|---|
+| `cryptography` | The modern crypto library (TLS, X.509, AEAD) |
+| `pyjwt` / `python-jose` | JWT encode/verify |
+| `passlib` / `argon2-cffi` / `bcrypt` | Password hashing |
+| `authlib` | OAuth1/2, OIDC |
+| `paramiko` / `fabric` / `netmiko` | SSH / SSH automation / network devices |
+| `scapy` | Packet crafting & sniffing |
+| `impacket` / `pwntools` | Windows protocols CTF/pentest toolkit |
+| `certifi` | The CA certificate bundle trusted by requests/httpx |
+
+**Science & engineering**
+
+| Library | What it does |
+|---|---|
+| `scipy` | Optimization, signal, linear algebra, stats |
+| `sympy` | Symbolic math (CAS) |
+| `numba` / `cython` | JIT / compile Python to C speed |
+| `networkx` | Graph algorithms |
+| `pint` / `uncertainties` | Units / error propagation |
+| `astropy` | Astronomy |
+| `biopython` | Bioinformatics |
+| `qutip` | Quantum physics |
+| `geopandas` / `shapely` / `rasterio` | Geospatial dataframes / geometry / rasters |
+
+**Docs, notebooks & education**
+
+| Library | What it does |
+|---|---|
+| `jupyterlab` / `notebook` / `ipython` | Interactive computing |
+| `ipywidgets` / `papermill` | Widget UIs / parameterized notebooks |
+| `sphinx` / `mkdocs-material` | Doc site generators |
+| `mkdocstrings` / `autodoc` | API docs from docstrings |
+| `pdoc` | Zero-config API docs |
+
+### H.3 How to choose a library (30-second method)
+
+1. `pip index versions name` — is it alive? Last release recent?
+2. Check PyPI page: does it support your Python version? Wheel available (no compiler needed)?
+3. Gut-check health: maintained repo, issues answered, tests, license permissive (MIT/BSD/Apache)?
+4. Any heavyweight deps it drags in? (`pip install --dry-run`)
+5. Search “alternatives to X” — the ecosystem moves (requests→httpx, pandas→polars, pip→uv).
+6. For anything security-sensitive: is it widely audited (`cryptography`, not random forks)?
+
+Every package above is installable with `pip install name` / `uv pip install name` (§3–§4) — and browsable at `pypi.org/project/<name>` with docs, changelog and dependency info.
+
 ---
 
 ## Keep Learning
@@ -1976,4 +2547,4 @@ KeyError: 'qty'                           ← …the LAST line names the disease
 - 7-day path with this doc: Day 1 §0–1 · Day 2 §11–14 · Day 3 §15–17 · Day 4 §18–19 · Day 5 §20 · Day 6 §21–22 · Day 7 T1–T10 of your choice
 - When stuck: read the traceback bottom-up → `help()`/`dir()` → docs.python.org → search the exact error line
 
-*End of reference — 70 built-ins, 40+ tool subcommand tables, complete language core, 10 tutorials. Happy hissing.* 🐍
+*End of reference — 70 built-ins, 40+ tool subcommand tables, complete language core, 10 tutorials, complete library catalog. Happy hissing.* 🐍
