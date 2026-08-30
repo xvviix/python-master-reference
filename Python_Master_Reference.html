@@ -3,87 +3,277 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
 <title>The Complete Python Master Reference — CLI · Language · Standard Library</title>
+<script>
+(function(){try{var t=localStorage.getItem('pymr-theme');
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.dataset.theme=t;}catch(e){}})();
+</script>
 <style>
-:root{--bg:#f6f8fa;--bg2:#fff;--side:#122029;--side2:#0b161d;--fg:#1c2430;--fg2:#5a6472;
---accent:#2f7dae;--accent2:#ffd43b;--border:#d9dee6;--code-bg:#eef1f5;--pre-bg:#101a22;--pre-fg:#d7e4ec;
---shadow:0 2px 10px rgba(10,20,30,.08)}
-html[data-theme=dark]{--bg:#0f151b;--bg2:#151d26;--side:#0a1117;--side2:#070d12;--fg:#d7dee8;--fg2:#8b96a5;
---accent:#4cc2ff;--accent2:#ffd43b;--border:#28323f;--code-bg:#1c2530;--pre-bg:#0a1118;--pre-fg:#cfd9e5;
---shadow:0 2px 12px rgba(0,0,0,.45)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55}
-a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}[id]{scroll-margin-top:84px}
+/* ───────── Telegram-inspired design system ───────── */
+:root{
+  --tg-blue:#3390ec; --tg-blue-2:#64b5ef; --tg-green:#4dcd5e;
+  --bg:#eef2f6; --bg-grad:radial-gradient(1200px 800px at 80% -10%, #dfe9f4 0%, transparent 60%),
+                   radial-gradient(1000px 700px at -10% 110%, #e2ecf7 0%, transparent 55%);
+  --card:#ffffff; --sidebar:#ffffff; --border:#e4e9ee; --border-2:#eef2f5;
+  --fg:#111920; --fg-2:#707579; --fg-3:#8d969d;
+  --hover:rgba(0,0,0,.045); --active-soft:rgba(51,144,236,.09);
+  --code-bg:#f2f5f8; --pre-bg:#1d2530; --pre-fg:#dbe6f0; --pre-border:#2a3441;
+  --shadow-sm:0 1px 2px rgba(16,32,64,.06),0 1px 3px rgba(16,32,64,.08);
+  --shadow-md:0 4px 14px rgba(16,32,64,.10),0 2px 4px rgba(16,32,64,.06);
+  --shadow-lg:0 12px 40px rgba(9,20,40,.18);
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-full:999px;
+  --topbar:rgba(255,255,255,.86);
+}
+html[data-theme="dark"]{
+  --bg:#0e1621; --bg-grad:radial-gradient(1200px 800px at 80% -10%, #132133 0%, transparent 60%),
+                   radial-gradient(1000px 700px at -10% 110%, #101c2c 0%, transparent 55%);
+  --card:#17212b; --sidebar:#17212b; --border:#233240; --border-2:#1c2835;
+  --fg:#e9eef3; --fg-2:#8fa0af; --fg-3:#718191;
+  --hover:rgba(255,255,255,.06); --active-soft:rgba(100,181,239,.13);
+  --code-bg:#202b38; --pre-bg:#0c1420; --pre-fg:#c9d7e2; --pre-border:#1b2733;
+  --topbar:rgba(23,33,43,.86);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.35); --shadow-md:0 4px 14px rgba(0,0,0,.4);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:15px; line-height:1.6; color:var(--fg);
+  background:var(--bg); background-image:var(--bg-grad); background-attachment:fixed;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+::selection{background:rgba(51,144,236,.25)}
+[id]{scroll-margin-top:76px}
+
+/* scrollbars */
+*{scrollbar-width:thin; scrollbar-color:var(--border) transparent}
+*::-webkit-scrollbar{width:9px;height:9px}
+*::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px;border:2px solid transparent;background-clip:content-box}
+*::-webkit-scrollbar-thumb:hover{background:var(--fg-3);background-clip:content-box}
+*::-webkit-scrollbar-track{background:transparent}
+
+a{color:var(--tg-blue);text-decoration:none;transition:color .15s}
+a:hover{color:var(--tg-blue-2);text-decoration:none}
+html[data-theme="dark"] a{color:#6ab3f3}
+.content a:not(.no-ul):hover{text-decoration:underline}
+
+/* ───────── progress bar ───────── */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:120;
+  background:linear-gradient(90deg,var(--tg-blue),var(--tg-blue-2));
+  border-radius:0 3px 3px 0; box-shadow:0 0 8px rgba(51,144,236,.55)}
+
+/* ───────── layout ───────── */
 .layout{display:flex;min-height:100vh}
-aside.sidebar{width:320px;flex:0 0 320px;background:linear-gradient(180deg,var(--side),var(--side2));color:#c6d4de;position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 14px 40px;border-right:1px solid rgba(255,255,255,.06)}
-.sidebar .brand{font-weight:700;font-size:15px;color:#fff;padding:6px 10px 12px;border-bottom:1px solid rgba(255,255,255,.09);margin-bottom:10px}
-.sidebar .brand .sub{display:block;font-weight:400;font-size:11.5px;color:#7f929f;margin-top:3px}
-main.content{flex:1;min-width:0;padding:0 40px 90px;max-width:1240px}.inner{max-width:1100px;margin:0 auto}
-.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:12px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.topbar h1{font-size:17px;margin:0 12px 0 0;flex:1 1 auto;min-width:200px}
-.searchwrap{position:relative;flex:0 1 380px;min-width:220px}
-#search{width:100%;padding:8px 64px 8px 34px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--fg);font-size:13.5px}
-#search:focus{outline:2px solid var(--accent);outline-offset:1px}
-.searchwrap .icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--fg2);font-size:13px;pointer-events:none}
-.searchwrap kbd{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:10.5px;color:var(--fg2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;background:var(--bg)}
-#matchcount{font-size:12px;color:var(--fg2);white-space:nowrap}
-.iconbtn{border:1px solid var(--border);background:var(--bg2);color:var(--fg);border-radius:8px;padding:7px 11px;cursor:pointer;font-size:14px}
-.iconbtn:hover{border-color:var(--accent)}#menuBtn{display:none}
-details.part{margin:2px 0 8px;border-radius:8px}
-details.part summary{cursor:pointer;list-style:none;padding:7px 10px;font-weight:600;font-size:13px;color:#e8f0f6;border-radius:8px;background:rgba(255,255,255,.05)}
-details.part summary::-webkit-details-marker{display:none}
-details.part summary::before{content:"\25B8  ";color:#6f8494}
-details.part[open] summary::before{content:"\25BE  "}
-details.part summary a{color:inherit}
-details.part ul{list-style:none;margin:4px 0 6px;padding:0 0 0 8px;border-left:1px solid rgba(255,255,255,.08)}
+aside.sidebar{
+  width:330px;flex:0 0 330px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+  background:var(--sidebar);border-right:1px solid var(--border);z-index:90;
+}
+.side-head{padding:14px 14px 10px;border-bottom:1px solid var(--border-2)}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 6px 12px}
+.avatar{width:46px;height:46px;flex:0 0 46px;border-radius:var(--r-full);
+  background:linear-gradient(135deg,var(--tg-blue),#2b6fb8);display:grid;place-items:center;
+  font-size:23px;box-shadow:0 3px 10px rgba(51,144,236,.35)}
+.brand .name{font-weight:700;font-size:15.5px;line-height:1.25}
+.brand .status{font-size:12px;color:var(--tg-blue);font-weight:500}
+.searchbox{position:relative;margin-top:4px}
+.searchbox svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--fg-3);pointer-events:none}
+#search{width:100%;border:none;border-radius:var(--r-full);background:var(--hover);
+  padding:10px 62px 10px 40px;font-size:13.5px;color:var(--fg);outline:none;
+  transition:background .2s,box-shadow .2s}
+#search::placeholder{color:var(--fg-3)}
+#search:focus{background:var(--card);box-shadow:0 0 0 2px var(--tg-blue),var(--shadow-sm)}
+#clearBtn{position:absolute;right:44px;top:50%;transform:translateY(-50%);border:none;background:none;
+  color:var(--fg-3);cursor:pointer;padding:4px;display:none;line-height:0;border-radius:50%}
+#clearBtn:hover{color:var(--fg)}
+.searchbox kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:10.5px;
+  color:var(--fg-3);border:1px solid var(--border);border-radius:5px;padding:1px 6px;background:var(--card)}
+.side-tools{display:flex;gap:6px;padding:8px 6px 2px}
+.toolchip{font-size:11.5px;color:var(--fg-2);background:var(--hover);border-radius:var(--r-full);padding:3px 10px}
+.minibtn{border:none;background:none;color:var(--fg-2);font-size:11.5px;cursor:pointer;
+  border-radius:var(--r-full);padding:3px 10px;transition:background .15s,color .15s}
+.minibtn:hover{background:var(--hover);color:var(--fg)}
+nav#tocnav{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:6px 10px 24px}
+
+/* TOC groups */
+details.part{margin:2px 0 4px}
+details.part>summary{list-style:none;cursor:pointer;user-select:none}
+details.part>summary::-webkit-details-marker{display:none}
+details.part>summary .sum-in{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--r-md);
+  font-weight:600;font-size:13px;color:var(--fg);transition:background .15s}
+details.part>summary:hover .sum-in{background:var(--hover)}
+.chev{width:16px;height:16px;flex:0 0 16px;color:var(--fg-3);transition:transform .25s ease}
+details.part[open]>summary .chev{transform:rotate(90deg)}
+details.part>summary .sum-in>a{color:inherit;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+details.part>summary .sum-in>a:hover{text-decoration:none;color:var(--tg-blue)}
+details.part ul{list-style:none;margin:2px 0 8px;padding:0}
 details.part li{margin:1px 0}
-details.part li a{display:block;padding:4px 9px;font-size:12.3px;color:#9fb2c0;border-radius:6px}
-details.part li.sub a{padding-left:22px;font-size:11.8px;color:#7e919e}
-details.part li a:hover{background:rgba(255,255,255,.07);color:#fff;text-decoration:none}
-details.part li a.active{background:var(--accent);color:#041018;font-weight:600}
+details.part li a{display:block;padding:6px 12px;font-size:12.6px;color:var(--fg-2);
+  border-radius:var(--r-md);transition:background .15s,color .15s;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+details.part li.sub a{padding-left:26px;font-size:12px;color:var(--fg-3)}
+details.part li a:hover{background:var(--hover);color:var(--fg)}
+details.part li a.active{
+  background:var(--tg-blue);color:#fff !important;font-weight:600;
+  box-shadow:0 2px 8px rgba(51,144,236,.35)}
 details.part li a.filtered{display:none}
-h1.doc-title{font-size:30px;margin:26px 0 6px;line-height:1.25}
-h1{font-size:26px;margin:38px 0 14px;padding-bottom:8px;border-bottom:3px solid var(--accent)}
-h2{font-size:21px;margin:34px 0 12px;padding-left:11px;border-left:4px solid var(--accent)}
-h3{font-size:16.5px;margin:24px 0 8px;color:var(--fg)}
-p{margin:10px 0}hr{border:0;border-top:1px solid var(--border);margin:34px 0}
-blockquote{margin:14px 0;padding:10px 16px;border-left:4px solid var(--accent2);background:var(--bg2);border-radius:0 8px 8px 0;color:var(--fg2)}
-blockquote code{color:var(--fg)}
-ul,ol{margin:10px 0;padding-left:26px}li{margin:4px 0}
-code{font-family:'Cascadia Code',Consolas,'JetBrains Mono',Menlo,monospace;font-size:.9em;background:var(--code-bg);padding:1.5px 5px;border-radius:5px;border:1px solid var(--border)}
-.section{border-radius:4px}.section.hidden{display:none}
-.table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow)}
-table{border-collapse:collapse;width:100%;font-size:13.4px;background:var(--bg2)}
-th,td{padding:7px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
-thead th{background:var(--code-bg);font-weight:700;font-size:12.6px;border-bottom:2px solid var(--accent);white-space:nowrap}
-tbody tr:nth-child(even){background:color-mix(in srgb,var(--code-bg) 45%,transparent)}
-tbody tr:hover{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+details.part.filtered{display:none}
+
+/* ───────── main column ───────── */
+main.content{flex:1;min-width:0}
+.topbar{
+  position:sticky;top:0;z-index:80;display:flex;align-items:center;gap:10px;
+  padding:10px 22px;background:var(--topbar);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.tb-title{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;min-width:0}
+.tb-title .mini-ava{width:30px;height:30px;border-radius:var(--r-full);display:none;place-items:center;
+  background:linear-gradient(135deg,var(--tg-blue),#2b6fb8);font-size:15px;
+  box-shadow:0 2px 6px rgba(51,144,236,.3)}
+#crumb{flex:1;min-width:0;text-align:center;font-size:13px;color:var(--fg-2);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:opacity .3s}
+.iconbtn{display:grid;place-items:center;width:38px;height:38px;border:none;border-radius:var(--r-full);
+  background:transparent;color:var(--fg-2);cursor:pointer;transition:background .15s,color .15s,transform .15s}
+.iconbtn:hover{background:var(--hover);color:var(--tg-blue)}
+.iconbtn:active{transform:scale(.92)}
+#themeToggle .sun{display:none}
+html[data-theme="dark"] #themeToggle .sun{display:block}
+html[data-theme="dark"] #themeToggle .moon{display:none}
+#menuBtn,#searchBtn{display:none}
+.inner{max-width:880px;margin:0 auto;padding:26px 34px 100px}
+
+/* ───────── typography ───────── */
+h1.doc-title{font-size:31px;margin:18px 0 4px;line-height:1.22;letter-spacing:-.4px}
+h1{font-size:26px;margin:44px 0 16px;letter-spacing:-.3px;line-height:1.25;
+  padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-sm)}
+h2{font-size:21px;margin:36px 0 12px;letter-spacing:-.2px;display:flex;align-items:center;gap:10px}
+h2::before{content:"";width:4px;height:22px;border-radius:3px;flex:0 0 4px;
+  background:linear-gradient(180deg,var(--tg-blue),var(--tg-blue-2))}
+h3{font-size:16px;margin:26px 0 8px;color:var(--fg)}
+p{margin:11px 0}
+hr{border:none;height:1px;background:var(--border);margin:36px 0}
+blockquote{
+  margin:16px 0;padding:12px 18px;border-radius:var(--r-md);border-left:4px solid var(--tg-blue);
+  background:var(--active-soft);color:var(--fg);
+}
+blockquote code{background:rgba(51,144,236,.1)}
+ul,ol{margin:10px 0;padding-left:26px}
+li{margin:4px 0}
+code{font-family:ui-monospace,"Cascadia Code",Consolas,"JetBrains Mono",Menlo,monospace;font-size:.88em;
+  background:var(--code-bg);padding:2px 6px;border-radius:6px;border:1px solid var(--border-2);
+  color:var(--fg);word-break:break-word}
+.section{border-radius:4px;content-visibility:auto;contain-intrinsic-size:auto 800px}
+.section.hidden{display:none}
+
+/* tables */
+.table-wrap{overflow-x:auto;margin:16px 0;border:1px solid var(--border);border-radius:var(--r-lg);
+  background:var(--card);box-shadow:var(--shadow-sm)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:9px 14px;text-align:left;border-bottom:1px solid var(--border-2);vertical-align:top}
+thead th{background:var(--active-soft);font-weight:700;font-size:12.4px;color:var(--fg);
+  border-bottom:2px solid var(--tg-blue);white-space:nowrap;position:sticky;top:0}
+tbody tr{transition:background .12s}
+tbody tr:nth-child(even){background:color-mix(in srgb,var(--hover) 55%,transparent)}
+tbody tr:hover{background:var(--active-soft)}
+tbody tr:last-child td{border-bottom:none}
 td code{white-space:nowrap}
-.codewrap{margin:14px 0;border-radius:10px;overflow:hidden;border:1px solid #24333f;box-shadow:var(--shadow)}
-.codebar{display:flex;justify-content:space-between;align-items:center;background:#182530;padding:6px 12px;font-size:11.5px;color:#8b9dad}
-.codebar .lang{text-transform:uppercase;letter-spacing:.08em;font-weight:600}
-.copybtn{background:#22303d;color:#c6d4de;border:1px solid #33455a;border-radius:6px;font-size:11.5px;padding:3px 12px;cursor:pointer}
-.copybtn:hover{background:#2d3f51}
-pre{margin:0;background:var(--pre-bg);padding:14px 16px;overflow-x:auto}
-pre code{background:none;border:0;padding:0;color:var(--pre-fg);font-size:13px;line-height:1.5;white-space:pre}
-#toTop{position:fixed;right:22px;bottom:22px;z-index:60;width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);color:var(--fg);font-size:17px;cursor:pointer;box-shadow:var(--shadow);display:none}
-#toTop.show{display:block}
-.footer-note{margin-top:60px;padding-top:16px;border-top:1px solid var(--border);color:var(--fg2);font-size:12.5px;text-align:center}
-@media (max-width:920px){#menuBtn{display:inline-block}
-aside.sidebar{position:fixed;left:0;top:0;z-index:100;transform:translateX(-105%);transition:transform .25s ease;height:100vh}
-body.nav-open aside.sidebar{transform:translateX(0);box-shadow:0 0 40px rgba(0,0,0,.5)}
-body.nav-open::after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
-main.content{padding:0 16px 70px}.topbar h1{font-size:14.5px}}
-@media print{aside.sidebar,.topbar,#toTop,.copybtn,.codebar{display:none!important}
-.section.hidden{display:block!important}body{background:#fff;color:#000}
-main.content{max-width:100%;padding:0}.table-wrap{box-shadow:none;overflow:visible}
-pre{white-space:pre-wrap;word-break:break-all}}
+
+/* code blocks */
+.codewrap{margin:16px 0;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--pre-border);
+  box-shadow:var(--shadow-md)}
+.codebar{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  background:#141c27;padding:7px 8px 7px 16px}
+.codebar .lang{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:#7d8fa3}
+.copybtn{display:inline-flex;align-items:center;gap:6px;border:none;cursor:pointer;
+  background:rgba(255,255,255,.07);color:#c3d2df;font-size:11.5px;font-weight:600;
+  padding:5px 12px;border-radius:var(--r-full);transition:background .15s,color .15s,transform .1s}
+.copybtn:hover{background:rgba(255,255,255,.14);color:#fff}
+.copybtn:active{transform:scale(.95)}
+.copybtn.done{background:var(--tg-green);color:#08250f}
+pre{margin:0;background:var(--pre-bg);padding:15px 18px;overflow-x:auto}
+pre code{background:none;border:none;padding:0;color:var(--pre-fg);font-size:13px;line-height:1.55;white-space:pre}
+
+/* FAB */
+#toTop{position:fixed;right:24px;bottom:24px;z-index:110;width:46px;height:46px;border-radius:var(--r-full);
+  border:none;background:var(--tg-blue);color:#fff;font-size:18px;cursor:pointer;
+  box-shadow:0 6px 20px rgba(51,144,236,.45);opacity:0;transform:scale(.4) translateY(10px);
+  pointer-events:none;transition:opacity .25s,transform .25s cubic-bezier(.34,1.56,.64,1)}
+#toTop.show{opacity:1;transform:scale(1) translateY(0);pointer-events:auto}
+#toTop:hover{background:var(--tg-blue-2)}
+
+.footer-note{margin-top:64px;padding:16px;border-radius:var(--r-md);text-align:center;
+  color:var(--fg-3);font-size:12.5px;background:var(--hover)}
+
+/* search chip */
+#matchcount{font-size:12px;color:var(--tg-blue);font-weight:600;background:var(--active-soft);
+  border-radius:var(--r-full);padding:3px 11px;white-space:nowrap;display:none}
+#matchcount.show{display:inline-block}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);z-index:130;
+  background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:var(--r-full);
+  padding:9px 20px;font-size:13px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;
+  transition:opacity .25s,transform .25s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* theme transition */
+html.theming *{transition:background-color .25s,border-color .25s,color .25s !important}
+
+/* ───────── mobile ───────── */
+@media (max-width:960px){
+  #menuBtn,#searchBtn{display:grid}
+  .tb-title .mini-ava{display:grid}
+  .tb-title .tname{display:none}
+  aside.sidebar{position:fixed;left:0;top:0;transform:translateX(-106%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+    box-shadow:none;width:320px;flex-basis:320px}
+  body.nav-open aside.sidebar{transform:translateX(0);box-shadow:var(--shadow-lg)}
+  body.nav-open #scrim{opacity:1;pointer-events:auto}
+  #scrim{position:fixed;inset:0;background:rgba(10,20,35,.45);z-index:85;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(2px)}
+  .inner{padding:18px 16px 90px}
+  h1{font-size:22px;padding:12px 14px}
+  #crumb{display:none}
+}
+@media print{
+  aside.sidebar,.topbar,#toTop,.copybtn,.codebar,#progress,#toast,#scrim{display:none!important}
+  .section.hidden{display:block!important;content-visibility:visible!important}
+  body{background:#fff;color:#000}
+  .inner{max-width:100%;padding:0}
+  .table-wrap,.codewrap{box-shadow:none;break-inside:avoid}
+  pre{white-space:pre-wrap;word-break:break-all}
+  h1{background:none;border:none;box-shadow:none;padding:0}
+}
 </style>
 </head>
 <body>
+<div id="progress"></div>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
-    <div class="brand">🐍 Python Master Reference<span class="sub">CLI tools · the whole language · stdlib · 20 tutorials · every library</span></div>
+    <div class="side-head">
+      <div class="brand">
+        <div class="avatar">🐍</div>
+        <div>
+          <div class="name">Python Master Reference</div>
+          <div class="status">online · 20 tutorials · every library</div>
+        </div>
+      </div>
+      <div class="searchbox">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" placeholder="Search the reference…" autocomplete="off" spellcheck="false">
+        <button id="clearBtn" type="button" aria-label="Clear search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <kbd>/</kbd>
+      </div>
+      <div class="side-tools">
+        <span class="toolchip" id="chipSections"></span>
+        <span style="flex:1"></span>
+        <button class="minibtn" id="expandAll" type="button">Expand all</button>
+        <button class="minibtn" id="collapseAll" type="button">Collapse</button>
+      </div>
+    </div>
     <nav id="tocnav">
 <details open class="part"><summary><a href="#the-complete-python-master-reference">🐍 The Complete Python Master Reference</a></summary><ul>
 <li class="main"><a href="#table-of-contents">Table of Contents</a></li>
@@ -214,15 +404,19 @@ pre{white-space:pre-wrap;word-break:break-all}}
   </aside>
   <main class="content">
     <div class="topbar">
-      <button class="iconbtn" id="menuBtn" title="Menu">☰</button>
-      <h1>🐍 The Complete Python Master Reference</h1>
-      <div class="searchwrap">
-        <span class="icon">🔍</span>
-        <input id="search" type="search" placeholder="Search commands, sections, tutorials&hellip;" autocomplete="off">
-        <kbd>/</kbd>
-      </div>
+      <button class="iconbtn" id="menuBtn" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="tb-title"><span class="mini-ava">🐍</span><span class="tname">Python Master Reference</span></div>
+      <div id="crumb"></div>
       <span id="matchcount"></span>
-      <button class="iconbtn" id="themeToggle" title="Toggle theme">🌙</button>
+      <button class="iconbtn" id="searchBtn" aria-label="Search">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <button class="iconbtn" id="themeToggle" aria-label="Toggle theme">
+        <svg class="moon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+        <svg class="sun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="4.4"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      </button>
     </div>
     <div class="inner" id="docbody">
 <h1 id="the-complete-python-master-reference">🐍 The Complete Python Master Reference</h1>
@@ -256,7 +450,7 @@ pre{white-space:pre-wrap;word-break:break-all}}
 <p>Upgrade once comfortable: <code>$ pip install ipython</code> → run <code>ipython</code>. Colored output, magic commands (<code>%</code>), <code>?</code> help, shell escape (<code>!ls</code>), and syntax-highlighted input.</p>
 <h2 id="05-virtual-environments-the-packaging-zoo">0.5 Virtual environments &amp; the packaging zoo</h2>
 <p><strong>The problem:</strong> project A needs <code>requests==2.31</code>, project B needs <code>2.32</code>. Install both into one global Python → pain. <strong>The fix:</strong> per-project isolated environments.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>python -m venv .venv            # 1. create (one-time per project)
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>python -m venv .venv            # 1. create (one-time per project)
 source .venv/bin/activate       # 2. activate (Linux/macOS)
 .venv\Scripts\activate          #    (Windows CMD/PowerShell)
 python -m pip install -U pip    # 3. fresh envs ship an old pip — upgrade
@@ -267,7 +461,7 @@ deactivate                      # 5. leave the env</code></pre></div>
 <h2 id="06-getting-help-anywhere">0.6 Getting help anywhere</h2>
 <div class="table-wrap"><table><thead><tr><th> Where </th><th> Command </th></tr></thead><tbody><tr><td> REPL </td><td> <code>help(len)</code>, <code>help("re")</code>, <code>dir(str)</code> </td></tr><tr><td> Shell docs </td><td> <code>python -m pydoc re.findall</code>, <code>pydoc -b</code> (browser), <code>pydoc -w module</code> (writes .html) </td></tr><tr><td> Signatures live </td><td> <code>import inspect; inspect.signature(func)</code> </td></tr><tr><td> Official docs </td><td> <a href="https://docs.python.org/3/" target="_blank" rel="noopener">docs.python.org/3</a> — tutorial, library reference, HOWTOs </td></tr><tr><td> Error → answer </td><td> Paste the <strong>last line</strong> of a traceback into a search; add “python3” </td></tr><tr><td> PEPs </td><td> Index of Python Enhancement Proposals — the design documents (<code>peps.python.org</code>) </td></tr></tbody></table></div>
 <h2 id="07-your-first-10-programs">0.7 Your first 10 programs</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># 1 — print &amp; arithmetic
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># 1 — print &amp; arithmetic
 print("Hello, Python!", 2 + 2, 10 / 4, 10 // 4, 10 % 4, 2 ** 10)
 
 # 2 — variables need no declarations
@@ -338,7 +532,7 @@ print(date.today(), "· cwd:", Path.cwd().name)</code></pre></div>
 <div class="table-wrap"><table><thead><tr><th> Command </th><th> What it gives you </th></tr></thead><tbody><tr><td> <code>python -m http.server 8000</code> </td><td> Instant web server for the current folder (add <code>--bind 127.0.0.1</code>, <code>--directory path</code>) </td></tr><tr><td> <code>python -m http.server 8000 --cgi</code> † </td><td> CGI mode (removed 3.13) </td></tr><tr><td> <code>python -m json.tool file.json</code> </td><td> Pretty-print / validate JSON (<code>--indent 2</code>, <code>-</code> stdin) </td></tr><tr><td> <code>python -m json.tool --json-lines f.ndjson</code> </td><td> Validate newline-delimited JSON </td></tr><tr><td> <code>python -m timeit "‘-’.join(map(str,range(50)))"</code> </td><td> Micro-benchmark a snippet </td></tr><tr><td> <code>python -m cProfile -s cumulative script.py</code> </td><td> Profile a whole program (§9) </td></tr><tr><td> <code>python -m pstats dump.prof</code> </td><td> Interactive profile browser </td></tr><tr><td> <code>python -m pdb script.py</code> </td><td> Run under the debugger </td></tr><tr><td> <code>python -m pydoc re.sub</code> / <code>pydoc -b</code> / <code>-p 1234</code> </td><td> Docs in terminal / browser / port </td></tr><tr><td> <code>python -m zipfile -l arch.zip</code> </td><td> List zip contents </td></tr><tr><td> <code>python -m zipfile -e arch.zip dir/</code> / <code>-c arch.zip files…</code> </td><td> Extract / create </td></tr><tr><td> <code>python -m tarfile -l/-e/-c …</code> </td><td> Same for tar archives </td></tr><tr><td> <code>python -m base64 file</code> </td><td> Encode/decode base64 from CLI </td></tr><tr><td> <code>python -m compileall src/</code> </td><td> Pre-compile bytecode (deployment/syntax check) </td></tr><tr><td> <code>python -m ensurepip --upgrade</code> </td><td> Bootstrap/repair pip </td></tr><tr><td> <code>python -m site</code> </td><td> Show module search paths </td></tr><tr><td> <code>python -m sysconfig</code> </td><td> Build/interpreter configuration </td></tr><tr><td> <code>python -m unittest discover</code> </td><td> Run test suite (§7) </td></tr><tr><td> <code>python -m venv .venv</code> </td><td> Environments (§4) </td></tr><tr><td> <code>python -m webbrowser -t "https://x"</code> </td><td> Open a URL in a browser </td></tr><tr><td> <code>python -m ast script.py</code> </td><td> Dump the parse tree </td></tr><tr><td> <code>python -m dis script.py</code> </td><td> Disassemble to bytecode </td></tr><tr><td> <code>python -m token</code> </td><td> Tokenizer dump </td></tr><tr><td> <code>python -m textwrap</code>? — no CLI </td><td> ✗ (library only; listed so you don't hunt) </td></tr><tr><td> <code>python -m this</code> </td><td> The Zen of Python 🎶 </td></tr><tr><td> <code>python -m antigravity</code> </td><td> 🪁 xkcd 352. You deserve a break </td></tr></tbody></table></div>
 <h2 id="6-packaging-publishing">6. Packaging &amp; Publishing</h2>
 <p><strong>Anatomy of a <code>pyproject.toml</code></strong> (the modern standard — one file, no setup.py needed):</p>
-<div class="codewrap"><div class="codebar"><span class="lang">toml</span><button class="copybtn" type="button">Copy</button></div><pre><code>[build-system]
+<div class="codewrap"><div class="codebar"><span class="lang">toml</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>[build-system]
 requires = ["setuptools&gt;=69"]
 build-backend = "setuptools.build_meta"
 
@@ -384,12 +578,12 @@ include = ["coolpkg*"]</code></pre></div>
 <div class="table-wrap"><table><thead><tr><th> Pdb command </th><th> Action </th></tr></thead><tbody><tr><td> <code>h</code> / <code>h cmd</code> </td><td> Help / help on command </td></tr><tr><td> <code>l [n]</code> / <code>ll</code> </td><td> List source (around line) / whole function </td></tr><tr><td> <code>w</code> / <code>where</code> </td><td> Stack trace, current frame marked </td></tr><tr><td> <code>u</code> / <code>d</code> </td><td> Up / down the stack frames </td></tr><tr><td> <code>b 42</code> / <code>b func</code> / <code>b file:line</code> </td><td> Set breakpoint </td></tr><tr><td> <code>b</code> </td><td> List breakpoints </td></tr><tr><td> <code>tbreak …</code> </td><td> Temporary breakpoint (dies after first hit) </td></tr><tr><td> <code>cl [n]</code> </td><td> Clear breakpoint(s) </td></tr><tr><td> <code>disable n</code> / <code>enable n</code> </td><td> Toggle without deleting </td></tr><tr><td> <code>condition n expr</code> </td><td> Conditional breakpoint </td></tr><tr><td> <code>ignore n count</code> </td><td> Skip next <em>count</em> hits </td></tr><tr><td> <code>commands n</code> </td><td> Auto-commands on hit (end with <code>end</code>; <code>silent</code> + print = logging) </td></tr><tr><td> <code>s</code> / <code>step</code> </td><td> Step <strong>into</strong> </td></tr><tr><td> <code>n</code> / <code>next</code> </td><td> Step <strong>over</strong> </td></tr><tr><td> <code>r</code> / <code>return</code> </td><td> Run until current function returns </td></tr><tr><td> <code>c</code> / <code>continue</code> </td><td> Run to next breakpoint </td></tr><tr><td> <code>unt [n]</code> </td><td> Run until line n (or next line &gt; current) </td></tr><tr><td> <code>j n</code> / <code>jump</code> </td><td> Jump execution to line n (careful!) </td></tr><tr><td> <code>a</code> / <code>args</code> </td><td> Current function arguments </td></tr><tr><td> <code>p expr</code> / <code>pp expr</code> </td><td> Print / pretty-print </td></tr><tr><td> <code>whatis expr</code> </td><td> Type of expr </td></tr><tr><td> <code>source expr</code> / <code>display [expr]</code> </td><td> Show source of object / auto-print on each stop </td></tr><tr><td> <code>interact</code> </td><td> Full REPL at this point </td></tr><tr><td> <code>retval</code> / <code>exc</code> </td><td> Last return value / current exception </td></tr><tr><td> <code>alias name cmd</code> </td><td> Command macros </td></tr><tr><td> <code>exec stmt</code> </td><td> Execute statement in frame </td></tr><tr><td> <code>q</code> </td><td> Quit (hard exit) </td></tr></tbody></table></div>
 <p>Better-looking alternatives: <code>pip install ipdb</code> (<code>import ipdb; ipdb.set_trace()</code>) or <code>pudb</code> (full-screen TUI), or just use your editor's debugger (VS Code: F5).</p>
 <h3 id="cprofile"><code>cProfile</code></h3>
-<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>python -m cProfile -s cumulative script.py          # sorted by total time
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>python -m cProfile -s cumulative script.py          # sorted by total time
 python -m cProfile -o out.prof script.py            # save
 python -m pstats out.prof                           # browse: sort cumulative / stats 10 / strip</code></pre></div>
 <p>Reading it: <code>ncalls</code> calls · <code>tottime</code> time in the function itself · <code>cumtime</code> including children · look for high <code>tottime</code> = your hotspot. GUI: <code>pip install snakeviz</code> → <code>snakeviz out.prof</code>.</p>
 <h3 id="timeit-tracemalloc"><code>timeit</code> / <code>tracemalloc</code></h3>
-<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>python -m timeit "'-'.join(map(str, range(50)))"
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>python -m timeit "'-'.join(map(str, range(50)))"
 python -m timeit -s "x=list(range(1000))" "x.sort()"</code></pre></div>
 <div class="table-wrap"><table><thead><tr><th> Snippet </th><th> Use </th></tr></thead><tbody><tr><td> <code>timeit.timeit(f, number=1_000)</code> </td><td> Library form </td></tr><tr><td> <code>python -X importtime -c "import requests" 2&amp;gt; imp.log</code> </td><td> Find slow imports </td></tr><tr><td> <code>tracemalloc.start()</code> … <code>tracemalloc.take_snapshot()</code> </td><td> Who allocates memory </td></tr><tr><td> <code>sys.settrace</code> / <code>sys.setprofile</code> </td><td> Build your own tracer </td></tr><tr><td> <code>faulthandler.enable()</code> (or <code>-X dev</code>) </td><td> Traceback on hard crashes </td></tr></tbody></table></div>
 <h2 id="10-jupyter-notebooks">10. Jupyter &amp; Notebooks</h2>
@@ -418,7 +612,7 @@ python -m timeit -s "x=list(range(1000))" "x.sort()"</code></pre></div>
 <p><strong>Walrus <code>:=</code></strong> assigns inside an expression: <code>while (chunk := f.read(8192)): …</code>. Floor <code>//</code> rounds toward −∞ on negatives: <code>-7 // 2 == -4</code>. <code>==</code> on <code>is</code>-looking things: small ints/strings may be interned — never rely on it.</p>
 <h2 id="14-strings-deep-dive">14. Strings Deep-Dive</h2>
 <h3 id="slicing-the-complete-rules">Slicing — the complete rules</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>s = "Pythonista"
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>s = "Pythonista"
 s[0] s[-1]        # 'P', 'a'
 s[2:5] s[:4] s[6:]     # 'tho', 'Pyth', 'ista'
 s[::2] s[::-1]         # 'PtoiA' step-2; reversed copy
@@ -427,7 +621,7 @@ s[1:-1:3]              # start 1, stop before -1, step 3</code></pre></div>
 <h3 id="f-strings-format-full-spec-mini-language">f-strings &amp; <code>format</code> — full spec mini-language</h3>
 <p><code>f"{value:[[fill]align][sign][z][#][0][width][grouping][.precision][type]}"</code></p>
 <div class="table-wrap"><table><thead><tr><th> Piece </th><th> Options </th></tr></thead><tbody><tr><td> align </td><td> <code>&amp;lt;</code> left · <code>&amp;gt;</code> right · <code>^</code> center · <code>=</code> pad after sign </td></tr><tr><td> sign </td><td> <code>+</code> always · <code>-</code> only negatives · <code> </code> space for positives </td></tr><tr><td> <code>#</code> </td><td> Alternate form: <code>0x</code> prefix, keep trailing <code>.0</code> </td></tr><tr><td> <code>0</code> </td><td> Zero-pad (same as <code>fill=0, align==</code>) </td></tr><tr><td> width </td><td> Minimum width (can nest: <code>{v:{w}}</code>) </td></tr><tr><td> grouping </td><td> <code>_</code> or <code>,</code> thousands separators </td></tr><tr><td> precision </td><td> Digits after <code>.</code> </td></tr><tr><td> type </td><td> <code>d</code> int · <code>f</code> fixed · <code>e</code> sci · <code>g</code> general · <code>%</code> percent · <code>b o x X</code> int bases · <code>c</code> char · <code>s</code> string · <code>n</code> locale-aware </td></tr></tbody></table></div>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>f"{3.14159:.2f}"          # '3.14'
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>f"{3.14159:.2f}"          # '3.14'
 f"{1234567:,}"            # '1,234,567'
 f"{0.85:.1%}"             # '85.0%'
 f"{255:#x} {255:b}"       # '0xff' '11111111'
@@ -440,7 +634,7 @@ f"{obj!r}"                # repr() instead of str()</code></pre></div>
 <p>Flags: <code>re.I</code> ignorecase · <code>re.M</code> ^$ per-line · <code>re.S</code> dot-matches-newline · <code>re.X</code> verbose · <code>re.A</code> ASCII. Pattern syntax: <code>\d \w \s \b</code> classes, <code>+ * ? {m,n}</code> reps, <code>[]</code> sets, <code>(...)</code> group, <code>(?:...)</code> non-capture, <code>(?P&amp;lt;name&amp;gt;…)</code>, lookarounds <code>(?=…) (?!…) (?&amp;lt;=…) (?&amp;lt;!…)</code>, alternation <code>|</code>.</p>
 <h2 id="15-control-flow">15. Control Flow</h2>
 <h3 id="conditionals">Conditionals</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>if x &gt; 100:        ...
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>if x &gt; 100:        ...
 elif x &gt; 10:       ...
 else:              ...
 
@@ -457,7 +651,7 @@ match command.split():
     case Point(x=0, y=y):              ...               # class patterns
     case _:                            print("unknown")</code></pre></div>
 <h3 id="loops">Loops</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>for item in iterable: ...          # the one loop
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>for item in iterable: ...          # the one loop
 for i, item in enumerate(items, 1): ...
 for a, b in zip(xs, ys): ...
 while condition: ...
@@ -467,7 +661,7 @@ else:                              # runs only if loop finished WITHOUT break �
     print("no break happened")
 for n in range(10, 0, -1): ...     # countdown</code></pre></div>
 <h3 id="comprehensions-all-four">Comprehensions — all four</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>[n*n for n in range(10) if n % 2 == 0]           # list
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>[n*n for n in range(10) if n % 2 == 0]           # list
 {n: n*n for n in range(5)}                       # dict
 {ch for ch in "abracadabra" if ch in "abc"}      # set
 (lazy := (line.strip() for line in f))           # generator expression — memory-free
@@ -475,7 +669,7 @@ for n in range(10, 0, -1): ...     # countdown</code></pre></div>
 [x if x &gt; 0 else 0 for x in data]                # conditional expression inside
 flat = [x for row in matrix for x in row]        # flatten (order: outer loop first)</code></pre></div>
 <h3 id="generators-iterators">Generators &amp; iterators</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>def countdown(n):
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>def countdown(n):
     while n &gt; 0:
         yield n          # pause here, hand value out
         n -= 1
@@ -499,7 +693,7 @@ g = echo(); g.send(None); g.send("hi")</code></pre></div>
 <div class="table-wrap"><table><thead><tr><th> Function </th><th> Yields </th></tr></thead><tbody><tr><td> <code>count(10, 2)</code> </td><td> 10, 12, 14, … forever </td></tr><tr><td> <code>cycle("AB")</code> </td><td> A, B, A, B… </td></tr><tr><td> <code>repeat(x, n)</code> </td><td> x, x, x (n times or forever) </td></tr><tr><td> <code>chain(a, b)</code> / <code>chain.from_iterable(lists)</code> </td><td> Concatenation </td></tr><tr><td> <code>compress(data, [1,0,1])</code> </td><td> Keep items where selector truthy </td></tr><tr><td> <code>dropwhile(pred, it)</code> / <code>takewhile(pred, it)</code> </td><td> Skip/keep until pred fails </td></tr><tr><td> <code>filterfalse(pred, it)</code> </td><td> Opposite of builtin filter </td></tr><tr><td> <code>groupby(it, key)</code> </td><td> Consecutive groups — <strong>sort first!</strong> </td></tr><tr><td> <code>islice(it, 5)</code> / <code>islice(it, 2, 10, 2)</code> </td><td> Slicing any iterator </td></tr><tr><td> <code>pairwise(it)</code> (3.10+) </td><td> (a,b),(b,c),… sliding pairs </td></tr><tr><td> <code>starmap(f, [(1,2),(3,4)])</code> </td><td> f(*args) per item </td></tr><tr><td> <code>tee(it, 2)</code> </td><td> Two independent iterators </td></tr><tr><td> <code>zip_longest(a, b, fillvalue=0)</code> </td><td> Zip to the longest </td></tr><tr><td> <code>product("AB", "12")</code> </td><td> Cartesian product </td></tr><tr><td> <code>permutations("ABC", 2)</code> </td><td> Ordered arrangements </td></tr><tr><td> <code>combinations("ABC", 2)</code> </td><td> Unordered subsets </td></tr><tr><td> <code>combinations_with_replacement("AB", 2)</code> </td><td> With repeats </td></tr><tr><td> <code>accumulate([1,2,3])</code> / <code>accumulate(xs, operator.mul)</code> </td><td> Running totals/products </td></tr></tbody></table></div>
 <h2 id="16-functions">16. Functions</h2>
 <h3 id="definitions-the-full-anatomy">Definitions — the full anatomy</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>def f(pos_only, /, normal, *args, kw_only=1, **kwargs):
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>def f(pos_only, /, normal, *args, kw_only=1, **kwargs):
     """Docstring. pos_only is positional-only (the /)."""
     ...
 
@@ -511,7 +705,7 @@ lambda x, y: x + y                         # expression function
 func(*args_list, **kwargs_dict)            # unpacking at call site</code></pre></div>
 <p>Defaults are evaluated <strong>once</strong> — the mutable default trap: <code>def f(x, acc=[])</code> accumulates forever; use <code>acc=None</code> + <code>acc = [] if acc is None else acc</code>.</p>
 <h3 id="closures-decorators-functools">Closures, decorators, functools</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>def make_multiplier(n):
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>def make_multiplier(n):
     def multiply(x): return x * n          # closes over n
     return multiply
 
@@ -523,7 +717,7 @@ def fib(n): return n if n &lt; 2 else fib(n-1) + fib(n-2)
 def wrapper(*a, **k): ...</code></pre></div>
 <div class="table-wrap"><table><thead><tr><th> <code>functools</code> tool </th><th> Does </th></tr></thead><tbody><tr><td> <code>cache</code> / <code>lru_cache(maxsize=128, typed=False)</code> </td><td> Memoization </td></tr><tr><td> <code>cached_property</code> </td><td> Compute once, store on instance </td></tr><tr><td> <code>partial(f, x=1)</code> </td><td> Freeze arguments </td></tr><tr><td> <code>reduce(f, iter, init)</code> </td><td> Rolling fold: <code>reduce(operator.add, xs, 0)</code> </td></tr><tr><td> <code>wraps</code> </td><td> Decorator-preserving decorator </td></tr><tr><td> <code>total_ordering</code> </td><td> Define <code>__eq__</code>+<code>__lt__</code>, get all six comparisons </td></tr><tr><td> <code>cmp_to_key(f)</code> </td><td> old-style cmp → sort key </td></tr><tr><td> <code>singledispatch</code> </td><td> Function overloading by first-arg type </td></tr></tbody></table></div>
 <h3 id="typing-annotations">Typing (annotations)</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>def process(items: list[int], name: str = "x", *,
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>def process(items: list[int], name: str = "x", *,
             limit: int | None = None) -&gt; dict[str, float]: ...
 
 from typing import Optional, Union, Literal, TypedDict, Protocol, Callable, TypeVar, Generic, Any
@@ -538,7 +732,7 @@ def scale(v: list[float], k: float = 1.0) -&gt; list[float]: return [x * k for x
 # gradual typing: hints are NOT enforced at runtime — check with mypy / pyright</code></pre></div>
 <p>Common hints: <code>int str bytes bool float</code> · <code>list[T] dict[K,V] set[T] tuple[int, ...]</code> · <code>T \| None</code> (3.10+) · <code>Literal["a","b"]</code> · <code>Callable[[int], str]</code> · <code>Iterable/Sequence/Mapping</code> (accept broad, return precise) · <code>Any</code>, <code>Never</code>, <code>Self</code> (3.11+).</p>
 <h2 id="17-classes-oop">17. Classes &amp; OOP</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>class Animal:
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>class Animal:
     kingdom = "Animalia"                        # class attribute (shared)
     def __init__(self, name: str, legs: int = 4):
         self.name = name                        # instance attributes
@@ -560,7 +754,7 @@ d = Dog("Rex")
 isinstance(d, Animal)  → True;  issubclass(Dog, Animal) → True</code></pre></div>
 <div class="table-wrap"><table><thead><tr><th> Concept </th><th> Syntax </th><th> Notes </th></tr></thead><tbody><tr><td> Class attr vs instance </td><td> <code>Dog.kingdom</code> vs <code>d.name</code> </td><td> Shared vs per-object </td></tr><tr><td> Property </td><td> <code>@property</code> + <code>@x.setter</code> + <code>@x.deleter</code> </td><td> Computed attributes with validation </td></tr><tr><td> Classmethod </td><td> <code>@classmethod def from_str(cls, s):</code> </td><td> Alternative constructors </td></tr><tr><td> Staticmethod </td><td> <code>@staticmethod def helper():</code> </td><td> No self/cls — namespaced function </td></tr><tr><td> <code>__slots__ = ("a","b")</code> </td><td> Attribute whitelist </td><td> Smaller objects, no dict, blocks typos </td></tr><tr><td> <code>@dataclass</code> </td><td> See below </td><td> Kills boilerplate </td></tr><tr><td> Multiple inheritance </td><td> <code>class A(B, C)</code> </td><td> MRO via <code>A.__mro__</code> / <code>super()</code> follows it </td></tr><tr><td> Mixin </td><td> Small base adding one behavior </td><td> Convention: suffix <code>Mixin</code> </td></tr><tr><td> Abstract base </td><td> <code>from abc import ABC, abstractmethod</code> </td><td> Force subclasses to implement </td></tr><tr><td> Protocol </td><td> <code>class Closeable(Protocol): def close(self)-&amp;gt;None: ...</code> </td><td> Duck-typed interfaces (static check) </td></tr><tr><td> Composition &gt; inheritance </td><td> <code>self.engine = Engine()</code> </td><td> Prefer it when tempted by deep trees </td></tr></tbody></table></div>
 <h3 id="dataclasses-the-boilerplate-killer">dataclasses — the boilerplate killer</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from dataclasses import dataclass, field
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from dataclasses import dataclass, field
 
 @dataclass
 class Point:
@@ -576,7 +770,7 @@ print(p)                # Point(x=3, y=4) — __repr__ generated</code></pre></d
 <p>Modifiers: <code>@dataclass(frozen=True)</code> immutable/hashable · <code>@dataclass(order=True)</code> adds <code>&amp;lt;</code> etc. · <code>field(compare=False, repr=False)</code>. Sister tools: <code>typing.NamedTuple</code> (tuple-behavior) and <code>attrs</code> (third-party, more features).</p>
 <h2 id="18-exceptions">18. Exceptions</h2>
 <h3 id="full-builtin-hierarchy">Full builtin hierarchy</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">text</span><button class="copybtn" type="button">Copy</button></div><pre><code>BaseException
+<div class="codewrap"><div class="codebar"><span class="lang">text</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>BaseException
 ├── SystemExit              # sys.exit()
 ├── KeyboardInterrupt       # Ctrl+C
 ├── GeneratorExit
@@ -620,7 +814,7 @@ print(p)                # Point(x=3, y=4) — __repr__ generated</code></pre></d
     │   └── UnicodeError (Decode/Encode/Translate)
     └── Warning (Deprecation, Future, User, RuntimeWarning, …)</code></pre></div>
 <h3 id="using-them-properly">Using them properly</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>try:
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>try:
     risky()
 except (ValueError, KeyError) as e:      # multiple types, bound as e
     log.warning("bad input: %s", e)
@@ -642,7 +836,7 @@ with contextlib.suppress(FileNotFoundError):
     os.remove("tmp.txt")                  # try/except-pass, but readable</code></pre></div>
 <p><strong>Rules:</strong> catch the <strong>narrowest</strong> exception you can handle; never bare <code>except:</code> (it swallows Ctrl+C); don't use exceptions for normal flow control; log the traceback (<code>logging.exception("msg")</code> inside except).</p>
 <h2 id="19-modules-packages-imports">19. Modules, Packages &amp; Imports</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import math                                # whole module
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import math                                # whole module
 import numpy as np                         # aliased
 from datetime import date, timedelta       # names directly
 from pathlib import Path as P              # aliased name
@@ -653,7 +847,7 @@ from .sibling import helper                # relative (inside a package)</code><
 <h2 id="20-files-io">20. Files &amp; I/O</h2>
 <h3 id="open-all-modes"><code>open</code> — all modes</h3>
 <div class="table-wrap"><table><thead><tr><th> Mode </th><th> Meaning </th><th> Notes </th></tr></thead><tbody><tr><td> <code>r</code> </td><td> Read (default) </td><td> Missing → FileNotFoundError </td></tr><tr><td> <code>w</code> </td><td> Write, truncate </td><td> Creates/destroys </td></tr><tr><td> <code>a</code> </td><td> Append </td><td> Creates </td></tr><tr><td> <code>x</code> </td><td> Exclusive create </td><td> Exists → FileExistsError </td></tr><tr><td> <code>b</code> / <code>t</code> </td><td> Binary / text (default text) </td><td> <code>rb</code>, <code>wb</code>, <code>r+b</code>… </td></tr><tr><td> <code>+</code> </td><td> Read+write </td><td> <code>r+</code> no truncate, <code>w+</code> truncate </td></tr></tbody></table></div>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>with open("data.txt", "r", encoding="utf-8", newline="\n") as f:   # ALWAYS with
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>with open("data.txt", "r", encoding="utf-8", newline="\n") as f:   # ALWAYS with
     text = f.read()                    # whole file
     first = f.readline()
     lines = f.readlines()              # list of lines
@@ -664,13 +858,13 @@ with open("out.txt", "w", encoding="utf-8") as f:
     f.write("text\n"); f.writelines(lines)</code></pre></div>
 <p><code>with</code> guarantees closing even on exceptions. <strong>Always pass <code>encoding=</code></strong> on Windows (default there is locale-dependent — cp1252 landmines). Universal newlines: text mode translates <code>\r\n</code>→<code>\n</code> automatically.</p>
 <h3 id="pathlib-every-method-that-matters"><code>pathlib</code> — every method that matters</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from pathlib import Path
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from pathlib import Path
 p = Path("docs") / "report" / "final.txt"     # / joins!</code></pre></div>
 <div class="table-wrap"><table><thead><tr><th> Method </th><th> Returns </th></tr></thead><tbody><tr><td> <code>Path.cwd()</code> / <code>Path.home()</code> </td><td> Where am I / home dir </td></tr><tr><td> <code>p.exists() is_file() is_dir() is_symlink() is_absolute()</code> </td><td> Tests </td></tr><tr><td> <code>p.name .stem .suffix .suffixes .parts</code> </td><td> <code>'final.txt'</code>, <code>'final'</code>, <code>'.txt'</code>, <code>['docs','report','final.txt']</code> </td></tr><tr><td> <code>p.parent</code> / <code>p.parents[0..n]</code> </td><td> Up one / ancestors </td></tr><tr><td> <code>p.with_name("v2.txt")</code> / <code>p.with_suffix(".md")</code> </td><td> Sibling paths </td></tr><tr><td> <code>p.resolve()</code> / <code>p.absolute()</code> </td><td> Canonical absolute (symlinks resolved) </td></tr><tr><td> <code>p.expanduser()</code> </td><td> <code>~</code> expansion </td></tr><tr><td> <code>p.iterdir()</code> </td><td> Entries of a folder </td></tr><tr><td> <code>p.glob("*.log")</code> / <code>p.rglob("*.log")</code> </td><td> Pattern match (recursive) </td></tr><tr><td> <code>p.mkdir(parents=True, exist_ok=True)</code> </td><td> Create (no errors) </td></tr><tr><td> <code>p.rmdir()</code> / <code>p.unlink(missing_ok=True)</code> </td><td> Delete dir / file </td></tr><tr><td> <code>p.touch()</code> </td><td> Create empty </td></tr><tr><td> <code>p.rename(target)</code> / <code>p.replace(target)</code> </td><td> Rename / overwrite-rename </td></tr><tr><td> <code>p.read_text(encoding="utf-8")</code> / <code>p.write_text(s)</code> </td><td> Whole-file shuttle </td></tr><tr><td> <code>p.read_bytes()</code> / <code>p.write_bytes(b)</code> </td><td> Binary shuttle </td></tr><tr><td> <code>p.open("r")</code> </td><td> Built-in open on this path </td></tr><tr><td> <code>p.stat()</code> </td><td> <code>.st_size .st_mtime .st_mtime_ns</code>… </td></tr><tr><td> <code>p.chmod(0o644)</code> / <code>p.owner() .group()</code> </td><td> Permissions/ownership </td></tr><tr><td> <code>p.samefile(q)</code> / <code>p.is_relative_to(base)</code> / <code>p.relative_to(base)</code> </td><td> Relations </td></tr><tr><td> <code>p.as_posix()</code> / <code>p.as_uri()</code> </td><td> String forms </td></tr></tbody></table></div>
 <h3 id="os-ospath-shutil"><code>os</code> / <code>os.path</code> / <code>shutil</code></h3>
 <div class="table-wrap"><table><thead><tr><th> Call </th><th> Does </th></tr></thead><tbody><tr><td> <code>os.getcwd()</code> · <code>os.chdir(p)</code> · <code>os.listdir(p)</code> </td><td> Classic trio </td></tr><tr><td> <code>os.environ["KEY"]</code> / <code>os.getenv("K", default)</code> </td><td> Environment </td></tr><tr><td> <code>os.system(cmd)</code> † </td><td> Shell out — prefer <code>subprocess</code> </td></tr><tr><td> <code>os.path.join(a,b)</code> · <code>os.path.exists/abspath/basename/dirname/splitext/getsize/isfile/isdir</code> </td><td> Legacy path ops (pathlib replaces) </td></tr><tr><td> <code>os.remove(f)</code> · <code>os.mkdir/rmdir</code> · <code>os.makedirs(p, exist_ok=True)</code> </td><td> File ops </td></tr><tr><td> <code>os.walk(top)</code> </td><td> Yields <code>(dirpath, dirnames, filenames)</code> down a tree </td></tr><tr><td> <code>os.stat(f).st_size</code> · <code>os.rename</code> · <code>os.replace</code> </td><td> Metadata/moves </td></tr><tr><td> <code>shutil.copy(src,dst)</code> / <code>copy2</code> (metadata) / <code>copytree</code> / <code>rmtree</code> ⚠ </td><td> Copies &amp; deep deletes </td></tr><tr><td> <code>shutil.move(src,dst)</code> </td><td> Move </td></tr><tr><td> <code>shutil.disk_usage("/")</code> </td><td> Free space </td></tr><tr><td> <code>shutil.make_archive("backup","zip",root_dir)</code> / <code>unpack_archive</code> </td><td> Zip/tar without zipfile boilerplate </td></tr><tr><td> <code>shutil.which("python")</code> </td><td> Locate executable </td></tr></tbody></table></div>
 <h3 id="data-formats">Data formats</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import json
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import json
 json.dumps(obj)  / json.dump(obj, f, indent=2, ensure_ascii=False)   # → str / file
 json.loads(s)    / json.load(f)                                      # ← str / file
 # tuples→lists, keys must be str, use default= for dates/custom
@@ -698,7 +892,7 @@ buf = io.StringIO("initial"); buf.seek(0)      # in-memory text file</code></pre
 <h3 id="which-model-for-what">Which model for what?</h3>
 <div class="table-wrap"><table><thead><tr><th> Workload </th><th> Tool </th></tr></thead><tbody><tr><td> Many network waits (HTTP, DB) </td><td> <code>asyncio</code> </td></tr><tr><td> Many blocking I/O calls (legacy libs, file ops) </td><td> <code>threading</code> </td></tr><tr><td> CPU-bound crunching </td><td> <code>multiprocessing</code> (or C extensions/numpy) </td></tr><tr><td> Don't want to choose </td><td> <code>concurrent.futures</code> thread/process pools </td></tr></tbody></table></div>
 <h3 id="threading"><code>threading</code></h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from threading import Thread, Lock, Event, Semaphore, Condition, local
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from threading import Thread, Lock, Event, Semaphore, Condition, local
 lock = Lock()
 def worker(n):
     with lock:                    # GIL still applies to Python bytecode
@@ -707,7 +901,7 @@ threads = [Thread(target=worker, args=(i,)) for i in range(8)]
 [t.start() for t in threads]; [t.join() for t in threads]</code></pre></div>
 <p>The <strong>GIL</strong>: only one thread runs Python bytecode at a time — threads help I/O concurrency, not CPU parallelism (PEP 703 free-threaded build exists experimentally in 3.13).</p>
 <h3 id="multiprocessing"><code>multiprocessing</code></h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from multiprocessing import Process, Pool, Queue, Pipe
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from multiprocessing import Process, Pool, Queue, Pipe
 def cube(n): return n * n * n
 if __name__ == "__main__":                     # REQUIRED on Windows/macOS spawn
     with Pool() as pool:
@@ -716,7 +910,7 @@ if __name__ == "__main__":                     # REQUIRED on Windows/macOS spawn
     p = Process(target=worker, args=(1,)); p.start(); p.join()</code></pre></div>
 <p>Each process = separate interpreter = true parallel CPU work. Costs: pickling, startup. <code>multiprocessing.shared_memory</code> (3.8+) for zero-copy buffers.</p>
 <h3 id="concurrentfutures-the-friendly-face"><code>concurrent.futures</code> — the friendly face</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
 with ThreadPoolExecutor(max_workers=20) as ex:
     futures = {ex.submit(fetch, url): url for url in urls}
     for fut in as_completed(futures):
@@ -724,7 +918,7 @@ with ThreadPoolExecutor(max_workers=20) as ex:
         except Exception as e: print("failed:", futures[fut], e)
 pages = list(ex.map(fetch, urls))               # simple parallel map</code></pre></div>
 <h3 id="asyncio"><code>asyncio</code></h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import asyncio
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import asyncio
 
 async def fetch(name, delay):
     await asyncio.sleep(delay)                  # non-blocking wait
@@ -749,7 +943,7 @@ asyncio.run(main())                              # THE entry point</code></pre><
 <p>Libraries must be async-native (<code>aiohttp</code>, <code>httpx</code> async mode). <code>await</code> only inside <code>async def</code>. One event loop per process.</p>
 <h2 id="22-standard-library-essentials">22. Standard Library Essentials</h2>
 <h3 id="datetime-the-complete-kit"><code>datetime</code> — the complete kit</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from datetime import datetime, date, time, timedelta, timezone
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from datetime import datetime, date, time, timedelta, timezone
 now = datetime.now()                      # local, naive
 utc  = datetime.now(timezone.utc)         # TIMEZONE-AWARE — prefer for real code
 datetime.fromisoformat("2026-08-30T14:30:00+02:00")   # parse ISO (3.11+: most formats)
@@ -768,7 +962,7 @@ date.today() ; dt.date() ; dt.year .month .day .hour .weekday()  # Monday=0 / is
 <h3 id="hashing-encoding">Hashing &amp; encoding</h3>
 <div class="table-wrap"><table><thead><tr><th> Call </th><th> Purpose </th></tr></thead><tbody><tr><td> <code>hashlib.sha256(b).hexdigest()</code> (<code>md5†</code> <code>sha1†</code> <code>sha512</code> <code>blake2b</code> <code>sha3_256</code>) </td><td> Digests — verify downloads, fingerprint </td></tr><tr><td> <code>hashlib.file_digest(open(f,'rb'), 'sha256')</code> (3.11+) </td><td> Streamed file hash </td></tr><tr><td> <code>hmac.new(key, msg, 'sha256').hexdigest()</code> </td><td> Signed messages </td></tr><tr><td> <code>base64.b64encode(b)</code> / <code>b64decode</code> / <code>urlsafe_b64*</code> </td><td> Transport encoding (not encryption!) </td></tr><tr><td> <code>uuid.uuid4()</code> </td><td> Random UUID; <code>uuid1()</code> host-based; <code>uuid5(ns, name)</code> deterministic </td></tr></tbody></table></div>
 <h3 id="subprocess-run-anything"><code>subprocess</code> — run anything</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import subprocess
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import subprocess
 r = subprocess.run(["ping", "-n", "1", "example.com"], capture_output=True,
                    text=True, timeout=10, check=False)
 r.returncode, r.stdout, r.stderr
@@ -777,7 +971,7 @@ subprocess.run(["python", "script.py"], input="y\n", text=True, check=True)</cod
 <div class="table-wrap"><table><thead><tr><th> Param </th><th> Meaning </th></tr></thead><tbody><tr><td> <code>args</code> list </td><td> Program + args (no shell parsing — safe) </td></tr><tr><td> <code>capture_output=True</code> </td><td> Collect stdout+stderr </td></tr><tr><td> <code>text=True</code> </td><td> Decode to str (else bytes) </td></tr><tr><td> <code>input="…"</code> </td><td> Feed stdin </td></tr><tr><td> <code>check=True</code> </td><td> Non-zero → <code>CalledProcessError</code> </td></tr><tr><td> <code>timeout=30</code> </td><td> Kill after 30 s (<code>TimeoutExpired</code>) </td></tr><tr><td> <code>cwd=</code>, <code>env={**os.environ, "K":"v"}</code> </td><td> Working dir / environment </td></tr><tr><td> <code>Popen(…)</code> </td><td> Low-level streaming (<code>p.stdout.readline()</code>, <code>p.communicate()</code>) </td></tr></tbody></table></div>
 <p>Legacy: <code>os.system</code> † · <code>os.popen</code> † — migrate both to <code>subprocess</code>.</p>
 <h3 id="argparse-full-walkthrough"><code>argparse</code> — full walkthrough</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import argparse
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import argparse
 
 p = argparse.ArgumentParser(
     prog="tool", description="Do the thing",
@@ -801,7 +995,7 @@ args = p.parse_args()          # --help auto-generated from all of the above</co
 <div class="table-wrap"><table><thead><tr><th> Concept </th><th> Detail </th></tr></thead><tbody><tr><td> <code>nargs</code> </td><td> <code>N</code> exactly · <code>?</code> 0-or-1 · <code>*</code> any list · <code>+</code> at least one </td></tr><tr><td> <code>action</code> </td><td> <code>store</code> · <code>store_true/false/const</code> · <code>append</code> · <code>count</code> · <code>extend</code> · custom Action class </td></tr><tr><td> <code>type</code> </td><td> Any callable — <code>int</code>, <code>float</code>, <code>Path</code>, <code>datetime.fromisoformat</code> </td></tr><tr><td> <code>default</code> + <code>required=True</code> </td><td> Optionality control </td></tr><tr><td> <code>dest</code> </td><td> Attribute name (from long option by default) </td></tr><tr><td> <code>parse_known_args()</code> </td><td> Ignore unknown (wrapper scripts) </td></tr><tr><td> <code>args = p.parse_args(["init","--force"])</code> </td><td> Testing parsers programmatically </td></tr></tbody></table></div>
 <p>Alternatives: <code>typer</code> (type-hint driven, pretty) and <code>click</code> (decorator based) — argparse needs zero dependencies.</p>
 <h3 id="logging-full-walkthrough"><code>logging</code> — full walkthrough</h3>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import logging
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)-8s %(name)s: %(message)s",
@@ -824,7 +1018,7 @@ log.exception("boom")                        # ERROR + traceback (in except bloc
 <h1 id="part-3-hands-on-tutorials">PART 3 — HANDS-ON TUTORIALS</h1>
 <h2 id="t1-your-first-hour">T1. Your First Hour</h2>
 <p><strong>Goal:</strong> variables → data → loops → functions, ending with two tiny real programs.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># Step 1 — the calculator soul of Python (REPL: &gt;&gt;&gt; means type it live)
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># Step 1 — the calculator soul of Python (REPL: &gt;&gt;&gt; means type it live)
 2 + 2, 7 / 2, 7 // 2, 7 % 2, 2 ** 10          # (4, 3.5, 3, 1, 1024)
 
 # Step 2 — variables &amp; types (dynamic: names are labels, not boxes)
@@ -867,7 +1061,7 @@ for word in text.lower().split():
 print(sorted(counts.items(), key=lambda kv: -kv[1]))</code></pre></div>
 <p><strong>Checkpoint:</strong> you can store data (list/dict), repeat work (for/while), package logic (def), and read input. That's 80 % of daily Python.</p>
 <h2 id="t2-parse-a-log-file-csv-report">T2. Parse a Log File → CSV Report</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># parse access logs like: 2026-08-30 12:01:02 ERROR payment failed id=771
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># parse access logs like: 2026-08-30 12:01:02 ERROR payment failed id=771
 import re, csv
 from collections import Counter
 from pathlib import Path
@@ -889,7 +1083,7 @@ print("levels:", dict(level_counts))
 print("errors on:", {r["date"] for r in rows if r["level"] == "ERROR"})</code></pre></div>
 <p>Teaches: <code>re</code> named groups, walrus, <code>Counter</code>, <code>pathlib</code>, <code>csv.DictWriter</code>.</p>
 <h2 id="t3-consume-any-rest-api-json">T3. Consume Any REST API (JSON)</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import requests
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import requests
 
 def get_json(url, **params):
     r = requests.get(url, params=params, timeout=10)
@@ -904,7 +1098,7 @@ for ev in data:
 # requests.post(url, json={"key": "value"}, headers={"Authorization": f"Bearer {token}"})</code></pre></div>
 <p>Teaches: HTTP verbs, params/timeout, raise_for_status, JSON navigation (<code>['type']</code>), and the habit of wrapping API calls in small functions. Retry logic: <code>HTTPAdapter(max_retries=3)</code> in a <code>requests.Session</code>.</p>
 <h2 id="t4-build-a-real-cli-app-argparse">T4. Build a Real CLI App (<code>argparse</code>)</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>"""todo.py — a tiny task manager."""
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>"""todo.py — a tiny task manager."""
 import argparse, json
 from pathlib import Path
 
@@ -934,7 +1128,7 @@ if __name__ == "__main__":
     main()</code></pre></div>
 <p>Run: <code>python todo.py add "Ship the report"</code> → <code>python todo.py list</code> → <code>python todo.py done 1</code>. Next level: convert with <code>typer</code> (add type hints, get <code>--help</code> for free) and install as a command with <code>pipx install</code> after adding a <code>[project.scripts]</code> entry (§6).</p>
 <h2 id="t5-oop-with-dataclasses-an-inventory-manager">T5. OOP with Dataclasses — an Inventory Manager</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from dataclasses import dataclass, field
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from dataclasses import dataclass, field
 from enum import Enum
 
 class Condition(Enum):
@@ -967,7 +1161,7 @@ inv.add(Item(sku="A2", name="Monitor", price=349, condition=Condition.USED))
 print(inv.total_value(), inv.find("monitor"))</code></pre></div>
 <p>Teaches: <code>@dataclass(order=True)</code>, <code>field(init=False)</code> + <code>__post_init__</code>, <code>Enum</code>, private-by-convention attributes, type-hinted composition.</p>
 <h2 id="t6-package-publish-a-library-to-pypi">T6. Package &amp; Publish a Library to PyPI</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code># 1. Layout
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># 1. Layout
 mylib/
 ├── pyproject.toml      # from §6 — name, version, deps, [project.scripts]
 ├── README.md
@@ -989,7 +1183,7 @@ pip install -i https://test.pypi.org/simple/ mylib &amp;&amp; python -c "import 
 twine upload dist/*                            # needs a PyPI API token</code></pre></div>
 <p>Checklist before upload: unique name, version bumped, README renders (<code>twine check</code>), license present, no secrets in the sdist. Every re-upload of the same version is rejected — bump first.</p>
 <h2 id="t7-test-like-a-pro-with-pytest">T7. Test Like a Pro with pytest</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># tests/test_math.py
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># tests/test_math.py
 import pytest
 from mylib import add, divide, load_config
 
@@ -1014,12 +1208,12 @@ def test_config(config):
 
 def test_output(capsys):
     print("hi"); assert capsys.readouterr().out == "hi\n"</code></pre></div>
-<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>pytest -v --durations=3
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>pytest -v --durations=3
 pytest --lf
 pytest --cov=mylib --cov-report=term-missing</code></pre></div>
 <p>Teaches: one concept per test, AAA (Arrange-Act-Assert), fixtures over setup boilerplate, parametrize over copy-paste, raises-testing, coverage flags.</p>
 <h2 id="t8-automate-the-boring-stuff">T8. Automate the Boring Stuff</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># A — rename &amp; sort a folder of photos by EXIF-less mtime
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># A — rename &amp; sort a folder of photos by EXIF-less mtime
 from pathlib import Path
 from datetime import datetime
 for p in Path("dump").iterdir():
@@ -1055,7 +1249,7 @@ while True:
             seen.add(p); print("new:", p); # process(p)
     time.sleep(2)</code></pre></div>
 <h2 id="t9-async-a-concurrent-downloader">T9. Async — a Concurrent Downloader</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import asyncio, aiohttp, time
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import asyncio, aiohttp, time
 
 URLS = [f"https://httpbin.org/delay/{d}" for d in (1, 1, 1, 1, 1)]
 
@@ -1075,7 +1269,7 @@ asyncio.run(main())
 print(f"5 requests in {time.perf_counter() - start:.1f}s (sequential would be ~5s)")</code></pre></div>
 <p><code>pip install aiohttp</code> first. Same pattern with threads for blocking libraries: <code>ThreadPoolExecutor</code> + <code>fetch</code> (§21). Teaches: async/await, sessions, TaskGroup, timeouts, and measuring speedups honestly.</p>
 <h2 id="t10-debug-profile-like-a-detective">T10. Debug &amp; Profile Like a Detective</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code># 1 — reproduce under pdb
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># 1 — reproduce under pdb
 python -m pdb app.py input.csv
 (Pdb) b app.py:42            # break where it goes wrong
 (Pdb) c                      # run to it
@@ -1097,7 +1291,7 @@ python -m cProfile -s cumtime app.py | head -25
 <blockquote>The ten tutorials below teach the libraries shipped in this repo's <code>requirements.txt</code> — the same code, the same style as T1–T10. Set up once, then do them in any order: ```bash python -m venv .venv &amp;&amp; source .venv/bin/activate      # Windows: .venv\Scripts\activate python -m pip install -r requirements.txt              # installs every library used below ```</blockquote>
 <h2 id="l1-requests-httpx-http-like-a-human">L1. <code>requests</code> &amp; <code>httpx</code> — HTTP Like a Human</h2>
 <p><strong>Goal:</strong> fetch pages and APIs, handle auth, sessions, errors and retries — the right way.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import requests
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import requests
 
 # 1 — the basic GET (ALWAYS pass a timeout)
 r = requests.get("https://api.github.com/users/torvalds", timeout=10)
@@ -1128,7 +1322,7 @@ with requests.Session() as s:
         if not repos: break
         print([repo["name"] for repo in repos])</code></pre></div>
 <p><strong>Error handling pattern</strong> (copy this into every project):</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>try:
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>try:
     r = requests.get(url, timeout=10)
     r.raise_for_status()
 except requests.Timeout:
@@ -1140,7 +1334,7 @@ except requests.ConnectionError:
 else:
     data = r.json()</code></pre></div>
 <p><strong><code>httpx</code></strong> — same API, plus async and HTTP/2:</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import httpx
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import httpx
 r = httpx.get("https://example.org", timeout=10)        # drop-in for requests
 
 import asyncio
@@ -1152,7 +1346,7 @@ print(asyncio.run(fetch_all(["https://example.org"] * 5)))</code></pre></div>
 <p><strong>Checkpoint:</strong> you can talk to any REST API with params, auth, sessions and proper errors. <em>Exercise: fetch your own GitHub profile and print follower count; then list the first page of your repos.</em></p>
 <h2 id="l2-pydantic-data-that-validates-itself">L2. <code>pydantic</code> — Data That Validates Itself</h2>
 <p><strong>Goal:</strong> stop hand-checking dicts — declare what data should look like and let pydantic enforce it.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from pydantic import BaseModel, Field, field_validator, model_validator
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from pydantic import BaseModel, Field, field_validator, model_validator
 from datetime import date
 from typing import Literal
 
@@ -1178,7 +1372,7 @@ class User(BaseModel):
             raise ValueError("admin cannot be named guest")
         return self</code></pre></div>
 <p><strong>Watch it work:</strong></p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>u = User.model_validate({                        # messy input → validated object
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>u = User.model_validate({                        # messy input → validated object
     "id": "7",                                   # str → coerced to int!
     "name": "Matin",
     "email": "MATIN@Example.COM",
@@ -1194,7 +1388,7 @@ try:
 except ValidationError as e:
     print(e.error_count(), "errors")             # precise, structured error report</code></pre></div>
 <p><strong>Config with <code>pydantic-settings</code> + <code>.env</code></strong> (the clean way to read environment variables):</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># .env file:   API_TOKEN=abc123   DEBUG=true
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># .env file:   API_TOKEN=abc123   DEBUG=true
 from pydantic_settings import BaseSettings
 from pydantic import Field
 
@@ -1208,7 +1402,7 @@ print(settings.debug)                            # True — typed, validated con
 <p><strong>Where it shines:</strong> validating API responses (<code>User.model_validate(resp.json())</code>), FastAPI request bodies, and typed settings. <strong>Checkpoint:</strong> write a <code>Product</code> model with price &gt; 0, stock ≥ 0, and a category from a fixed set.</p>
 <h2 id="l3-numpy-think-in-arrays">L3. <code>numpy</code> — Think in Arrays</h2>
 <p><strong>Goal:</strong> replace Python loops with vectorized array math — the foundation under pandas, ML, and image processing.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import numpy as np
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import numpy as np
 
 # 1 — creation
 a = np.array([1, 2, 3, 4])                       # from a list
@@ -1241,14 +1435,14 @@ quantities = np.array([[1, 2, 3], [4, 5, 6]])    # shape (2, 3)
 totals = prices * quantities                      # (3,) stretches to (2, 3) — row-wise
 print(totals.sum(axis=1))                         # per-order totals</code></pre></div>
 <p><strong>Why it matters:</strong> a vectorized numpy operation is typically 10–100× faster than the equivalent Python <code>for</code> loop. Rule of thumb — <strong>if you wrote a loop over numbers, there's a numpy one-liner.</strong></p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># before                       # after
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># before                       # after
 out = []                       import numpy as np
 for x in data:                 out = np.sqrt(np.abs(data))
     out.append(abs(x)**0.5)</code></pre></div>
 <p><strong>Checkpoint:</strong> generate 100,000 random exam scores (mean 65, std 12), clip them to 0–100 (<code>np.clip</code>), and print the mean, median (<code>np.median</code>), and the percentage ≥ 50.</p>
 <h2 id="l4-pandas-dataframes-end-to-end">L4. <code>pandas</code> — DataFrames End to End</h2>
 <p><strong>Goal:</strong> load messy tabular data, clean it, interrogate it, export it — the complete workflow on one realistic file.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import pandas as pd
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import pandas as pd
 
 # 1 — load (csv / excel / json / sql all work)
 df = pd.read_csv("sales.csv", parse_dates=["date"])
@@ -1291,7 +1485,7 @@ df.to_csv("clean.csv", index=False)
 df.to_excel("report.xlsx", sheet_name="sales")
 df.to_sql("sales", engine, if_exists="replace")              # into a database</code></pre></div>
 <p><strong>Realistic mini-analysis (run this on any CSV):</strong></p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>top = (df.groupby("region")["amount"]
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>top = (df.groupby("region")["amount"]
          .sum()
          .sort_values(ascending=False))
 print(top.head(10))
@@ -1301,7 +1495,7 @@ print(growth.pct_change().round(3).tail())                     # % change</code>
 <p><strong>Checkpoint:</strong> load any CSV, find the numeric column, and produce a per-category summary table sorted by total. <em>Exercise: which month had the biggest jump over the previous month?</em></p>
 <h2 id="l5-matplotlib-charts-that-explain-themselves">L5. <code>matplotlib</code> — Charts That Explain Themselves</h2>
 <p><strong>Goal:</strong> the eight charts you'll actually use, with proper labels, and saving to files.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import matplotlib.pyplot as plt
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import matplotlib.pyplot as plt
 import numpy as np
 
 # 0 — the anatomy: figure = the canvas, axes = one chart
@@ -1319,7 +1513,7 @@ ax.legend(); ax.grid(alpha=0.3)
 fig.savefig("trig.png", dpi=150, bbox_inches="tight")   # save BEFORE show
 plt.show()</code></pre></div>
 <p><strong>The chart menu — pick by question:</strong></p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>fig, axes = plt.subplots(2, 2, figsize=(10, 8))   # 2×2 grid of axes
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>fig, axes = plt.subplots(2, 2, figsize=(10, 8))   # 2×2 grid of axes
 ax = axes[0, 0]
 ax.bar(["A", "B", "C"], [3, 7, 5])                 # compare categories
 ax.set_title("bar — comparison")
@@ -1337,7 +1531,7 @@ axes[1, 1].set_title("box — spread")
 fig.tight_layout()
 fig.savefig("dashboard.png", dpi=150)</code></pre></div>
 <p><strong>Daily-driver tricks:</strong></p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>plt.style.use("seaborn-v0_8-darkgrid")     # instant decent look (plt.style.available)
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>plt.style.use("seaborn-v0_8-darkgrid")     # instant decent look (plt.style.available)
 df.plot(kind="line", x="date", y="amount", title="Sales")   # pandas one-liner!
 df.groupby("region")["amount"].sum().plot(kind="barh")      # groupby → chart
 fig, ax = plt.subplots()
@@ -1346,7 +1540,7 @@ fig.colorbar(im)</code></pre></div>
 <p><strong>Checkpoint:</strong> plot the monthly-totals Series you made in L4 as a line chart, and the per-region totals as a horizontal bar chart — with titles, labels, and a saved PNG.</p>
 <h2 id="l6-typer-rich-beautiful-command-line-apps">L6. <code>typer</code> + <code>rich</code> — Beautiful Command-Line Apps</h2>
 <p><strong>Goal:</strong> build a real CLI tool with typed arguments, colored tables and progress — in 30 lines.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>"""notes.py — typer + rich demo CLI"""
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>"""notes.py — typer + rich demo CLI"""
 from pathlib import Path
 import json, typer
 from rich.console import Console
@@ -1392,7 +1586,7 @@ def stats():
 
 if __name__ == "__main__":
     app()</code></pre></div>
-<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code>python notes.py add "ship the report" --tag work
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>python notes.py add "ship the report" --tag work
 python notes.py add "buy milk"
 python notes.py list --tag work
 python notes.py --help            # typer wrote all this help for you</code></pre></div>
@@ -1400,7 +1594,7 @@ python notes.py --help            # typer wrote all this help for you</code></pr
 <p><strong>Checkpoint:</strong> add a <code>clear</code> command that empties the database (ask <code>typer.confirm("Sure?")</code> first).</p>
 <h2 id="l7-sqlalchemy-a-real-database-in-40-lines">L7. <code>SQLAlchemy</code> — A Real Database in 40 Lines</h2>
 <p><strong>Goal:</strong> define tables as classes, create the database, insert, query — the modern 2.0 style.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from sqlalchemy import create_engine, select, ForeignKey
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from sqlalchemy import create_engine, select, ForeignKey
 from sqlalchemy.orm import (DeclarativeBase, Mapped, mapped_column,
                             Session, relationship)
 
@@ -1443,7 +1637,7 @@ with Session(engine) as session:                   # READ
 <p><strong>Checkpoint:</strong> add a <code>visited: Mapped[bool]</code> column and a query that counts unvisited bookmarks.</p>
 <h2 id="l8-beautifulsoup-lxml-scraping-politely">L8. <code>BeautifulSoup</code> + <code>lxml</code> — Scraping Politely</h2>
 <p><strong>Goal:</strong> download a page, extract structured data, and respect the site while doing it.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>import time
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>import time
 import requests
 from bs4 import BeautifulSoup
 
@@ -1486,7 +1680,7 @@ while True:
 <p><strong>Checkpoint:</strong> scrape 5 pages of quotes and build a DataFrame of (author, text, tags) — then count quotes per author (hello again, L4).</p>
 <h2 id="l9-pillow-openpyxl-images-excel-reports">L9. <code>Pillow</code> + <code>openpyxl</code> — Images &amp; Excel Reports</h2>
 <p><strong>Goal:</strong> batch-process a photo folder and write a real styled Excel report about it.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from pathlib import Path
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from pathlib import Path
 from PIL import Image
 
 # 1 — open · inspect · save (format conversion is just save-as)
@@ -1515,7 +1709,7 @@ for file in sorted(src.glob("*.jpg")):
         im.convert("RGB").save(thumb, "JPEG", quality=85)
         records.append((file.name, *im.size, thumb.name))</code></pre></div>
 <p><strong>Now report it in Excel with <code>openpyxl</code>:</strong></p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>from openpyxl import Workbook
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill
 from openpyxl.utils import get_column_letter
 
@@ -1542,7 +1736,7 @@ wb.save("thumbs_report.xlsx")</code></pre></div>
 <p><strong>Checkpoint:</strong> add a <code>Size (KB)</code> column comparing original vs thumbnail file sizes, and a sum formula at the bottom. (Reading Excel back: <code>pd.read_excel</code> — L4.)</p>
 <h2 id="l10-capstone-all-the-small-tools-one-robust-script">L10. Capstone — All the Small Tools, One Robust Script</h2>
 <p><strong>Goal:</strong> combine <code>python-dotenv</code> + <code>tenacity</code> + <code>tqdm</code> + <code>rich</code> + <code>pydantic</code> + <code>requests</code> into one production-shaped program: a resilient API reporter.</p>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code>"""github_report.py — the utilities tutorial, assembled."""
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>"""github_report.py — the utilities tutorial, assembled."""
 from dotenv import load_dotenv                     # 1. config from .env
 import os, requests, typer
 from tenacity import retry, stop_after_attempt, wait_exponential
@@ -1590,7 +1784,7 @@ def main(user: str):
 
 if __name__ == "__main__":
     typer.run(main)</code></pre></div>
-<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button">Copy</button></div><pre><code># .env:   GITHUB_TOKEN=ghp_...
+<div class="codewrap"><div class="codebar"><span class="lang">bash</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># .env:   GITHUB_TOKEN=ghp_...
 python github_report.py torvalds</code></pre></div>
 <p><strong>What each piece contributed:</strong> <code>dotenv</code> — config without hardcoding secrets · <code>tenacity</code> — survives rate-limits and blips (exponential backoff) · <code>tqdm</code> — progress you can trust · <code>pydantic</code> — the API response is now typed, validated data · <code>rich</code> — output worth screenshotting · <code>typer</code> — <code>--help</code> for free. This is the shape of a real production tool.</p>
 <p><strong>Checkpoint — final exercises:</strong> (1) add a <code>--language</code> filter option; (2) export the table to CSV (L4); (3) swap <code>fetch_repos</code> to <code>httpx.AsyncClient</code> and gather pages concurrently (L1).</p>
@@ -1609,7 +1803,7 @@ python github_report.py torvalds</code></pre></div>
 <div class="table-wrap"><table><thead><tr><th> Exception </th><th> Typical cause → fix </th></tr></thead><tbody><tr><td> <code>SyntaxError</code> </td><td> Typo/unclosed bracket — read the caret line </td></tr><tr><td> <code>IndentationError</code>/<code>TabError</code> </td><td> Mixed tabs+spaces — configure editor to spaces </td></tr><tr><td> <code>NameError</code> / <code>UnboundLocal</code> </td><td> Typo'd or pre-import use; missing <code>global</code>/<code>nonlocal</code> </td></tr><tr><td> <code>TypeError</code> </td><td> Wrong types (<code>"a"+1</code>) or wrong arg count — check signatures </td></tr><tr><td> <code>ValueError</code> </td><td> Right type, bad value: <code>int("abc")</code> — validate first </td></tr><tr><td> <code>IndexError</code> / <code>KeyError</code> </td><td> Out of range / missing key — <code>.get()</code>, guard lengths </td></tr><tr><td> <code>AttributeError</code> </td><td> <code>'NoneType' has no attribute x</code> — a function returned None (missing return!) </td></tr><tr><td> <code>ImportError</code>/<code>ModuleNotFoundError</code> </td><td> Not installed / wrong venv / wrong name — <code>pip install</code>, check <code>sys.path</code> </td></tr><tr><td> <code>FileNotFoundError</code> / <code>PermissionError</code> </td><td> Wrong cwd, relative paths — use absolute <code>Path</code>s; run as admin </td></tr><tr><td> <code>ZeroDivisionError</code> </td><td> Guard denominators </td></tr><tr><td> <code>StopIteration</code> leaked </td><td> <code>next()</code> past end outside a for-loop — give <code>next(it, default)</code> </td></tr><tr><td> <code>RecursionError</code> </td><td> Missing base case — rewrite iteratively </td></tr><tr><td> <code>UnicodeDecodeError</code> </td><td> Read bytes as utf-8 of a non-utf8 file — pass <code>encoding=</code> / <code>errors=</code> </td></tr><tr><td> <code>TypeError: can't pickle</code> </td><td> Lambdas/local objects crossing process boundaries </td></tr><tr><td> <code>OSError errno 22</code> </td><td> Invalid path chars (<code>:</code> in Windows filenames!) </td></tr></tbody></table></div>
 <p>Full hierarchy tree: §18. Custom errors: subclass <code>Exception</code>, name it <code>SomethingError</code>.</p>
 <h2 id="appendix-f-one-liner-cookbook">Appendix F — One-Liner Cookbook</h2>
-<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button">Copy</button></div><pre><code># Files &amp; data
+<div class="codewrap"><div class="codebar"><span class="lang">python</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code># Files &amp; data
 python -c "import json;print(json.dumps(json.load(open('x.json')),indent=2))"   # pretty JSON
 sorted(paths, key=lambda p: p.stat().st_size)[-1]      # biggest file
 Path("f.txt").read_text().count("ERROR")               # occurrences
@@ -1636,7 +1830,7 @@ sum(a[1]*b[1] for a,b in zip(prices,qtys))             # dot product
 __import__("sys").exit(1)                              # last-resort inline exit</code></pre></div>
 <h2 id="appendix-g-traceback-decoding-errors-best-practices">Appendix G — Traceback Decoding, Errors &amp; Best Practices</h2>
 <p><strong>Reading a traceback (bottom-up):</strong></p>
-<div class="codewrap"><div class="codebar"><span class="lang">text</span><button class="copybtn" type="button">Copy</button></div><pre><code>Traceback (most recent call last):        ← read DOWN to find your code…
+<div class="codewrap"><div class="codebar"><span class="lang">text</span><button class="copybtn" type="button" aria-label="Copy code"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy</span></button></div><pre><code>Traceback (most recent call last):        ← read DOWN to find your code…
   File "app.py", line 10, in &lt;module&gt;     ← your entry: process(invoice)
   File "lib.py", line 4, in process
     total = sum(row["qty"] for row in rows)
@@ -1745,14 +1939,30 @@ KeyError: 'qty'                           ← …the LAST line names the disease
 <h2 id="keep-learning">Keep Learning</h2>
 <ul><li>Official tutorial &amp; library reference: <strong>docs.python.org/3</strong> (the single best free resource)</li><li>Practice: <strong>exercism.org/tracks/python</strong>, <strong>adventofcode.com</strong>, project ideas → build, don't just read</li><li>Real-world code reading: browse the stdlib source (<code>Lib/</code> in the CPython repo) — it's readable Python!</li><li>7-day path with this doc: Day 1 §0–1 · Day 2 §11–14 · Day 3 §15–17 · Day 4 §18–19 · Day 5 §20 · Day 6 §21–22 · Day 7 any of T/L tutorials — then L1→L10 across week two</li><li>When stuck: read the traceback bottom-up → <code>help()</code>/<code>dir()</code> → docs.python.org → search the exact error line</li></ul>
 <p><em>End of reference — 70 built-ins, 40+ tool subcommand tables, complete language core, 20 tutorials (T1–T10 + L1–L10), complete library catalog. Happy hissing.</em> 🐍</p>
-      <div class="footer-note">The Complete Python Master Reference &middot; single-file HTML edition &middot; works fully offline</div>
+      <div class="footer-note">The Complete Python Master Reference · single-file HTML edition · works fully offline</div>
     </div>
   </main>
 </div>
-<button id="toTop" title="Back to top">↑</button>
+<div id="scrim"></div>
+<button id="toTop" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<div id="toast"></div>
+
 <script>
 (function(){
-  var body = document.getElementById('docbody');
+  "use strict";
+  var body      = document.getElementById('docbody');
+  var input     = document.getElementById('search');
+  var clearBtn  = document.getElementById('clearBtn');
+  var count     = document.getElementById('matchcount');
+  var crumb     = document.getElementById('crumb');
+  var progress  = document.getElementById('progress');
+  var toTop     = document.getElementById('toTop');
+  var toastEl   = document.getElementById('toast');
+  var tocNav    = document.getElementById('tocnav');
+
+  /* ── split content into sections keyed by h1/h2 ── */
   var nodes = Array.prototype.slice.call(body.childNodes), sections = [];
   var cur = null, first = null;
   nodes.forEach(function(n){
@@ -1761,75 +1971,182 @@ KeyError: 'qty'                           ← …the LAST line names the disease
       body.insertBefore(cur, n); cur.appendChild(n); sections.push(cur);
     } else if(cur){ cur.appendChild(n); }
     else if(n.nodeType!==8){
-      if(!first){first=document.createElement('section');first.className='section';body.insertBefore(first,n);first.appendChild(n);sections.push(first);cur=first;}
-      else {first.appendChild(n);}
+      if(!first){ first=document.createElement('section'); first.className='section';
+        body.insertBefore(first,n); first.appendChild(n); sections.push(first); cur=first; }
+      else first.appendChild(n);
     }
   });
-  sections.forEach(function(s){ s._q = s.textContent.toLowerCase(); });
+  sections.forEach(function(s){
+    s._q = (s.textContent || '').toLowerCase();
+    var h = s.querySelector('h1,h2');
+    s._title = h ? h.textContent : '';
+  });
+  document.getElementById('chipSections').textContent = sections.length + ' sections';
 
-  var input=document.getElementById('search'), count=document.getElementById('matchcount');
-  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('#tocnav a'));
-  function runFilter(){
-    var q=input.value.trim().toLowerCase(), n=0;
-    sections.forEach(function(s){ var hit=!q || s._q.indexOf(q)>-1; s.classList.toggle('hidden',!hit); if(hit)n++; });
-    tocLinks.forEach(function(a){ var li=a.parentNode, hit=!q || a.textContent.toLowerCase().indexOf(q)>-1; li.classList.toggle('filtered',!hit); });
-    count.textContent = q ? n+' / '+sections.length+' sections' : '';
+  /* ── toast ── */
+  var toastT;
+  function toast(msg){
+    toastEl.textContent = msg; toastEl.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove('show'); }, 1800);
   }
-  input.addEventListener('input', runFilter);
+
+  /* ── search (debounced, section-level) ── */
+  var debounceT;
+  var tocLinks = Array.prototype.slice.call(tocNav.querySelectorAll('a'));
+  var tocParts = Array.prototype.slice.call(tocNav.querySelectorAll('details.part'));
+  function runFilter(){
+    var q = input.value.trim().toLowerCase();
+    clearBtn.style.display = q ? 'block' : 'none';
+    var n = 0;
+    sections.forEach(function(s){
+      var hit = !q || s._q.indexOf(q) > -1;
+      s.classList.toggle('hidden', !hit);
+      if(hit) n++;
+    });
+    tocLinks.forEach(function(a){
+      a.classList.toggle('filtered', !!q && a.textContent.toLowerCase().indexOf(q) === -1);
+    });
+    tocParts.forEach(function(d){
+      var anyVisible = !!d.querySelector('li a:not(.filtered)');
+      d.classList.toggle('filtered', !!q && !anyVisible);
+      if(q) d.open = anyVisible;
+    });
+    if(q){
+      count.textContent = n + ' / ' + sections.length;
+      count.classList.add('show');
+    } else count.classList.remove('show');
+  }
+  input.addEventListener('input', function(){
+    clearTimeout(debounceT);
+    debounceT = setTimeout(runFilter, 130);
+  });
+  clearBtn.addEventListener('click', function(){ input.value=''; runFilter(); input.focus(); });
   document.addEventListener('keydown', function(e){
-    if(e.key==='/' && document.activeElement!==input){ e.preventDefault(); input.focus(); }
-    if(e.key==='Escape' && document.activeElement===input){ input.value=''; runFilter(); input.blur(); }
+    if((e.key==='/' || (e.ctrlKey && e.key.toLowerCase()==='k')) && document.activeElement!==input){
+      e.preventDefault(); openNav(); input.focus(); input.select();
+    }
+    if(e.key==='Escape'){
+      if(document.activeElement===input && input.value){ input.value=''; runFilter(); }
+      else { closeNav(); }
+    }
   });
 
+  /* ── expand / collapse all ── */
+  document.getElementById('expandAll').addEventListener('click', function(){
+    tocParts.forEach(function(d){ d.open = true; });
+  });
+  document.getElementById('collapseAll').addEventListener('click', function(){
+    tocParts.forEach(function(d){ if(!d.querySelector('a.active')) d.open = false; });
+  });
+
+  /* ── copy buttons (with success state + toast) ── */
   document.addEventListener('click', function(e){
-    var btn=e.target.closest('.copybtn'); if(!btn) return;
-    var code=btn.closest('.codewrap').querySelector('code'), txt=code.innerText, ok=false;
-    function done(){ btn.textContent = ok?'Copied \u2713':'Ctrl+C'; setTimeout(function(){btn.textContent='Copy';},1500); }
+    var btn = e.target.closest('.copybtn'); if(!btn) return;
+    var code = btn.closest('.codewrap').querySelector('pre code');
+    var txt = code.innerText, ok = false;
+    function done(){
+      btn.classList.add('done');
+      var span = btn.querySelector('span'); if(span) span.textContent = 'Copied';
+      toast('✓ Code copied to clipboard');
+      setTimeout(function(){ btn.classList.remove('done'); if(span) span.textContent='Copy'; }, 1600);
+    }
     function fallback(){
-      var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0';
+      var ta = document.createElement('textarea'); ta.value = txt;
+      ta.style.cssText = 'position:fixed;opacity:0';
       document.body.appendChild(ta); ta.select();
-      try{ ok=document.execCommand('copy'); }catch(err){}
+      try{ document.execCommand('copy'); ok = true; }catch(err){}
       ta.remove(); done();
     }
     if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(txt).then(function(){ok=true;done();},fallback);
+      navigator.clipboard.writeText(txt).then(done, fallback);
     } else fallback();
   });
 
-  var byId={}; tocLinks.forEach(function(a){ byId[a.getAttribute('href').slice(1)]=a; });
-  function setActive(id){
-    tocLinks.forEach(function(a){a.classList.remove('active');});
-    var a=byId[id]; if(a){ a.classList.add('active');
-      var d=a.closest('details'); if(d) d.open=true;
-      a.scrollIntoView({block:'nearest'});
-    }
+  /* ── scroll-spy (IntersectionObserver + rAF) ── */
+  var byId = {};
+  tocLinks.forEach(function(a){ byId[a.getAttribute('href').slice(1)] = a; });
+  var rafPending = false;
+  function setActive(id, title){
+    if(rafPending) return; rafPending = true;
+    requestAnimationFrame(function(){
+      rafPending = false;
+      tocLinks.forEach(function(a){ a.classList.remove('active'); });
+      var a = byId[id];
+      if(a){
+        a.classList.add('active');
+        var d = a.closest('details'); if(d) d.open = true;
+        var li = a.parentNode;
+        if(li.offsetTop < tocNav.scrollTop || li.offsetTop > tocNav.scrollTop + tocNav.clientHeight - 40)
+          tocNav.scrollTop = li.offsetTop - tocNav.clientHeight/2 + 20;
+      }
+      if(title){ crumb.textContent = title; crumb.title = title; }
+    });
   }
   if('IntersectionObserver' in window){
-    var visible=[];
-    var io=new IntersectionObserver(function(entries){
-      entries.forEach(function(en){ visible=visible.filter(function(s){return s.target!==en.target;}); if(en.isIntersecting) visible.push(en); });
-      visible.sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top;});
-      if(visible[0]) setActive(visible[0].target.id || visible[0].target.querySelector('[id]').id);
-    },{rootMargin:'-80px 0px -75% 0px'});
+    var visible = [];
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        visible = visible.filter(function(v){ return v.target !== en.target; });
+        if(en.isIntersecting) visible.push(en);
+      });
+      visible.sort(function(a,b){ return a.boundingClientRect.top - b.boundingClientRect.top; });
+      if(visible[0]){
+        var t = visible[0].target;
+        setActive(t.id || (t.querySelector('[id]') && t.querySelector('[id]').id) || '',
+                  t._title || '');
+      }
+    }, {rootMargin:'-70px 0px -72% 0px', threshold:0});
     sections.forEach(function(s){ io.observe(s); });
   }
 
-  var root=document.documentElement, tbtn=document.getElementById('themeToggle'), stored=null;
-  try{ stored=localStorage.getItem('pymr-theme'); }catch(e){}
-  var initial = stored || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light');
-  applyTheme(initial);
-  tbtn.addEventListener('click', function(){ applyTheme(root.dataset.theme==='dark'?'light':'dark'); });
-  function applyTheme(t){ root.dataset.theme=t; tbtn.textContent = t==='dark'?'☀️':'🌙';
-    try{ localStorage.setItem('pymr-theme',t); }catch(e){} }
+  /* ── progress bar + FAB (rAF-throttled scroll) ── */
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if(ticking) return; ticking = true;
+    requestAnimationFrame(function(){
+      ticking = false;
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+      progress.style.width = (p * 100).toFixed(2) + '%';
+      toTop.classList.toggle('show', (h.scrollTop || document.body.scrollTop) > 640);
+    });
+  }, {passive:true});
+  toTop.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
 
-  var top=document.getElementById('toTop');
-  window.addEventListener('scroll', function(){ top.classList.toggle('show', window.scrollY>600); });
-  top.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
-
-  document.getElementById('menuBtn').addEventListener('click', function(){ document.body.classList.toggle('nav-open'); });
-  document.getElementById('tocnav').addEventListener('click', function(e){
-    if(e.target.tagName==='A') document.body.classList.remove('nav-open');
+  /* ── theme toggle (smooth) ── */
+  var root = document.documentElement;
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    root.classList.add('theming');
+    var t = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = t;
+    try{ localStorage.setItem('pymr-theme', t); }catch(e){}
+    setTimeout(function(){ root.classList.remove('theming'); }, 320);
+    toast(t === 'dark' ? '🌙 Dark mode' : '☀️ Light mode');
   });
+
+  /* ── mobile nav ── */
+  function openNav(){ document.body.classList.add('nav-open'); }
+  function closeNav(){ document.body.classList.remove('nav-open'); }
+  document.getElementById('menuBtn').addEventListener('click', openNav);
+  document.getElementById('searchBtn').addEventListener('click', function(){
+    openNav(); setTimeout(function(){ input.focus(); input.select(); }, 180);
+  });
+  document.getElementById('scrim').addEventListener('click', closeNav);
+  tocNav.addEventListener('click', function(e){ if(e.target.tagName==='A') closeNav(); });
+
+  /* ── smooth anchor offset fix for slow renders ── */
+  tocNav.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#"]'); if(!a) return;
+    var el = document.getElementById(a.getAttribute('href').slice(1));
+    if(!el) return;
+    e.preventDefault();
+    var y = el.getBoundingClientRect().top + window.pageYOffset - 64;
+    window.scrollTo({top: y < 40 ? 0 : y, behavior:'smooth'});
+    history.replaceState(null, '', a.getAttribute('href'));
+  });
+
+  runFilter();
 })();
 </script>
 </body>
